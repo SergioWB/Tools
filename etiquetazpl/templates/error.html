@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<!--
+    Solid State by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+    <head>
+        <title>SOMOS-REYES- MELI</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+        <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    </head>
+    <body class="is-preload">
+
+        <!-- Page Wrapper -->
+            <div id="page-wrapper">
+
+                <!-- Header -->
+                    <header id="header">
+                        <h1><a href="index.html">Somos Reyes, tenemos un problema!</a></h1>
+                        
+                    </header>
+
+                <!-- Wrapper -->
+                    <section id="wrapper">
+                        <header>
+                            <div class="inner">
+                                <h2>Resultado</h2>
+                                <p>Mensajes del proceso</p>
+                                <strong>Nombre: </strong>{{name_so}}<br>
+                                <strong>Order Meli Id: </strong>{{order_id}}<br>
+                                <strong>Respuesta: </strong>{{respuesta}}
+                               
+                                 
+                            </div>
+                            <div class="inner" >
+                                <input type="button" onclick="history.back()" name="volver atrás" value="volver atrás">
+                                
+                            </div>
+                        </header>
+
+                        <!-- Content -->
+                            <div class="wrapper">
+                                <div class="inner">
+
+                                    <h3 class="major">Revise la carpeta</h3>
+
+                                </div>
+                            </div>
+                                   
+                                   
+                    </section>
+
+                <!-- Footer -->
+                    <section id="footer">
+                        <div class="inner">
+                        </div>
+                    </section>
+
+            </div>
+
+        <!-- Scripts -->
+            <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+            <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.scrollex.min.js') }}"></script>
+            <script type="text/javascript" src="{{ url_for('static', filename='js/browser.min.js') }}"></script>
+            <script type="text/javascript" src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
+            <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+            
+
+    </body>
+</html>

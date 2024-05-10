@@ -1,0 +1,63 @@
+Ubuntu 14.04 LTS
+================
+
+Process of compilation and installation of Godex printer filter in Ubuntu
+14.04 LTS, step by step. On other distributions of Linux the process are
+similar.
+
+Lines begin with sign dollar ('$') mean command for shell (Terminal). Copy text
+after dollar sign and paste it to Terminal and confirm with Enter.
+
+ 1. Prepare system:
+    execute application "Terminal" for writing commands
+     - run: Applications -> Accessories -> Terminal
+  
+    install utilities for compilation (C compiler and make; gcc and make
+    packages)
+     - in terminal write:
+        $ sudo apt-get install gcc make
+  
+    install header files of CUPS library (install libcupsimage2-dev package)
+     - in terminal write:
+        $ sudo apt-get install libcupsimage2-dev
+  
+    On some systems PPD compiler isn't in default installation.  If you want
+    rebuild PPD files and PPD compiler isn't installed, you must install it:
+        $ sudo apt-get install cups-ppdc
+  
+    deactive AppArmor for print server (CUPS) (this is only for test!):
+        $ sudo aa-complain /usr/sbin/cupsd
+    For the final solution edit /etc/apparmor.d/usr.bin.cupsd and add line with
+    path to rastertoezpl filter with correct rights. More information about
+    AppArmor are in FAQ file.
+
+ 2. Get and extract the filter source ( - we expect that you download file 
+    "rastertoezpl-x.x.tar.gz" from our ftp.  Of course, You can copy this file 
+    to Places -> home folder -> src from another source - for example from a 
+    USB flash drive.)
+
+    Download archive:
+        $ cd src
+        $ wget http://path/to/last/version/of/rastertoezpl-x.x.tar.gz
+    Extract archive:
+        $ tar xzf rastertoezpl-x.x.tar.gz
+
+ 3. Compile the filter
+    Run configuration of the building and build the filter:
+        $ cd rastertoezpl-x.x
+        $ ./configure
+        $ make
+
+ 4. Install the filter and the PPD files to system:
+        $ sudo make install
+
+ 5. Set Godex printer in system:
+    - run: System -> Administration -> Printing
+    - icon New: if printer is connected to USB port you would see GODEX printer name, 
+      if not choose correct port.
+    - Choose filter: choose producer Godex, the correct model and other settings.
+
+
+Details for installation paths, parameters and other informations are in file
+doc/README in the filter archive. After installation this file is loaded in
+system (typical /usr/local/share/doc/rastertoezpl/README).

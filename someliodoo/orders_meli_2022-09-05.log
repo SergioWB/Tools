@@ -1,0 +1,561 @@
+2022-05-09 01:25:00 PM|werkzeug|INFO| * Running on http://0.0.0.0:8001/ (Press CTRL+C to quit)
+2022-05-09 01:25:00 PM|werkzeug|INFO| * Restarting with stat
+2022-05-09 01:25:00 PM|werkzeug|WARNING| * Debugger is active!
+2022-05-09 01:25:00 PM|werkzeug|INFO| * Debugger PIN: 167-490-010
+2022-05-09 01:47:19 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:19] "GET / HTTP/1.1" 200 -
+2022-05-09 01:47:19 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:19] "GET /static/js/breakpoints.min.js HTTP/1.1" 200 -
+2022-05-09 01:47:19 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:19] "GET /static/js/browser.min.js HTTP/1.1" 200 -
+2022-05-09 01:47:19 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:19] "GET /static/js/jquery.min.js HTTP/1.1" 200 -
+2022-05-09 01:47:19 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:19] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 200 -
+2022-05-09 01:47:19 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:19] "GET /static/css/main.css HTTP/1.1" 200 -
+2022-05-09 01:47:19 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:19] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 200 -
+2022-05-09 01:47:19 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:19] "GET /static/js/main.js HTTP/1.1" 200 -
+2022-05-09 01:47:19 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:19] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 200 -
+2022-05-09 01:47:19 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:19] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 01:47:25 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:25] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 01:47:25 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:25] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 01:47:27 PM|root|INFO|RESERVADO:2022-09-01T20:21:17|None:2000004140978464|92799|RRM366-MEN|1|paid
+2022-05-09 01:47:27 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-05 18:47:27', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 92799, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 162.9741379310345, 'name': 'Refaccion Resorte Para Rifle De Piston Magnum Rrm366 Mendoza'})], 'commitment_date': '2022-09-01T20:21:17', 'tracking_number': 'MEL Distribution/MEL00002497435936', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41627374401&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004140978464', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-01T20:21:17', 'correo_marketplace': '', 'client_order_ref': 'OLGA8731816', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41627374401, 'comments': 'AUTOCONFIRMADO'}
+2022-05-09 01:47:32 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:32] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 01:47:32 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:32] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 01:47:32 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:47:32] "GET /favicon.ico HTTP/1.1" 404 -
+2022-05-09 01:56:23 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:56:23] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 01:56:23 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:56:23] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 01:56:23 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:56:23] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-05-09 01:56:26 PM|root|INFO|RESERVADO:2022-09-03T19:55:52|None:2000004150231166|41069|207134|1|paid
+2022-05-09 01:56:26 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-05 18:56:25', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 41069, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 154.31034482758622, 'name': 'Báscula De Cocina Digital Obi 207134 Pesa Hasta 5kg Blanca'})], 'commitment_date': '2022-09-03T19:55:52', 'tracking_number': 'MEL Distribution/MEL00002497622584', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41631324748&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004150231166', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-03T19:55:52', 'correo_marketplace': '', 'client_order_ref': 'ROJU3215045', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41631324748, 'comments': 'AUTOCONFIRMADO'}
+2022-05-09 01:56:35 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:56:35] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 01:56:35 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 13:56:35] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 02:34:44 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 14:34:44] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 02:34:44 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 14:34:44] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 02:34:44 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 14:34:44] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-05-09 02:34:46 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 14:34:46] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 02:34:46 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 14:34:46] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 02:40:19 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 14:40:19] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 02:40:19 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 14:40:19] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 02:40:21 PM|root|INFO|RESERVADO:2022-09-03T09:20:57|None:2000004147612338|99905|284954-IUSA|1|paid
+2022-05-09 02:40:21 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-05 19:40:21', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 99905, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1749.1379310344828, 'name': 'Calentador Rapida Recu Gas Lp 1 Ser Mini 5 L/min 284954 Iusa'})], 'commitment_date': '2022-09-03T09:20:57', 'tracking_number': 'MEL Distribution/MEL00002497890225', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41630203780&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004147612338', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-03T09:20:57', 'correo_marketplace': '', 'client_order_ref': 'UFO', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41630203780, 'comments': 'AUTOCONFIRMADO'}
+2022-05-09 02:40:25 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 14:40:25] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 02:40:25 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 14:40:25] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 03:50:26 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 15:50:26] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 03:50:26 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 15:50:26] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 03:50:27 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 15:50:27] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 03:50:27 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 15:50:27] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 04:03:52 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 16:03:52] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 04:03:52 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 16:03:52] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 04:03:53 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 16:03:53] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-05-09 04:04:49 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 16:04:49] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 04:04:49 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 16:04:49] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 04:04:52 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 16:04:52] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 04:04:52 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 16:04:52] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 04:04:52 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 16:04:52] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-05-09 04:04:55 PM|root|INFO|RESERVADO:2022-09-03T16:40:00|None:2000004149441406|107255|293425|1|paid
+2022-05-09 04:04:55 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-05 21:04:54', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 107255, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1376.7241379310346, 'name': 'Toldo Carpa Impermeable Plegable Acero 2x2 M Blanco + Bolsa'})], 'commitment_date': '2022-09-03T16:40:00', 'tracking_number': 'MEL Distribution/MEL00002498979762', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41630988997&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004149441406', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-03T16:40:00', 'correo_marketplace': '', 'client_order_ref': 'ESPA1270662', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41630988997, 'comments': 'AUTOCONFIRMADO'}
+2022-05-09 04:04:59 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 16:04:59] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 04:04:59 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 16:04:59] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 04:45:24 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 16:45:24] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 04:45:25 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 16:45:25] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 04:45:27 PM|root|INFO|RESERVADO:2022-09-03T15:37:31|None:2000004149191478|109359|B1276-SZ|1|paid
+2022-05-09 04:45:27 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-05 21:45:27', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 109359, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1432.3706896551726, 'name': 'Combo Escritorio + Estante 3 Niveles + Estante 1 Nivel Casa'})], 'commitment_date': '2022-09-03T15:37:31', 'tracking_number': 'MEL Distribution/MEL00002504832887', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41630882478&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004149191478', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-03T15:37:31', 'correo_marketplace': '', 'client_order_ref': 'HEVA3937803', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41630882478, 'comments': 'AUTOCONFIRMADO'}
+2022-05-09 04:45:31 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 16:45:31] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 04:45:31 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 16:45:31] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:02:33 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:02:33] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 05:02:33 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:02:33] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:02:33 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:02:33] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-05-09 05:02:35 PM|root|INFO|RESERVADO:2022-09-04T19:31:11|None:2000004154111060|62303|703325-PEL|1|paid
+2022-05-09 05:02:35 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-05 22:02:35', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 62303, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 645.6896551724138, 'name': 'Cubeta Exprime Fácil Práctica  20 Lts 703325 Peldaños'})], 'commitment_date': '2022-09-04T19:31:11', 'tracking_number': 'MEL Distribution/MEL00002500038134', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41632964827&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004154111060', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-04T19:31:11', 'correo_marketplace': '', 'client_order_ref': 'CASTROANA20220731001952', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41632964827, 'comments': 'AUTOCONFIRMADO'}
+2022-05-09 05:02:39 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:02:39] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 05:02:39 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:02:39] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:06:53 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:06:53] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 05:06:53 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:06:53] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:06:53 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:06:53] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-05-09 05:06:55 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:06:55] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 05:06:55 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:06:55] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:06:58 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:06:58] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 05:06:58 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:06:58] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:06:58 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:06:58] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-05-09 05:07:03 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-05 22:07:03', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 79910, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1214.66, 'name': 'Pistola Deportiva Derringer  PK-62-3-0210 Mendoza'}), (0, 0, {'product_id': 105507, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 154.31, 'name': 'Funda Para Pistola Derringer MP-005 Mendoza'})], 'commitment_date': '2022-09-04T13:58:12', 'tracking_number': 'MEL Distribution/MEL00002500227297', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41632322706&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004152589724', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-04T13:58:12', 'correo_marketplace': '', 'client_order_ref': 'PIJU1185063', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': True, 'combo_detail': 'COMBO-MENDOZA-06|Pistola Derringer Cal 4.5 Salva + Funda Tiro Blanco Mendoza|1|$1230', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41632322706, 'comments': 'AUTOCONFIRMADO'}
+2022-05-09 05:07:08 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:07:08] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 05:07:08 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:07:08] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:10:59 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 17:10:59] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 05:10:59 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 17:10:59] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:11:01 PM|root|INFO|RESERVADO:2022-09-03T14:27:56|None:2000004148912686|112669|300233|1|paid
+2022-05-09 05:11:01 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-05 22:11:01', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 112669, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 50.862068965517246, 'name': 'Chupón Ventosa Para Sacar Abolladuras Y Levantar Cargas 25kg'})], 'commitment_date': '2022-09-03T14:27:56', 'tracking_number': 'MEL Distribution/MEL00002505911044', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41630762889&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004148912686', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-03T14:27:56', 'correo_marketplace': '', 'client_order_ref': 'GURE3058984', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41630762889, 'comments': 'AUTOCONFIRMADO'}
+2022-05-09 05:11:05 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 17:11:05] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 05:11:05 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 17:11:05] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:11:28 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 17:11:28] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 05:11:28 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 17:11:28] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:11:30 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-05 22:11:30', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 89509, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 438.7931034482759, 'name': 'Interruptor Para Rotomartillo Gsb 20-2 Re / Gsb 16 Re'})], 'commitment_date': '2022-09-02T19:31:37', 'tracking_number': 'MEL Distribution/MEL00002505778043', 'etiqueta_meli': '', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004145980118', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-02T19:31:37', 'correo_marketplace': '', 'client_order_ref': 'FRYMSA', 'order_status': 'paid', 'warehouse_id': 3, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41629515305, 'comments': 'AUTOCONFIRMADO'}
+2022-05-09 05:11:33 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 17:11:33] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 05:11:33 PM|werkzeug|INFO|192.168.0.50 - - [05/Sep/2022 17:11:33] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:26:10 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:26:10] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 05:26:10 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:26:10] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:26:10 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:26:10] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-05-09 05:26:14 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-05 22:26:14', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 79910, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1214.66, 'name': 'Pistola Deportiva Derringer  PK-62-3-0210 Mendoza'}), (0, 0, {'product_id': 105507, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 154.31, 'name': 'Funda Para Pistola Derringer MP-005 Mendoza'})], 'commitment_date': '2022-09-04T18:14:10', 'tracking_number': 'MEL Distribution/MEL00002500405049', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41632802617&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004153726364', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-04T18:14:10', 'correo_marketplace': '', 'client_order_ref': 'CELESTINOANGEL20220702145434', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': True, 'combo_detail': 'COMBO-MENDOZA-06|Pistola Derringer Cal 4.5 Salva + Funda Tiro Blanco Mendoza|1|$1230', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41632802617, 'comments': 'AUTOCONFIRMADO'}
+2022-05-09 05:26:20 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:26:20] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 05:26:20 PM|werkzeug|INFO|192.168.0.48 - - [05/Sep/2022 17:26:20] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:47:56 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:47:56] "GET / HTTP/1.1" 200 -
+2022-05-09 05:47:56 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:47:56] "GET /static/css/main.css HTTP/1.1" 200 -
+2022-05-09 05:47:56 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:47:56] "GET /static/js/jquery.min.js HTTP/1.1" 200 -
+2022-05-09 05:47:56 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:47:56] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 200 -
+2022-05-09 05:47:56 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:47:56] "GET /static/js/breakpoints.min.js HTTP/1.1" 200 -
+2022-05-09 05:47:56 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:47:56] "GET /static/js/browser.min.js HTTP/1.1" 200 -
+2022-05-09 05:47:56 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:47:56] "GET /static/js/main.js HTTP/1.1" 200 -
+2022-05-09 05:47:56 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:47:56] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 200 -
+2022-05-09 05:47:56 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:47:56] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 200 -
+2022-05-09 05:47:56 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:47:56] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:47:59 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:47:59] "POST /inicio HTTP/1.1" 200 -
+2022-05-09 05:47:59 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:47:59] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:48:02 PM|root|INFO|RESERVADO:2022-08-31T19:54:35|None:2000004134946036|112917|TB-CT-150-TOU|1|paid
+2022-05-09 05:48:02 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'draft', 'confirmation_date': '2022-09-05 22:48:02', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 112917, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 150.86206896551724, 'name': 'Broches Hubs Cliptech De Porta Herramientas 3 Pzs Toughbuilt'})], 'commitment_date': '2022-08-31T19:54:35', 'tracking_number': 'null/0', 'etiqueta_meli': '', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004134946036', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-08-31T19:54:35', 'correo_marketplace': '', 'client_order_ref': 'ESTEBAN GOMEZCASTILLO', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 6, 'shipping_id': None, 'comments': ''}
+2022-05-09 05:48:03 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:48:03] "POST /procesar HTTP/1.1" 200 -
+2022-05-09 05:48:03 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:48:03] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-05-09 05:48:03 PM|werkzeug|INFO|192.168.0.46 - - [05/Sep/2022 17:48:03] "GET /favicon.ico HTTP/1.1" 404 -
+2022-06-09 08:30:26 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:26] "POST /procesar HTTP/1.1" 500 -
+2022-06-09 08:30:27 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:27] "GET /procesar?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2022-06-09 08:30:27 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:27] "GET /procesar?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2022-06-09 08:30:27 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:27] "GET /procesar?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+2022-06-09 08:30:27 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:27] "GET /procesar?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2022-06-09 08:30:27 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:27] "GET /procesar?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2022-06-09 08:30:29 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:29] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-06-09 08:30:29 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:29] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 304 -
+2022-06-09 08:30:29 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:29] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-06-09 08:30:29 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:29] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-06-09 08:30:29 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:29] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-06-09 08:30:29 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:29] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-06-09 08:30:29 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:29] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 304 -
+2022-06-09 08:30:29 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:29] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-06-09 08:30:29 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:29] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:30:33 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:33] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 08:30:33 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:33] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:30:35 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:35] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 08:30:36 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:36] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:30:36 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:36] "GET /favicon.ico HTTP/1.1" 404 -
+2022-06-09 08:30:39 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:39] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 08:30:39 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:39] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:30:39 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:39] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 304 -
+2022-06-09 08:30:42 AM|root|INFO|RESERVADO:2022-09-05T01:15:00|None:2000004155369854|34445|112601-SUR|1|paid
+2022-06-09 08:30:42 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 13:30:42', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 34445, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 257.7586206896552, 'name': 'Guía Jalacable 30 Metros Hasta 5 Cables 112601 Surtek'})], 'commitment_date': '2022-09-05T01:15:00', 'tracking_number': 'MEL Distribution/MEL00002507152636', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41633481563&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004155369854', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-05T01:15:00', 'correo_marketplace': '', 'client_order_ref': 'VAXI6652341', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41633481563, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 08:30:47 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:47] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 08:30:47 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:30:47] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:31:42 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:31:42] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 08:31:43 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:31:43] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:31:45 AM|root|INFO|RESERVADO:2022-08-30T21:42:49|None:2000004129726754|105672|CSS02-SUR|1|paid
+2022-06-09 08:31:45 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 13:31:45', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 105672, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 831.0344827586207, 'name': 'Careta Electr Solar Soldar Area De Visión De 92x42 Mm Surtek'})], 'commitment_date': '2022-08-30T21:42:49', 'tracking_number': 'MEL Distribution/MEL00002506897926', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41622541214&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004129726754', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-08-30T21:42:49', 'correo_marketplace': '', 'client_order_ref': 'ALEJANDRAFABIOLAPEREZZURITA', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41622541214, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 08:31:50 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:31:50] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 08:31:50 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:31:50] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:32:03 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:32:03] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 08:32:03 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:32:03] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:32:06 AM|root|INFO|RESERVADO:2022-09-05T19:06:03|None:2000004159899668|111049|300164|1|paid
+2022-06-09 08:32:06 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 13:32:06', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 111049, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 955.1724137931035, 'name': 'Mesa Plegable 120cm Portatil Portafolio Evento Fiesta Jardin'})], 'commitment_date': '2022-09-05T19:06:03', 'tracking_number': 'MEL Distribution/MEL00002506777266', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635456407&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004159899668', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-05T19:06:03', 'correo_marketplace': '', 'client_order_ref': 'JORGERESENDIZGUDIO', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41635456407, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 08:32:11 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:32:11] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 08:32:11 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:32:11] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:33:23 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:33:23] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 08:33:23 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:33:23] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:33:26 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 13:33:26', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 80385, 'product_uom': 1, 'product_uom_qty': 2, 'price_unit': 231.9, 'name': 'Salva / Diabolo 2000 Express Calibre 4.5 50 Juegos SD-4.5-50-0555 Mendoza'})], 'commitment_date': '2022-09-05T19:42:39', 'tracking_number': 'MEL Distribution/MEL00002506745168', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635561109&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004160143098', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-05T19:42:39', 'correo_marketplace': '', 'client_order_ref': 'JUANLEONARDOCAMPOS', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': True, 'combo_detail': 'COMBO-MENDOZA-07|Municiones Diabolo Capsula Salva 200 Pzas 4.5mm Tiro Mendoza|1|$519', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41635561109, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 08:33:31 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:33:31] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 08:33:31 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:33:31] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:33:39 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:33:39] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 08:33:39 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:33:39] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:33:41 AM|root|INFO|RESERVADO:2022-09-05T19:56:10|None:2000004160230202|34783|117527|1|paid
+2022-06-09 08:33:41 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 13:33:41', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 34783, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 865.7758620689656, 'name': 'Cautin Pistola Para Soldar 260 W D550 Weller Multiuso'})], 'commitment_date': '2022-09-05T19:56:10', 'tracking_number': 'MEL Distribution/MEL00002506687679', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635598884&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004160230202', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-05T19:56:10', 'correo_marketplace': '', 'client_order_ref': 'RAULFERNANDOCANULVZQUEZ', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 6, 'shipping_id': 41635598884, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 08:33:47 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:33:47] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 08:33:47 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:33:47] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:33:51 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:33:51] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 08:33:51 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:33:51] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 08:33:54 AM|root|INFO|RESERVADO:2022-09-05T19:55:33|None:2000004160221886|90941|56490NP-INTEX|1|paid
+2022-06-09 08:33:54 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 13:33:53', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 90941, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 692.2413793103449, 'name': 'Alberca Inflable Intex 56490 700l Multicolor'})], 'commitment_date': '2022-09-05T19:55:33', 'tracking_number': 'MEL Distribution/MEL00002506686573', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635597370&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004160221886', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-05T19:55:33', 'correo_marketplace': '', 'client_order_ref': '151090_BARO', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 18, 'shipping_id': 41635597370, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 08:33:59 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:33:59] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 08:34:00 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 08:34:00] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 09:13:06 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 09:13:06] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 09:13:06 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 09:13:06] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 09:13:07 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 09:13:07] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 09:13:07 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 09:13:07] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 09:31:31 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:31] "GET / HTTP/1.1" 200 -
+2022-06-09 09:31:32 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:32] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-06-09 09:31:32 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:32] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-06-09 09:31:32 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:32] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-06-09 09:31:32 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:32] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-06-09 09:31:32 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:32] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-06-09 09:31:32 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:32] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-06-09 09:31:32 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:32] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 304 -
+2022-06-09 09:31:32 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:32] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 304 -
+2022-06-09 09:31:33 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:33] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 09:31:36 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:36] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 09:31:36 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:36] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 09:31:39 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:39] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 09:31:39 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:39] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 09:31:39 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:39] "GET /favicon.ico HTTP/1.1" 404 -
+2022-06-09 09:31:51 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:51] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 09:31:51 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:31:51] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 09:31:58 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 14:31:58', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 113668, 'product_uom': 1, 'product_uom_qty': 4, 'price_unit': 1119.83, 'name': 'Silla Tolix Acero Metalica Color Blanco KingsHouse'})], 'commitment_date': '2022-09-05T19:58:11', 'tracking_number': '/41635604953', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635604953&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004160239816', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-05T19:58:11', 'correo_marketplace': '', 'client_order_ref': 'KATYADOBBERTIN', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': True, 'combo_detail': 'COMBO-KINGSMAN-37|Set De 4 Sillas Tipo Tolix Metal Vintage Minimalista Hogar|1|$3555', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 4, 'shipping_id': 41635604953, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 09:32:07 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:32:07] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 09:32:07 AM|werkzeug|INFO|192.168.0.77 - - [06/Sep/2022 09:32:07] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 10:48:55 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:55] "GET / HTTP/1.1" 200 -
+2022-06-09 10:48:55 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:55] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-06-09 10:48:55 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:55] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-06-09 10:48:55 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:55] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-06-09 10:48:55 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:55] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 304 -
+2022-06-09 10:48:55 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:55] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-06-09 10:48:55 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:55] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-06-09 10:48:55 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:55] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-06-09 10:48:55 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:55] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 304 -
+2022-06-09 10:48:55 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:55] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 10:48:57 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:57] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 10:48:57 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:57] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 10:48:59 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:59] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 10:48:59 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:59] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 10:48:59 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:48:59] "GET /favicon.ico HTTP/1.1" 404 -
+2022-06-09 10:49:09 AM|root|INFO|RESERVADO:2022-09-04T15:24:40|None:2000004152966112|117514|300530|1|paid
+2022-06-09 10:49:09 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 15:49:09', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 117514, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1063.8362068965519, 'name': 'Mini Trampolin Brincolin Jumping 1m 40in Fitness Ejercicio'})], 'commitment_date': '2022-09-04T15:24:40', 'tracking_number': 'MEL Distribution/MEL00002505384117', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41632480276&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004152966112', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-04T15:24:40', 'correo_marketplace': '', 'client_order_ref': 'ALMA749', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41632480276, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 10:49:09 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:49:09] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 10:49:10 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:49:10] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 10:49:10 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:49:10] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-06-09 10:49:12 AM|root|INFO|RESERVADO:2022-09-04T15:24:40|None:2000004152966112|117514|300530|1|paid
+2022-06-09 10:49:12 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 15:49:12', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 117514, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1063.8362068965519, 'name': 'Mini Trampolin Brincolin Jumping 1m 40in Fitness Ejercicio'})], 'commitment_date': '2022-09-04T15:24:40', 'tracking_number': 'MEL Distribution/MEL00002505384117', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41632480276&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004152966112', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-04T15:24:40', 'correo_marketplace': '', 'client_order_ref': 'ALMA749', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41632480276, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 10:49:19 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:49:19] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 10:49:19 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:49:19] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 10:49:19 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 10:49:19] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 11:50:54 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 11:50:54] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 11:50:54 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 11:50:54] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 11:50:56 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 11:50:56] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 11:50:56 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 11:50:56] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 11:50:59 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 11:50:59] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 11:50:59 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 11:50:59] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 11:51:01 AM|root|INFO|RESERVADO:2022-09-03T19:04:28|None:2000004150019384|32938|060164L9E0-BOS|1|paid
+2022-06-09 11:51:01 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 16:51:01', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 32938, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1499.1379310344828, 'name': 'Sierra Sable A Bateria Li-ion 12 V 3000 Spm Gsa 12v-li Bosch'})], 'commitment_date': '2022-09-03T19:04:28', 'tracking_number': 'MEL Distribution/MEL00002510018509', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41631235852&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004150019384', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-03T19:04:28', 'correo_marketplace': '', 'client_order_ref': 'OSCARLEOBARDOFLORESJUAREZ', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 6, 'shipping_id': 41631235852, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 11:51:06 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 11:51:06] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 11:51:06 AM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 11:51:06] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 11:59:11 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 11:59:11] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 11:59:11 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 11:59:11] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 11:59:11 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 11:59:11] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-06-09 11:59:13 AM|root|INFO|RESERVADO:2022-09-05T19:55:15|None:2000004160223282|59123|6042-640-MUL|1|paid
+2022-06-09 11:59:13 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 16:59:13', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 59123, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 329.3103448275862, 'name': 'Mira Telescopica 6x40 Para Rifle Con Monturas Lobo'})], 'commitment_date': '2022-09-05T19:55:15', 'tracking_number': 'MEL Distribution/MEL00002506687276', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635596452&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004160223282', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-05T19:55:15', 'correo_marketplace': '', 'client_order_ref': 'JUANSAENZ454', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 4, 'shipping_id': 41635596452, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 11:59:18 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 11:59:18] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 11:59:18 AM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 11:59:18] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 12:01:49 PM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 12:01:49] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 12:01:49 PM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 12:01:49] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 12:01:49 PM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 12:01:49] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-06-09 12:01:52 PM|root|INFO|RESERVADO:2022-09-05T19:57:35|None:2000004160237768|94611|2000034754|1|paid
+2022-06-09 12:01:52 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 17:01:51', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 94611, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 515.1293103448276, 'name': 'Hielera Flexible Termica 18 Latas 20 Horas Frio Azul Coleman'})], 'commitment_date': '2022-09-05T19:57:35', 'tracking_number': 'MEL Distribution/MEL00002506698577', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635603350&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004160237768', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-05T19:57:35', 'correo_marketplace': '', 'client_order_ref': 'FLCU9101332', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 18, 'shipping_id': 41635603350, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 12:01:58 PM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 12:01:58] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 12:01:58 PM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 12:01:58] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 12:02:38 PM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 12:02:38] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 12:02:38 PM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 12:02:38] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 12:02:38 PM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 12:02:38] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-06-09 12:02:40 PM|root|INFO|RESERVADO:2022-09-05T19:25:28|None:2000004160023922|67672|MTX20K6A-BD|1|paid
+2022-06-09 12:02:40 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 17:02:40', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 67672, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 3495.8793103448274, 'name': 'Combo Taladro Black And Decker 6 En 1 Matrix 20v Herramienta'})], 'commitment_date': '2022-09-05T19:25:28', 'tracking_number': 'MEL Distribution/MEL00002506745834', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635511786&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004160023922', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-05T19:25:28', 'correo_marketplace': '', 'client_order_ref': 'RAAM5995523', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41635511786, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 12:02:45 PM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 12:02:45] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 12:02:45 PM|werkzeug|INFO|192.168.0.48 - - [06/Sep/2022 12:02:45] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 03:03:55 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 15:03:55] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 03:03:55 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 15:03:55] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 03:03:58 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 15:03:58] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 03:03:58 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 15:03:58] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 03:04:01 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 15:04:01] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 03:04:01 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 15:04:01] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 03:04:05 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 20:04:05', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 117839, 'product_uom': 1, 'product_uom_qty': 20, 'price_unit': 162.93, 'name': 'Follaje Artificial Sintético 60x40 cm Verde Claro Hoja Chica Tallo Largo GL-LQ01 KingsHouse'})], 'commitment_date': '2022-09-02T16:38:28', 'tracking_number': 'MEL Distribution/MEL00002511371071', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41629173978&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004145188092', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-02T16:38:28', 'correo_marketplace': '', 'client_order_ref': 'VICTORRAMOSORDOEZ', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': True, 'combo_detail': 'COMBO-KH-44|Follaje Artificial Sintetico Muro Verde 60x40cm 20pzs Bardas|1|$2449', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41629173978, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 03:04:09 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 15:04:09] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 03:04:09 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 15:04:09] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 03:04:18 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 15:04:18] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 03:04:18 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 15:04:18] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 03:04:20 PM|root|INFO|RESERVADO:2022-09-04T10:25:02|None:2000004151721612|41069|207134|1|paid
+2022-06-09 03:04:20 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-06 20:04:20', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 41069, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 154.31034482758622, 'name': 'Báscula De Cocina Digital Obi 207134 Pesa Hasta 5kg Blanca'})], 'commitment_date': '2022-09-04T10:25:02', 'tracking_number': 'MEL Distribution/MEL00002511287067', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41631951634&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004151721612', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-04T10:25:02', 'correo_marketplace': '', 'client_order_ref': 'GONZALOVIRGEN', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 6, 'shipping_id': 41631951634, 'comments': 'AUTOCONFIRMADO'}
+2022-06-09 03:04:25 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 15:04:25] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 03:04:25 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 15:04:25] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 04:43:55 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:43:55] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 04:43:56 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:43:56] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 04:43:58 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:43:58] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 04:43:58 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:43:58] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 04:44:03 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:03] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 04:44:03 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:03] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 04:44:05 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:05] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 04:44:05 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:05] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 04:44:09 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:09] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 04:44:09 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:09] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 04:44:10 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:10] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 04:44:10 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:10] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 04:44:18 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:18] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 04:44:18 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:18] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 04:44:19 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:19] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 04:44:19 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:19] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 04:44:23 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:23] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 04:44:23 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:23] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 04:44:24 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:24] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 04:44:24 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:24] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 04:44:28 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:28] "POST /inicio HTTP/1.1" 200 -
+2022-06-09 04:44:28 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:28] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-06-09 04:44:29 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:29] "POST /procesar HTTP/1.1" 200 -
+2022-06-09 04:44:29 PM|werkzeug|INFO|192.168.0.50 - - [06/Sep/2022 16:44:29] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:44:36 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:36] "POST /procesar HTTP/1.1" 500 -
+2022-07-09 08:44:36 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:36] "GET /procesar?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2022-07-09 08:44:36 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:36] "GET /procesar?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+2022-07-09 08:44:36 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:36] "GET /procesar?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2022-07-09 08:44:37 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:37] "GET /procesar?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2022-07-09 08:44:37 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:37] "GET /procesar?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2022-07-09 08:44:38 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:38] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-07-09 08:44:38 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:38] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 304 -
+2022-07-09 08:44:38 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:38] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-07-09 08:44:38 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:38] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-07-09 08:44:38 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:38] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-07-09 08:44:38 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:38] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-07-09 08:44:38 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:38] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-07-09 08:44:38 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:38] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 304 -
+2022-07-09 08:44:38 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:38] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:44:42 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:42] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 08:44:42 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:44:42] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:46:35 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:46:35] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 08:46:35 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:46:35] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:46:35 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:46:35] "GET /favicon.ico HTTP/1.1" 404 -
+2022-07-09 08:46:38 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:46:38] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 08:46:38 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:46:38] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:46:38 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:46:38] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 304 -
+2022-07-09 08:46:41 AM|root|INFO|RESERVADO:2022-09-06T00:21:18|None:2000004161517082|110260|2099192-CON|1|paid
+2022-07-09 08:46:41 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 13:46:41', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 110260, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 397.6724137931035, 'name': 'Botella Agua Acero Inox 32 Oz 946 Ml Deportiva Frio Contigo'})], 'commitment_date': '2022-09-06T00:21:18', 'tracking_number': 'MEL Distribution/MEL00002512794556', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41636143170&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004161517082', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-06T00:21:18', 'correo_marketplace': '', 'client_order_ref': 'GUBE2122644', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41636143170, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 08:46:47 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:46:47] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 08:46:47 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:46:47] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:47:00 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:00] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 08:47:00 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:00] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:47:01 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:01] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 08:47:01 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:01] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:47:03 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:03] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 08:47:03 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:03] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:47:06 AM|root|INFO|RESERVADO:2022-09-06T03:50:00|None:2000004161784814|112656|300220|1|paid
+2022-07-09 08:47:06 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 13:47:06', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 112656, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 516.3793103448277, 'name': 'Tensor 4-22mm 2 Toneladas Tensar Jalar Cables Gancho Liniero'})], 'commitment_date': '2022-09-06T03:50:00', 'tracking_number': 'MEL Distribution/MEL00002512602340', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41636248685&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004161784814', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-06T03:50:00', 'correo_marketplace': '', 'client_order_ref': 'TORRESGARCIAJESUS96', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41636248685, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 08:47:11 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:11] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 08:47:11 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:11] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:47:25 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:25] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 08:47:25 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:25] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:47:27 AM|root|INFO|RESERVADO:2022-09-06T19:57:19|None:2000004166396894|107249|293414|1|paid
+2022-07-09 08:47:27 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 13:47:27', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 107249, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1378.448275862069, 'name': 'Toldo Carpa Impermeable Plegable De Acero 3x3m Kingsman'})], 'commitment_date': '2022-09-06T19:57:19', 'tracking_number': 'MEL Distribution/MEL00002512369246', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41638264207&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004166396894', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-06T19:57:19', 'correo_marketplace': '', 'client_order_ref': 'ESTRADAXIMENA20220810215825', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 18, 'shipping_id': 41638264207, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 08:47:32 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:32] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 08:47:32 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:32] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:47:37 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:37] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 08:47:37 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:37] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:47:40 AM|root|INFO|RESERVADO:2022-09-06T19:57:10|None:2000004166396752|107248|293413|1|paid
+2022-07-09 08:47:40 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 13:47:39', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 107248, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1482.0172413793105, 'name': 'Toldo Carpa Impermeable Plegable Acero 3x3 M Jardin Blanco'})], 'commitment_date': '2022-09-06T19:57:10', 'tracking_number': 'MEL Distribution/MEL00002512369192', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41638263805&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004166396752', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-06T19:57:10', 'correo_marketplace': '', 'client_order_ref': 'ENAN2086079', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 4, 'shipping_id': 41638263805, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 08:47:45 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:45] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 08:47:45 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:45] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:47:47 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:47] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 08:47:47 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:47] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:47:50 AM|root|INFO|RESERVADO:2022-09-06T19:56:00|None:2000004166391660|107248|293413|1|paid
+2022-07-09 08:47:50 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 13:47:49', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 107248, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1482.0172413793105, 'name': 'Toldo Carpa Impermeable Plegable Acero 3x3 M Jardin Blanco'})], 'commitment_date': '2022-09-06T19:56:00', 'tracking_number': 'MEL Distribution/MEL00002512361673', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41638260862&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004166391660', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-06T19:56:00', 'correo_marketplace': '', 'client_order_ref': 'ENAN2086079', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 4, 'shipping_id': 41638260862, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 08:47:55 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:55] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 08:47:55 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 08:47:55] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:57:36 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:36] "GET / HTTP/1.1" 200 -
+2022-07-09 08:57:37 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:37] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-07-09 08:57:37 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:37] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-07-09 08:57:37 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:37] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-07-09 08:57:37 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:37] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-07-09 08:57:37 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:37] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 304 -
+2022-07-09 08:57:37 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:37] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-07-09 08:57:37 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:37] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-07-09 08:57:37 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:37] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 304 -
+2022-07-09 08:57:38 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:38] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:57:39 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:39] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 304 -
+2022-07-09 08:57:43 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:43] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 08:57:43 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:43] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:57:47 AM|root|INFO|RESERVADO:2022-09-05T16:47:09|None:2000004159050486|109359|B1276-SZ|1|paid
+2022-07-09 08:57:47 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 13:57:47', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 109359, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1432.3706896551726, 'name': 'Combo Escritorio + Estante 3 Niveles + Estante 1 Nivel Casa'})], 'commitment_date': '2022-09-05T16:47:09', 'tracking_number': '/41635083958', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635083958&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004159050486', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-05T16:47:09', 'correo_marketplace': '', 'client_order_ref': 'GONZALEZAIDAN20220624084214', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41635083958, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 08:57:51 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:51] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 08:57:52 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:52] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 08:57:52 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 08:57:52] "GET /favicon.ico HTTP/1.1" 404 -
+2022-07-09 09:20:24 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 09:20:24] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 09:20:24 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 09:20:24] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 09:20:27 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 14:20:27', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 117379, 'product_uom': 1, 'product_uom_qty': 4, 'price_unit': 1119.83, 'name': 'Silla Tolix Acero Metalica Color Verde Menta 300500 KingsHouse'})], 'commitment_date': '2022-09-06T00:22:48', 'tracking_number': 'MEL Distribution/MEL00002512938195', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41636144760&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004161517520', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-06T00:22:48', 'correo_marketplace': '', 'client_order_ref': 'CEAN5014251', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': True, 'combo_detail': 'COMBO-KH-33|Set De 4 Sillas Tipo Tolix Metal Vintage Minimalista Hogar|1|$3555', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 18, 'shipping_id': 41636144760, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 09:20:32 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 09:20:32] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 09:20:32 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 09:20:32] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 09:20:54 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:20:54] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 09:21:00 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:00] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 09:21:00 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:00] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 09:21:02 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:02] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 09:21:02 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:02] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 09:21:14 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:14] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 09:21:14 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:14] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 09:21:20 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:20] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 09:21:20 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:20] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 09:21:27 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:27] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 09:21:28 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:28] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 09:21:31 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:31] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 09:21:31 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:31] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 09:21:36 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:36] "GET / HTTP/1.1" 200 -
+2022-07-09 09:21:37 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:37] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 09:21:41 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:41] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 09:21:41 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:41] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 09:21:43 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:43] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 09:21:43 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 09:21:43] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:12:11 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:11] "GET / HTTP/1.1" 200 -
+2022-07-09 10:12:11 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:11] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-07-09 10:12:11 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:11] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-07-09 10:12:11 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:11] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-07-09 10:12:11 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:11] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-07-09 10:12:11 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:11] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-07-09 10:12:11 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:11] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-07-09 10:12:11 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:11] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 304 -
+2022-07-09 10:12:11 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:11] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 304 -
+2022-07-09 10:12:12 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:12] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:12:13 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:13] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 10:12:13 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:13] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:12:16 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:16] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 10:12:16 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:16] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:12:16 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:16] "GET /favicon.ico HTTP/1.1" 404 -
+2022-07-09 10:12:59 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:59] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 10:12:59 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:59] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:12:59 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:12:59] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 10:13:01 AM|root|INFO|RESERVADO:2022-09-05T19:39:52|None:2000004160121400|112302|140-9-SZ|1|paid
+2022-07-09 10:13:01 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 15:13:00', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 112302, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 2550.862068965517, 'name': 'Banco Ejercicio Multiposiciones Profesional Pesas Gimnasio'})], 'commitment_date': '2022-09-05T19:39:52', 'tracking_number': 'MEL Distribution/MEL00002506779650', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635552928&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004160121400', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-05T19:39:52', 'correo_marketplace': '', 'client_order_ref': 'SANTIAGOFRANCISCOJ', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41635552928, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 10:13:06 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:13:06] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 10:13:06 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:13:06] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:17:54 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:17:54] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 10:17:54 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:17:54] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:17:54 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:17:54] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 10:17:56 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 15:17:55', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 113635, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1791.5775862068967, 'name': 'Fumigadora Aspersora Electrica Sanitizante Mochila Hyundai'})], 'commitment_date': '2022-09-05T17:47:06', 'tracking_number': 'MEL Distribution/MEL00002506879626', 'etiqueta_meli': '', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004159411190', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-05T17:47:06', 'correo_marketplace': '', 'client_order_ref': 'BUSE5859804', 'order_status': 'paid', 'warehouse_id': 3, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41635242187, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 10:17:59 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:17:59] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 10:17:59 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:17:59] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:18:07 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:18:07] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 10:18:07 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:18:07] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:18:07 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:18:07] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 10:18:09 AM|root|INFO|RESERVADO:2022-09-05T19:20:32|None:2000004159996322|95187|1513-35-MUL|1|paid
+2022-07-09 10:18:09 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 15:18:08', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 95187, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1578.448275862069, 'name': 'Caramelo Para Barberia Tapa Redonda Mini 35 Cm Lobo'})], 'commitment_date': '2022-09-05T19:20:32', 'tracking_number': 'MEL Distribution/MEL00002506902742', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635497367&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004159996322', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-05T19:20:32', 'correo_marketplace': '', 'client_order_ref': 'GARCIAMARILU20220816112950', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41635497367, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 10:18:13 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:18:13] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 10:18:13 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:18:13] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:18:18 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:18:18] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 10:18:18 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:18:18] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:18:18 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:18:18] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 10:21:52 AM|root|INFO|RESERVADO:2022-09-05T19:24:46|None:2000004160024138|107243|293406|1|paid
+2022-07-09 10:21:52 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 15:21:51', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 107243, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1990.7155172413795, 'name': 'Toldo Carpa Con Pared Impermeable Plegable Acero 3x3 M'})], 'commitment_date': '2022-09-05T19:24:46', 'tracking_number': 'Agencias Mercado Libre/MEL00002507060960', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635509496&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004160024138', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-05T19:24:46', 'correo_marketplace': '', 'client_order_ref': 'NEGRETEEDGARD', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 18, 'shipping_id': 41635509496, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 10:21:56 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:21:56] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 10:21:56 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:21:56] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:27:13 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 10:27:13] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 10:27:13 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 10:27:13] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:27:15 AM|root|INFO|RESERVADO:2022-09-06T12:54:56|None:2000004163916534|107248|293413|1|paid
+2022-07-09 10:27:15 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 15:27:15', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 107248, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1482.0172413793105, 'name': 'Toldo Carpa Impermeable Plegable Acero 3x3 M Jardin Blanco'})], 'commitment_date': '2022-09-06T12:54:56', 'tracking_number': 'MEL Distribution/MEL00002513817049', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41637187521&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004163916534', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-06T12:54:56', 'correo_marketplace': '', 'client_order_ref': 'ROSIOGIRON7799', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41637187521, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 10:27:20 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 10:27:20] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 10:27:20 AM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 10:27:20] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:33:53 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 10:33:53] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:33:57 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 10:33:57] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 10:33:57 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 10:33:57] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:34:00 AM|root|INFO|RESERVADO:2022-09-06T19:56:04|None:2000004166391744|107248|293413|1|paid
+2022-07-09 10:34:00 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 15:34:00', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 107248, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1482.0172413793105, 'name': 'Toldo Carpa Impermeable Plegable Acero 3x3 M Jardin Blanco'})], 'commitment_date': '2022-09-06T19:56:04', 'tracking_number': '/41638261031', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41638261031&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004166391744', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-06T19:56:04', 'correo_marketplace': '', 'client_order_ref': 'SABR9177075', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 6, 'shipping_id': 41638261031, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 10:34:05 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 10:34:05] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 10:34:05 AM|werkzeug|INFO|192.168.0.77 - - [07/Sep/2022 10:34:05] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:54:41 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:54:41] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 10:54:41 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:54:41] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 10:54:41 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:54:41] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 10:54:43 AM|root|INFO|RESERVADO:2022-09-04T13:16:14|None:2000004152413062|109360|B1275-SZ|1|paid
+2022-07-09 10:54:43 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 15:54:43', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 109360, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1432.3706896551726, 'name': 'Combo Escritorio   Estante 3 Niveles   Estante 1 Nivel Casa'})], 'commitment_date': '2022-09-04T13:16:14', 'tracking_number': 'MEL Distribution/MEL00002511164332', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41632246437&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004152413062', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-04T13:16:14', 'correo_marketplace': '', 'client_order_ref': 'CANA7845425', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41632246437, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 10:54:47 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:54:47] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 10:54:47 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 10:54:47] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 11:10:03 AM|werkzeug|INFO|192.168.0.56 - - [07/Sep/2022 11:10:03] "GET / HTTP/1.1" 200 -
+2022-07-09 11:10:03 AM|werkzeug|INFO|192.168.0.56 - - [07/Sep/2022 11:10:03] "GET /static/css/main.css HTTP/1.1" 200 -
+2022-07-09 11:10:03 AM|werkzeug|INFO|192.168.0.56 - - [07/Sep/2022 11:10:03] "GET /static/js/jquery.min.js HTTP/1.1" 200 -
+2022-07-09 11:10:03 AM|werkzeug|INFO|192.168.0.56 - - [07/Sep/2022 11:10:03] "GET /static/js/breakpoints.min.js HTTP/1.1" 200 -
+2022-07-09 11:10:03 AM|werkzeug|INFO|192.168.0.56 - - [07/Sep/2022 11:10:03] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 200 -
+2022-07-09 11:10:03 AM|werkzeug|INFO|192.168.0.56 - - [07/Sep/2022 11:10:03] "GET /static/js/browser.min.js HTTP/1.1" 200 -
+2022-07-09 11:10:03 AM|werkzeug|INFO|192.168.0.56 - - [07/Sep/2022 11:10:03] "GET /static/js/main.js HTTP/1.1" 200 -
+2022-07-09 11:10:03 AM|werkzeug|INFO|192.168.0.56 - - [07/Sep/2022 11:10:03] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 200 -
+2022-07-09 11:10:03 AM|werkzeug|INFO|192.168.0.56 - - [07/Sep/2022 11:10:03] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 200 -
+2022-07-09 11:10:04 AM|werkzeug|INFO|192.168.0.56 - - [07/Sep/2022 11:10:04] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 11:10:04 AM|werkzeug|INFO|192.168.0.56 - - [07/Sep/2022 11:10:04] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 11:44:45 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 11:44:45] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 11:44:45 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 11:44:45] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 11:44:45 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 11:44:45] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 11:44:47 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 11:44:47] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 11:44:47 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 11:44:47] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 11:44:50 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 11:44:50] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 11:44:50 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 11:44:50] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 11:44:50 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 11:44:50] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 11:44:52 AM|root|INFO|RESERVADO:2022-09-05T19:22:38|None:2000004160006960|113743|300264|1|paid
+2022-07-09 11:44:52 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 16:44:51', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 113743, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 352.58620689655174, 'name': 'Caja Para Dinero Sencilla De 30 Cm Billetes Y Monedas Gris'})], 'commitment_date': '2022-09-05T19:22:38', 'tracking_number': 'MEL Distribution/MEL00002506850533', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635503748&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004160006960', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-05T19:22:38', 'correo_marketplace': '', 'client_order_ref': 'SERGIOVELEZCONTRERAS', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41635503748, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 11:44:57 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 11:44:57] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 11:44:57 AM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 11:44:57] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:32:25 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:25] "GET / HTTP/1.1" 200 -
+2022-07-09 12:32:25 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:25] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 304 -
+2022-07-09 12:32:25 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:25] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-07-09 12:32:25 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:25] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-07-09 12:32:25 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:25] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-07-09 12:32:25 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:25] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-07-09 12:32:25 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:25] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-07-09 12:32:25 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:25] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-07-09 12:32:25 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:25] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 304 -
+2022-07-09 12:32:25 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:25] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:32:25 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:25] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 12:32:31 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:31] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 12:32:31 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:31] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:32:34 PM|root|INFO|RESERVADO:2022-09-04T19:58:06|None:2000004154241858|109359|B1276-SZ|1|paid
+2022-07-09 12:32:34 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'draft', 'confirmation_date': '2022-09-07 17:32:34', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 109359, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1593.9655172413795, 'name': 'Combo Escritorio + Estante 3 Niveles + Estante Casa Oficina'})], 'commitment_date': '2022-09-04T19:58:06', 'tracking_number': '/', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41633022584&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004154241858', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-04T19:58:06', 'correo_marketplace': '', 'client_order_ref': 'DIANASANCHEZCALZADA', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 18, 'shipping_id': 41633022584, 'comments': ''}
+2022-07-09 12:32:35 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:35] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 12:32:35 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:35] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:32:35 PM|werkzeug|INFO|192.168.0.46 - - [07/Sep/2022 12:32:35] "GET /favicon.ico HTTP/1.1" 404 -
+2022-07-09 12:43:51 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 12:43:51] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 12:43:51 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 12:43:51] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:43:55 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'draft', 'confirmation_date': '2022-09-07 17:43:55', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 120143, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 981.89, 'name': 'Esmeril Bosch GWS 700 127V 06013A30G0 Bosch'}), (0, 0, {'product_id': 94376, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 568.1, 'name': 'Combo Set Brocas y Puntas Maletín V-Line con 41 Piezas Bosch'}), (0, 0, {'product_id': 115622, 'product_uom': 1, 'product_uom_qty': 5, 'price_unit': 34.48, 'name': 'Disco Abrasivo de Corte para Metal 4 1/2 In 2608619383 Bosch'}), (0, 0, {'product_id': 32896, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1821.12, 'name': 'Rotomartillo 650w GSB 13 RE Bosch'})], 'commitment_date': '2022-09-05T21:28:39', 'tracking_number': 'MEL Distribution/MEL00002514436071', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635854290&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004160813992', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-05T21:28:39', 'correo_marketplace': '', 'client_order_ref': 'ROJASJAZMIN20220905211909', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': True, 'combo_detail': 'COMBO-BOSCH-131|Esmeriladora + Taladro Rotomartillo Gsb 16 Re Bosch + Regalo|1|$2329', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41635854290, 'comments': ''}
+2022-07-09 12:43:56 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 12:43:56] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 12:43:56 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 12:43:56] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:46:41 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:46:41] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 12:46:41 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:46:41] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:46:41 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:46:41] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 12:46:42 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:46:42] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 12:46:42 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:46:42] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:46:45 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:46:45] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 12:46:45 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:46:45] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:46:45 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:46:45] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 12:46:47 PM|root|INFO|RESERVADO:2022-09-06T19:57:15|None:2000004166398666|99905|284954-IUSA|1|paid
+2022-07-09 12:46:47 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 17:46:47', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 99905, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1749.1379310344828, 'name': 'Calentador Rapida Recu Gas Lp 1 Ser Mini 5 L/min 284954 Iusa'})], 'commitment_date': '2022-09-06T19:57:15', 'tracking_number': 'MEL Distribution/MEL00002512370141', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41638263768&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004166398666', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-06T19:57:15', 'correo_marketplace': '', 'client_order_ref': 'IBETHG123', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 4, 'shipping_id': 41638263768, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 12:46:51 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:46:51] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 12:46:51 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:46:51] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:49:19 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:49:19] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 12:49:19 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:49:19] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:49:19 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:49:19] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 12:49:21 PM|root|INFO|RESERVADO:2022-09-05T11:56:21|None:2000004157154958|117611|37007-GON|1|paid
+2022-07-09 12:49:21 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 17:49:20', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 117611, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 2645.689655172414, 'name': 'Compresor Silencioso Tornado Electrico Aire 1.0hp 24 Lt Goni'})], 'commitment_date': '2022-09-05T11:56:21', 'tracking_number': 'MEL Distribution/MEL00002512470583', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41634261655&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004157154958', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-05T11:56:21', 'correo_marketplace': '', 'client_order_ref': '.BAZAR', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41634261655, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 12:49:25 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:49:25] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 12:49:25 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:49:25] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:49:31 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:49:31] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 12:49:31 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:49:31] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:49:32 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:49:32] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 12:49:33 PM|root|INFO|RESERVADO:2022-09-06T15:12:19|None:2000004164782440|115274|SB130-BER|1|paid
+2022-07-09 12:49:33 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 17:49:33', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 115274, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1152.5862068965519, 'name': 'Soldadora Inverter Bergën Sb130 Azul Y Negra 50hz/60hz 110v/220v'})], 'commitment_date': '2022-09-06T15:12:19', 'tracking_number': 'MEL Distribution/MEL00002512489030', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41637560584&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004164782440', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-06T15:12:19', 'correo_marketplace': '', 'client_order_ref': 'COMI4184864', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41637560584, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 12:49:37 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:49:37] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 12:49:37 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:49:37] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:52:47 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:52:47] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 12:52:47 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:52:47] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:52:47 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:52:47] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 12:52:49 PM|root|INFO|RESERVADO:2022-09-06T19:21:05|None:2000004166193532|116035|75054-BEST|1|paid
+2022-07-09 12:52:49 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 17:52:49', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 116035, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 841.3793103448277, 'name': 'Cama Inflable Sillon Sofa Bestway 5en1 Bolsa Portatil Viajar'})], 'commitment_date': '2022-09-06T19:21:05', 'tracking_number': 'MEL Distribution/MEL00002512574390', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41638174459&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004166193532', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-06T19:21:05', 'correo_marketplace': '', 'client_order_ref': 'CARLOSPEREZANDRES', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41638174459, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 12:52:53 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:52:53] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 12:52:53 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:52:53] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:53:39 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:53:39] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 12:53:39 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:53:39] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:53:39 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:53:39] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 12:53:42 PM|root|INFO|RESERVADO:2022-09-06T19:38:56|None:2000004166294142|39699|190134|1|paid
+2022-07-09 12:53:42 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'draft', 'confirmation_date': '2022-09-07 17:53:42', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 39699, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1018.1034482758621, 'name': 'Rotomartillo 1/2  650w Guantes Anteojos Dwe1650si Dewalt'})], 'commitment_date': '2022-09-06T19:38:56', 'tracking_number': 'MEL Distribution/MEL00002512581722', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41638218065&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004166294142', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-06T19:38:56', 'correo_marketplace': '', 'client_order_ref': 'GOBR1973139', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41638218065, 'comments': ''}
+2022-07-09 12:53:44 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:53:44] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 12:53:44 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:53:44] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:57:48 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:57:48] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 12:57:48 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:57:48] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 12:57:49 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:57:49] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 12:57:50 PM|root|INFO|RESERVADO:2022-09-06T11:19:48|None:2000004163278406|113755|300276|1|paid
+2022-07-09 12:57:50 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 17:57:50', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 113755, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 242.24137931034485, 'name': 'Caja Metalica Alcancia Musical'})], 'commitment_date': '2022-09-06T11:19:48', 'tracking_number': 'MEL Distribution/MEL00002512673121', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41636910969&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004163278406', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-06T11:19:48', 'correo_marketplace': '', 'client_order_ref': 'GUSA7890843', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41636910969, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 12:57:55 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:57:55] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 12:57:55 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 12:57:55] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 01:05:19 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 13:05:19] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 01:05:19 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 13:05:19] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 01:05:20 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 13:05:20] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 01:05:20 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 13:05:20] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 01:05:23 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 13:05:23] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 01:05:23 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 13:05:23] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 01:05:24 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 13:05:24] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 01:05:24 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 13:05:24] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 01:22:43 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 13:22:43] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 01:22:43 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 13:22:43] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 01:22:43 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 13:22:43] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-07-09 01:22:45 PM|root|INFO|RESERVADO:2022-09-05T22:21:55|None:2000004161108336|113638|HHY1000-HYU|1|paid
+2022-07-09 01:22:45 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 18:22:45', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 113638, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 2957.862068965517, 'name': 'Generador Planta De Luz Gasolina Portatil 800-1000w Hyundai'})], 'commitment_date': '2022-09-05T22:21:55', 'tracking_number': 'MEL Distribution/MEL00002512683184', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41635976645&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004161108336', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-09-05T22:21:55', 'correo_marketplace': '', 'client_order_ref': 'GADE5677145', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41635976645, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 01:22:50 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 13:22:50] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 01:22:50 PM|werkzeug|INFO|192.168.0.48 - - [07/Sep/2022 13:22:50] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 01:27:46 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 13:27:46] "POST /inicio HTTP/1.1" 200 -
+2022-07-09 01:27:46 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 13:27:46] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-07-09 01:27:49 PM|root|INFO|RESERVADO:2022-09-06T15:11:20|None:2000004164778298|47543|274478|1|paid
+2022-07-09 01:27:49 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-09-07 18:27:49', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 47543, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 21619.870689655174, 'name': 'Polipasto Electrico 1000-2000kg Cable 60m 380v Construccion'})], 'commitment_date': '2022-09-06T15:11:20', 'tracking_number': 'MEL Distribution/MEL00002514523742', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41637558425&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004164778298', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-09-06T15:11:20', 'correo_marketplace': '', 'client_order_ref': 'SANA657730', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 18, 'shipping_id': 41637558425, 'comments': 'AUTOCONFIRMADO'}
+2022-07-09 01:27:53 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 13:27:53] "POST /procesar HTTP/1.1" 200 -
+2022-07-09 01:27:53 PM|werkzeug|INFO|192.168.0.50 - - [07/Sep/2022 13:27:53] "GET /images/bg.jpg HTTP/1.1" 404 -

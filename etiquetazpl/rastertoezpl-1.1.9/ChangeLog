@@ -1,0 +1,42 @@
+2017-12-10  Jan Hamrle <hamrle@unicode.cz>
+ * New models: Godex printers are added (DT4C, RT863i, RT833i, RT823i, EZ120, EZ130, EZ320, EZ330, EZ520, EZ530, ZX1200Xi, ZX1300Xi, ZX420, ZX430, ZX420i, ZX430i, HD830i, HD820i).
+ * USB communication info: ./usb/godex.usb-quirks
+ * Version 1.1.2
+
+2016-11-08  Jan Hamrle <hamrle@unicode.cz>
+ * New models: Godex printers are added (RT-700x, RT-730x, RT-700iW, RT-730iW and BP500L models [BP500l, BP520L, BP530L, BP500L (DT) and BP520L (DT)])
+ * Version 1.1.0
+
+2014-06-26  Jan Hamrle  <hamrle@unicode.cz>
+ * New models: Godex thermo and thermotransfer printers are added (DT2x, DT4x, ZX1200i, ZX1300i, ZX1600i, RT860i, MX30i, MX30, MX20).
+ * Doc: ./doc/beginner_readme is updated, all other doc files are corrected.
+ * Version 1.0.6
+
+2012-11-13  Jan Hamrle  <hamrle@unicode.cz>
+	* Option "mirror/Mirror" is removed. The mirroring is implemeted by default (and is realized by ghoscript).
+	* PPD files are localized. (A preparation, I can not translate it myself.)
+	* There are some minor changes in PPD files. (Section structure is changed, some parameters are renamed.)
+	* Version 1.0.5.
+
+2012-11-01  Jan Hamrle  <hamrle@unicode.cz>
+        * For CUPS_ORIENT_0 is used command "~R200" (instead "~R999", which does trouble on same printers).
+	* Human readable name of gdxMode rew is renamed from "Rewind" to "Nothing".
+	* Option "orientation/Rotate 180deg" is removed. The orientation is implemeted by default (and is realized by ghoscript).
+	* More parametrs for option "gdxOffset/Stop Position setting [mm]". Full range -- 0-40mm with step 1mm.
+	* Append subsection "Action after print" in doc/README.
+	* Version 1.0.4.
+
+2012-08-28  Jan Hamrle  <hamrle@unicode.cz>
+	* New models of Godex thermo and thermotransfer printers are append (DT2, DT4, EZ2050, EZ2150, EZ2250i, EZ2350i, G300, G330, G500, G530, RT200, RT200i, RT230, RT230i, RT700, RT700i, RT730, RT730i).
+	* ppd/godex.drv -- label sizes are defined in points now. (Using mm has problems with rounding in PPD files.)
+	* Script "configure" and "Makefile" update.
+	* System PPD paths for PPD symbolic link, include specific paths for Mac OS X, is defined.
+	* Symbolic link from system PPD directory to istalled PPD directory is
+	  created if variable "CREATE_PPDLINK" or "PPDLINK" is defined (except on OS X).
+	* Symbolic links from system PPD directory to PPD files are created on MacOSX.
+	* In src/rastertoezpl.c is changed "end of command" to CR (from NL) so, as it is defined in EZPL.
+	* Version 1.0.
+
+2009-12-01  Jan Hamrle  <hamrle@unicode.cz>
+	* There are a driver for CUPS for Godex thermo and thermotransfer printers (ez1100p, ez1105, ez1200p, ez1300p, ez1305, ez2200p, ez2300p, ez6200p, ez6300p, ezdt2, ezdt4, ezpi1200, ezpi1300).
+	* Version 0.8 is first public version.

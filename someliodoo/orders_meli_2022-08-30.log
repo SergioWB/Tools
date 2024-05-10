@@ -1,0 +1,81 @@
+2022-30-08 12:09:59 PM|werkzeug|INFO| * Running on http://0.0.0.0:8001/ (Press CTRL+C to quit)
+2022-30-08 12:09:59 PM|werkzeug|INFO| * Restarting with stat
+2022-30-08 12:09:59 PM|werkzeug|WARNING| * Debugger is active!
+2022-30-08 12:09:59 PM|werkzeug|INFO| * Debugger PIN: 222-459-463
+2022-30-08 12:10:07 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:07] "GET / HTTP/1.1" 200 -
+2022-30-08 12:10:08 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:08] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-30-08 12:10:08 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:08] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-30-08 12:10:08 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:08] "GET /static/css/main.css HTTP/1.1" 200 -
+2022-30-08 12:10:08 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:08] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-30-08 12:10:08 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:08] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-30-08 12:10:08 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:08] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-30-08 12:10:08 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:08] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 200 -
+2022-30-08 12:10:08 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:08] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 200 -
+2022-30-08 12:10:08 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:08] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-30-08 12:10:08 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:08] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-30-08 12:10:12 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:12] "POST /inicio HTTP/1.1" 200 -
+2022-30-08 12:10:26 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:26] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 12:10:27 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:27] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-30-08 12:10:27 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:10:27] "GET /favicon.ico HTTP/1.1" 404 -
+2022-30-08 12:14:23 PM|werkzeug|INFO| * Detected change in '/home/serverubuntu/someliodoo/process_orders_doo.py', reloading
+2022-30-08 12:14:23 PM|werkzeug|INFO| * Restarting with stat
+2022-30-08 12:14:23 PM|werkzeug|WARNING| * Debugger is active!
+2022-30-08 12:14:23 PM|werkzeug|INFO| * Debugger PIN: 222-459-463
+2022-30-08 12:16:15 PM|werkzeug|INFO| * Detected change in '/home/serverubuntu/someliodoo/process_orders_doo.py', reloading
+2022-30-08 12:16:15 PM|werkzeug|INFO| * Restarting with stat
+2022-30-08 12:16:16 PM|werkzeug|WARNING| * Debugger is active!
+2022-30-08 12:16:16 PM|werkzeug|INFO| * Debugger PIN: 222-459-463
+2022-30-08 12:18:39 PM|werkzeug|INFO| * Running on http://0.0.0.0:8001/ (Press CTRL+C to quit)
+2022-30-08 12:18:39 PM|werkzeug|INFO| * Restarting with stat
+2022-30-08 12:18:39 PM|werkzeug|WARNING| * Debugger is active!
+2022-30-08 12:18:39 PM|werkzeug|INFO| * Debugger PIN: 222-459-463
+2022-30-08 12:18:48 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-08-30 17:18:48', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 80385, 'product_uom': 1, 'product_uom_qty': 2, 'price_unit': 231.9, 'name': 'Salva / Diabolo 2000 Express Calibre 4.5 50 Juegos SD-4.5-50-0555 Mendoza'})], 'commitment_date': '2022-08-28T19:58:13', 'tracking_number': 'MEL Distribution/MEL00002473944426', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41617364217&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004117714832 ', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-08-28T19:58:13', 'correo_marketplace': '', 'client_order_ref': 'GARCÍACÉSAR20220715101539', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': True, 'combo_detail': 'COMBO-MENDOZA-07|Municiones Diabolo Capsula Salva 200 Pzas 4.5mm Tiro Mendoza|1|$493.05', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41617364217, 'comments': 'AUTOCONFIRMADO'}
+2022-30-08 12:18:52 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:18:52] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 12:20:08 PM|werkzeug|INFO| * Running on http://0.0.0.0:8001/ (Press CTRL+C to quit)
+2022-30-08 12:20:08 PM|werkzeug|INFO| * Restarting with stat
+2022-30-08 12:20:08 PM|werkzeug|WARNING| * Debugger is active!
+2022-30-08 12:20:08 PM|werkzeug|INFO| * Debugger PIN: 222-459-463
+2022-30-08 12:20:22 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:20:22] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 12:32:49 PM|werkzeug|INFO| * Detected change in '/home/serverubuntu/someliodoo/process_orders_doo.py', reloading
+2022-30-08 12:32:49 PM|werkzeug|INFO| * Restarting with stat
+2022-30-08 12:33:55 PM|werkzeug|INFO| * Running on http://0.0.0.0:8001/ (Press CTRL+C to quit)
+2022-30-08 12:33:55 PM|werkzeug|INFO| * Restarting with stat
+2022-30-08 12:33:55 PM|werkzeug|WARNING| * Debugger is active!
+2022-30-08 12:33:55 PM|werkzeug|INFO| * Debugger PIN: 222-459-463
+2022-30-08 12:34:01 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:34:01] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 12:35:35 PM|werkzeug|INFO| * Running on http://0.0.0.0:8001/ (Press CTRL+C to quit)
+2022-30-08 12:35:35 PM|werkzeug|INFO| * Restarting with stat
+2022-30-08 12:35:35 PM|werkzeug|WARNING| * Debugger is active!
+2022-30-08 12:35:35 PM|werkzeug|INFO| * Debugger PIN: 222-459-463
+2022-30-08 12:35:38 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:35:38] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 12:43:17 PM|werkzeug|INFO| * Running on http://0.0.0.0:8001/ (Press CTRL+C to quit)
+2022-30-08 12:43:17 PM|werkzeug|INFO| * Restarting with stat
+2022-30-08 12:43:18 PM|werkzeug|WARNING| * Debugger is active!
+2022-30-08 12:43:18 PM|werkzeug|INFO| * Debugger PIN: 222-459-463
+2022-30-08 12:43:22 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:43:22] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 12:43:50 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:43:50] "POST /inicio HTTP/1.1" 200 -
+2022-30-08 12:43:52 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:43:52] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 12:44:39 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:44:39] "POST /inicio HTTP/1.1" 200 -
+2022-30-08 12:44:41 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:44:41] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 12:44:45 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 12:44:45] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 01:06:45 PM|werkzeug|INFO|192.168.0.48 - - [30/Aug/2022 13:06:45] "POST /inicio HTTP/1.1" 200 -
+2022-30-08 01:06:46 PM|werkzeug|INFO|192.168.0.48 - - [30/Aug/2022 13:06:46] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-30-08 01:06:46 PM|werkzeug|INFO|192.168.0.48 - - [30/Aug/2022 13:06:46] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-30-08 01:06:49 PM|root|INFO|RESERVADO:2022-08-29T16:47:56|None:2000004122153452|112721|300244-SZ|1|paid
+2022-30-08 01:06:49 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'draft', 'confirmation_date': '2022-08-30 18:06:49', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 112721, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 1895.689655172414, 'name': 'Mesa Escritorio Gamer Juvenil Computadora Moderno Rojo/negro'})], 'commitment_date': '2022-08-29T16:47:56', 'tracking_number': '/', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41619275418&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004122153452', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-08-29T16:47:56', 'correo_marketplace': '', 'client_order_ref': 'PEUL1682148', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41619275418, 'comments': ''}
+2022-30-08 01:06:51 PM|werkzeug|INFO|192.168.0.48 - - [30/Aug/2022 13:06:51] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 01:06:51 PM|werkzeug|INFO|192.168.0.48 - - [30/Aug/2022 13:06:51] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-30-08 01:09:55 PM|werkzeug|INFO|192.168.0.50 - - [30/Aug/2022 13:09:55] "POST /inicio HTTP/1.1" 200 -
+2022-30-08 01:09:55 PM|werkzeug|INFO|192.168.0.50 - - [30/Aug/2022 13:09:55] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-30-08 01:09:57 PM|root|INFO|RESERVADO:2022-08-27T11:22:20|None:2000004112138972|71717|CM512-SUR|1|paid
+2022-30-08 01:09:57 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'draft', 'confirmation_date': '2022-08-30 18:09:57', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 71717, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 15068.103448275862, 'name': 'Sierra Cinta Para Cortar Metales Acero 550w Cm512 Surtek'})], 'commitment_date': '2022-08-27T11:22:20', 'tracking_number': '/', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41614997175&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000004112138972', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-08-27T11:22:20', 'correo_marketplace': '', 'client_order_ref': 'ANGELADOLFOVAZQUEZ', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 18, 'shipping_id': 41614997175, 'comments': ''}
+2022-30-08 01:09:59 PM|werkzeug|INFO|192.168.0.50 - - [30/Aug/2022 13:09:59] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 01:09:59 PM|werkzeug|INFO|192.168.0.50 - - [30/Aug/2022 13:09:59] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-30-08 05:11:39 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 17:11:39] "GET / HTTP/1.1" 200 -
+2022-30-08 05:11:49 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 17:11:49] "POST /inicio HTTP/1.1" 200 -
+2022-30-08 05:12:29 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 17:12:29] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 05:12:29 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 17:12:29] "GET /favicon.ico HTTP/1.1" 404 -
+2022-30-08 05:13:02 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 17:13:02] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 05:13:23 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 17:13:23] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 05:17:34 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 17:17:34] "POST /procesar HTTP/1.1" 200 -
+2022-30-08 05:18:02 PM|werkzeug|INFO|192.168.0.109 - - [30/Aug/2022 17:18:02] "POST /procesar HTTP/1.1" 200 -

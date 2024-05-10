@@ -1,0 +1,230 @@
+=============================================================================
+               Rastertoezpl - CUPS filter for Godex printers
+=============================================================================
+version 1.1.0, 2016-11-14
+
+
+Table of contents
+=================
+    Specification
+              Prerequisite
+              Rastertoezpl - filter for CUPS
+    Configuration - customize PPD files
+    Installation
+              Description of directories structure in package
+              Building
+              Installation directories
+    Add a Godex printer to CUPS
+              Special settings
+
+
+Specification
+=============
+
+Prerequisite
+~~~~~~~~~~~~
+CUPS (http://cups.org)
+
+Rastertoezpl - filter for CUPS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This package contain filter (rastertoezpl) and PostScript Printer Description
+files (PPD) for Godex thermotransfer label printers for CUPS.
+
+This filter allow set this items on the printer:
+  - Media Size
+  - Type of media: (see text under list)
+    - plain paper
+    - labels with gap
+    - black mark on back
+  - Darkness
+  - After Print
+    - Nothing (Rewind)
+    - Stripper
+    - Applicator (for printer with an applicator)
+    - Cut page (for printer with a cutter)
+    - Cut set (for printer with a cutter)
+  - Mirror
+  - Negative
+  - Rotate 180deg 
+  - Print mode
+    - Thermal Transfer
+    - Direct Thermal
+  - Print speed
+  - Resolution
+  - Stop Position setting
+  - Top margin
+  - Left margin
+
+Type of media: If item "Black Mark Length" is set to "No Black Mark", then
+type of media is set by item "Label Gap Length" and item "Black Mark Position"
+is ignored.  If item "Black Mark Length" is set to some length, then type of
+media is set to black mark.  Item "Black Mark Position" set distance between
+start of label and start of a black mark, "Label Gap Length" is ignored.
+
+Rastertoezpl source code is based on source code of CUPS filter.
+
+It is necessary to install CUPS system for process the filter.  Also is needed
+to have available additional CUPS DDK including header files and basic
+utilities for compilation, build and install (C compiler, make, install, ...)
+this package.  The CUPS Driver Development Kit (DDK) is packed with CUPS 1.4
+and higher version.  For CUPS 1.2.x and 1.3.x download and install the DDK
+separately.
+
+If you install CUPS from any package system, CUPS is probably distributed in
+more packages.  There are some packages necessary to build filter that are not
+installed automatically.  They contain the development files for CUPS and
+libraries for raster printers "libcupsimage".
+
+
+After print action
+~~~~~~~~~~~~~~~~~~
+After printing is able to select only one action. The action "Nothing" (Rewind)
+is rewinding (send printer command ^D0 and ^O0). The action "Stripper" enable
+stripper (^D0 and ^O1). The action "Applicator" activates applicator (^D0 and
+^O2). The action "Cut page" activates cutter for every label (page) (^D1 and
+^O0). And the action "Cut set" activates cutter for every set of label (page)
+copies (^Dx and ^O0; where x is number of copies). For details, see EZPL
+Programmer’s Manual.
+
+There are two ways of cutter behavior:
+  "cut page" -- cuts after every label,
+  "cut set"  -- cuts after every X label, where X is number of copies
+                entered to driver, when Collate is not active. When Collate
+                is active, it cuts after every label.
+
+There is a problem with setting the cutter in mode "cut set", some applications
+don't set number of copies. (These applications don't send one page with
+number of copies but send several identical pages. The
+same situation is, when Collate is active.) For example, OpenOffice.org Writer
+doesn't set number of copies. Evince (GNOME document viewer) sets it.
+
+Other problem is with cutting after whole print task, because CUPS don't give
+number of pages to filter, but only number of copies. In fact, the number of
+pages is known *only after* printing the whole task.
+
+Of course, for use stripper, applicator or cutter action is needed the matching
+hardware.
+
+
+Configuration - customize PPD files
+===================================
+Link to rastertoezpl filter and all values of items to set up are saved in PPD
+files.
+
+PPD files for Godex printers are generated from source file ppds/godex.drv.
+Initial values for most items are available in configuration of printer in
+CUPS. Some items have range of values restricted by selection from list.  These
+items are: size of label, stop position, top margin, left margin, position and
+length of black mark.
+
+If you need any value of item that is not available in selection, you have to
+change the list of values.  You can change this list directly in installed file
+for the appropriate printer in /etc/cups/ppd (only for expert; file is without
+notes, the syntax is strict, some values of item are on more places and it is
+necessary to respond!) or in the source file ppds/godex.drv.
+
+In source file we find the list of values that we want to change.  If range of
+value of item is limited by printer, this limit is in a note above value of
+item.  If we want to add a value to list, we find similar value and copy it and
+edit the title (first parameter after "Choice") and a value (second parameter).
+
+All label sizes usable in PPD files are defined on one place with formula
+"#media ...".  This defined name of label size that is used with formula
+"MediaSize ...", every name of label size is used only once, although is used in
+more printers.
+
+If you want to add a label size, first you have to define label size (#media),
+and then you have to use it (MediaSize).
+
+After you make above described changes, clean and build PPD files:
+ $ make clean-ppd
+ $ make build-ppd
+, and reinstall PPD files only:
+ # make install-data-local
+
+After installation the changed files will be available for CUPS.  It is
+necessary to reinstall PPD (Modify printer) in installed printer for use the
+changed PPD file.
+
+
+Installation
+============
+
+Description of directories structure in package
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ -- sources for filter
+ppds/ -- sources for PPD
+ppds/ppd/ -- PPD files for Godex printers
+
+Building
+~~~~~~~~
+Compilation and installation of filter and PPD are typical.  After extracting
+archive execute:
+ $ ./configure
+ $ make
+ # make install
+
+PPD files are distributed in the final format.  For rebuilding see section
+Configuration.
+
+Installation directories
+~~~~~~~~~~~~~~~~~~~~~~~~
+Installation directories are generated by script "./configure".  Default they
+are:
+ /usr/lib/cups/filter/ -- (from cups-config) for symbolic link to filter
+ /usr/local/libexec/rastertoezpl/ -- for filter rastertoezpl
+ /usr/local/doc/rastertoezpl/ -- for documentation
+ /usr/local/share/ppd/godex -- for PPD files
+
+You can set another prefix (default is /usr/local/) with command:
+ $ ./configure --prefix=/you/location/
+
+You can set another install directory for PPD files with command:
+ $ ./configure PPDDIR=/you/PPD/location/
+
+You can create a symbolic link from system PPD directory to installed PPD
+directory, if you define variable CREATE_PPDLINK or PPDLINK.  If you define
+CREATE_PPDLINK=1, then script ./configure searches for system PPD directory.
+Variable PPDLINK define the system PPD directory.  Example:
+ $ ./configure CREATE_PPDLINK=1
+or
+ $ ./configure PPDLINK=/usr/share/ppd
+
+On Mac OS X is always searched system path for PPD and there are also created
+symbolic links to installed PPD files (not to the directory!).
+
+
+Add a Godex printer to CUPS
+===========================
+After the compilation and installation of filter and PPD files, you can add a
+new printer to CUPS.  The default administration of CUPS is on
+http://localhost:631.
+
+Some systems for CUPS administration do not use only http://localhost:631, but
+another software as well.
+
+For network connection use AppSocket / HP JetDirect, don't use LPD/LPR (it
+doesn't work correctly on Godex printers) or IPP (it isn't supported by Godex
+printers).
+
+
+Special settings
+~~~~~~~~~~~~~~~~
+Godex printers finish communication with computer when label is printed with
+delay about 5 seconds.  Same distribution of CUPS expects that printers will
+close the communication. There are delays between printed labels in these
+cases.  (This is on Mac OS X, for example.)
+
+For network communication with printer, use parameter "waiteof=false" (for
+example: DeviceURI socket://192.168.1.179/?waiteof=false).  For details see
+http://cups.org/documentation.php/network.html.  For setting this parameter,
+stop CUPS daemon, edit /etc/cups/priters.conf file and start CUPS daemon.
+On Max OS X, run Terminal:
+ $ sudo launchctl stop org.cups.cupsd
+ $ sudo nano /etc/cups/printers.conf
+ $ sudo launchctl start org.cups.cupsd
+
+CUPS has usb-quirks files for modify USB communication. The files are in CUPS
+1.6.4 and newer in directory /usr/share/cups/usb. For Godex printers you can
+use parameter "unidir", and if you don't need lp device, you can append
+"no-reattach" parameter too.

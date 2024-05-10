@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<!--
+	Solid State by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>SOMOS-REYES- MELI</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+
+		
+		<link href="{{ url_for('static', filename='css/images/somosreyesfavicon.png') }}" rel="shortcut icon" type="image/x-icon">
+
+		<noscript><link rel="stylesheet" href="//css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<header id="header" class="alt">
+						 <strong>Ubicacion: </strong>{{ubicacion}}<br>
+						 <strong>Usuario: </strong>{{usuario}}<br>
+					</header>
+
+				<!-- Wrapper -->
+					<section id="wrapper">
+
+						<!-- One -->
+							<section id="one" class="wrapper spotlight style1">
+								<div class="inner">
+									<a href="#" class="image"><img src="{{ url_for('static', filename='css/images/logo_somos_reyes.png') }}" alt="" /></a>
+
+									<div class="content">
+										<h2 class="major">Recuperación Guía</h2>
+										<form method="POST" action="{{url_for('procesar')}}" autocomplete="off">
+								            <input autofocus id="name_so" name="name_so" required type="text" placeholder="Codigo de Barras Orden de Venta">
+
+								            <br><br>
+								            <input type="submit" value="Enviar">
+								            
+								            <input id = "limpiar" type="reset" value="Limpiar"/>
+								        </form>
+									</div>
+								</div>
+							</section>
+					</section>
+				</div>
+
+		<!-- Scripts -->
+	
+		    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+		    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.scrollex.min.js') }}"></script>
+		    <script type="text/javascript" src="{{ url_for('static', filename='js/browser.min.js') }}"></script>
+		    <script type="text/javascript" src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
+		    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+		    <script>
+                $(document).ready(function(){
+                	$("#name_so").select();
+                	$("#name_so").focus();
+                 $("#limpiar").click(function() {
+                     //alert("Hola Mundo con jQuery!");
+                     $("#name_so").select();
+                     $("#name_so").focus();
+                     
+
+                   }); 
+                });
+            </script>
+
+
+			
+
+	</body>
+</html>

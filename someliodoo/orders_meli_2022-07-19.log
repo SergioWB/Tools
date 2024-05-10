@@ -1,0 +1,278 @@
+2022-19-07 09:36:26 AM|werkzeug|INFO| * Running on http://0.0.0.0:8001/ (Press CTRL+C to quit)
+2022-19-07 09:36:26 AM|werkzeug|INFO| * Restarting with stat
+2022-19-07 09:36:26 AM|werkzeug|WARNING| * Debugger is active!
+2022-19-07 09:36:26 AM|werkzeug|INFO| * Debugger PIN: 214-709-182
+2022-19-07 09:36:54 AM|werkzeug|INFO|192.168.0.39 - - [19/Jul/2022 09:36:54] "GET / HTTP/1.1" 200 -
+2022-19-07 09:36:54 AM|werkzeug|INFO|192.168.0.39 - - [19/Jul/2022 09:36:54] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-19-07 09:36:54 AM|werkzeug|INFO|192.168.0.39 - - [19/Jul/2022 09:36:54] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-19-07 09:36:54 AM|werkzeug|INFO|192.168.0.39 - - [19/Jul/2022 09:36:54] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 304 -
+2022-19-07 09:36:54 AM|werkzeug|INFO|192.168.0.39 - - [19/Jul/2022 09:36:54] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-19-07 09:36:54 AM|werkzeug|INFO|192.168.0.39 - - [19/Jul/2022 09:36:54] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-19-07 09:36:54 AM|werkzeug|INFO|192.168.0.39 - - [19/Jul/2022 09:36:54] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-19-07 09:36:54 AM|werkzeug|INFO|192.168.0.39 - - [19/Jul/2022 09:36:54] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-19-07 09:36:54 AM|werkzeug|INFO|192.168.0.39 - - [19/Jul/2022 09:36:54] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 304 -
+2022-19-07 09:36:54 AM|werkzeug|INFO|192.168.0.39 - - [19/Jul/2022 09:36:54] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 09:37:12 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:12] "GET / HTTP/1.1" 200 -
+2022-19-07 09:37:12 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:12] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 09:37:18 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:18] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 09:37:18 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:18] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 09:37:21 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:21] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 09:37:21 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:21] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 09:37:24 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:24] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 09:37:25 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:25] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 09:37:25 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:25] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-19-07 09:37:27 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:27] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 09:37:27 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:27] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 09:37:32 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:32] "GET / HTTP/1.1" 200 -
+2022-19-07 09:37:32 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:32] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 09:37:43 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:43] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 09:37:43 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:43] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 09:37:45 AM|root|INFO|RESERVADO:2022-07-16T02:34:39|None:2000003887654364|92901|2076623-CON|1|paid
+2022-19-07 09:37:45 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-07-19 14:37:45', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 92901, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 400.47413793103453, 'name': 'Botella Acero Inox Ashland Chill Autospout 591 Ml Contigo'})], 'commitment_date': '2022-07-16T02:34:39', 'tracking_number': 'MEL Distribution/MEL00002284314416', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41518227593&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000003887654364', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-07-16T02:34:39', 'correo_marketplace': '', 'client_order_ref': 'PEER1571287', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41518227593, 'comments': 'AUTOCONFIRMADO'}
+2022-19-07 09:37:49 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:49] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 09:37:49 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:37:49] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 09:38:07 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:38:07] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 09:38:07 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:38:07] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 09:38:08 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:38:08] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 09:38:08 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:38:08] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 09:42:58 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:42:58] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 09:42:58 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 09:42:58] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:29:23 AM|root|INFO|RESERVADO:2022-07-18T09:33:29|None:2000003896551716|107929|56406-BEST|1|paid
+2022-19-07 10:29:23 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-07-19 15:29:23', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 107929, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 2187.1206896551726, 'name': 'Alberca Estructural Redonda Steel Pro Max 3m Jardin Bestway'})], 'commitment_date': '2022-07-18T09:33:29', 'tracking_number': 'MEL Distribution/MEL00002286701481', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41522009843&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000003896551716', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-07-18T09:33:29', 'correo_marketplace': '', 'client_order_ref': 'MARLONPEREZRUEDADELEON', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41522009843, 'comments': 'AUTOCONFIRMADO'}
+2022-19-07 10:29:27 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:29:27] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 10:29:27 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:29:27] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:30:17 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:30:17] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 10:30:17 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:30:17] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:30:17 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:30:17] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-19-07 10:30:19 AM|root|INFO|RESERVADO:2022-07-12T00:30:22|None:2000003864199280|112669|300233|1|paid
+2022-19-07 10:30:19 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-07-19 15:30:19', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 112669, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 76.72413793103449, 'name': 'Chupón Ventosa Para Sacar Abolladuras Y Levantar Cargas 25kg'})], 'commitment_date': '2022-07-12T00:30:22', 'tracking_number': 'MEL Distribution/MEL00002286891784', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41508122473&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000003864199280', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-07-12T00:30:22', 'correo_marketplace': '', 'client_order_ref': 'ARMANDORAMIREZ618', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 18, 'shipping_id': 41508122473, 'comments': 'AUTOCONFIRMADO'}
+2022-19-07 10:30:24 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:30:24] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 10:30:24 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:30:24] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:43:43 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:43:43] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 10:43:43 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:43:43] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:43:43 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:43:43] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-19-07 10:43:43 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:43:43] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 10:43:43 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:43:43] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:43:48 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:43:48] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 10:43:48 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:43:48] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:43:50 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:43:50] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 10:43:50 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:43:50] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:43:56 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:43:56] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 10:43:56 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:43:56] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:43:57 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:43:57] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 10:43:57 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:43:57] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:44:02 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:44:02] "GET / HTTP/1.1" 200 -
+2022-19-07 10:44:02 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:44:02] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:44:09 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:44:09] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 10:44:09 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:44:09] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:44:11 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:44:11] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 10:44:11 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:44:11] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:46:08 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:08] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 10:46:08 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:08] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:46:08 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:08] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-19-07 10:46:08 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:08] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 10:46:08 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:08] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:46:13 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:13] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 10:46:13 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:13] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:46:14 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:14] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 10:46:14 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:14] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:46:22 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:22] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 10:46:22 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:22] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:46:22 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:22] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-19-07 10:46:23 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:23] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 10:46:23 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:23] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:46:26 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:26] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 10:46:26 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:26] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 10:46:26 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:26] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-19-07 10:46:28 AM|root|INFO|RESERVADO:2022-07-18T19:58:19|None:2000003900475168|92791|KRRM163-MEN|1|paid
+2022-19-07 10:46:28 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-07-19 15:46:28', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 92791, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 81.07758620689656, 'name': 'Refaccion Para Rifle Kit Empaque Para Piston Krrm163 Mendoza'})], 'commitment_date': '2022-07-18T19:58:19', 'tracking_number': 'MEL Distribution/MEL00002284264157', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41523719213&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000003900475168', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-07-18T19:58:19', 'correo_marketplace': '', 'client_order_ref': 'MOEM8669063', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41523719213, 'comments': 'AUTOCONFIRMADO'}
+2022-19-07 10:46:33 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:33] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 10:46:33 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 10:46:33] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 11:11:06 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 11:11:06] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 11:11:06 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 11:11:06] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 11:11:06 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 11:11:06] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-19-07 11:11:09 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 11:11:09] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 11:11:09 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 11:11:09] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 11:13:10 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 11:13:10] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 11:13:10 AM|werkzeug|INFO|192.168.0.48 - - [19/Jul/2022 11:13:10] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 12:57:05 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:05] "GET / HTTP/1.1" 200 -
+2022-19-07 12:57:05 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:05] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-19-07 12:57:05 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:05] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-19-07 12:57:05 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:05] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-19-07 12:57:05 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:05] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-19-07 12:57:05 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:05] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-19-07 12:57:05 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:05] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-19-07 12:57:05 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:05] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 304 -
+2022-19-07 12:57:05 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:05] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 304 -
+2022-19-07 12:57:05 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:05] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 12:57:05 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:05] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-19-07 12:57:09 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:09] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 12:57:09 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:09] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 12:57:11 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:11] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 12:57:11 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:11] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 12:57:11 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:11] "GET /favicon.ico HTTP/1.1" 404 -
+2022-19-07 12:57:15 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:15] "GET / HTTP/1.1" 200 -
+2022-19-07 12:57:16 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:16] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 12:57:18 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:18] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 12:57:18 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:18] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 12:57:21 PM|root|INFO|RESERVADO:2022-07-18T16:59:31|None:2000003899367910|114736|BP2SXS-FCP|1|paid
+2022-19-07 12:57:21 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'draft', 'confirmation_date': '2022-07-19 17:57:21', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 114736, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 4655.818965517242, 'name': 'Rifle Nitro Piston Cal 5.5 Mm Mira Telescopica 4x32 Benjamin'})], 'commitment_date': '2022-07-18T16:59:31', 'tracking_number': '/', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41523237564&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000003899367910', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-07-18T16:59:31', 'correo_marketplace': '', 'client_order_ref': 'SPORTLINE UNIFORMESESCOLARES', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41523237564, 'comments': ''}
+2022-19-07 12:57:22 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:22] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 12:57:22 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 12:57:22] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 03:35:39 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 15:35:39] "GET / HTTP/1.1" 200 -
+2022-19-07 03:35:39 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 15:35:39] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 03:35:42 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 15:35:42] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 03:35:42 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 15:35:42] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 03:35:44 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 15:35:44] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 03:35:44 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 15:35:44] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 03:35:50 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 15:35:50] "GET / HTTP/1.1" 200 -
+2022-19-07 03:35:50 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 15:35:50] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 03:35:52 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 15:35:52] "POST /inicio HTTP/1.1" 200 -
+2022-19-07 03:35:52 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 15:35:52] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-19-07 03:35:55 PM|root|INFO|RESERVADO:2022-07-15T19:55:08|None:2000003886646618|111982|8440-SZ|1|paid
+2022-19-07 03:35:55 PM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'draft', 'confirmation_date': '2022-07-19 20:35:55', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 111982, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 4094.008620689656, 'name': 'Ropero Kingshouse Roma Color Gris/blanco De Mdf Con 6 Puertas  Batientes'})], 'commitment_date': '2022-07-15T19:55:08', 'tracking_number': '/', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41517808616&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000003886646618', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-07-15T19:55:08', 'correo_marketplace': '', 'client_order_ref': 'ING.JUAN-ARMENTA', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 18, 'shipping_id': 41517808616, 'comments': ''}
+2022-19-07 03:35:56 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 15:35:56] "POST /procesar HTTP/1.1" 200 -
+2022-19-07 03:35:56 PM|werkzeug|INFO|192.168.0.46 - - [19/Jul/2022 15:35:56] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:10:01 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:01] "GET / HTTP/1.1" 200 -
+2022-20-07 09:10:03 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:03] "GET /static/css/main.css HTTP/1.1" 200 -
+2022-20-07 09:10:03 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:03] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 200 -
+2022-20-07 09:10:03 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:03] "GET /static/js/jquery.min.js HTTP/1.1" 200 -
+2022-20-07 09:10:03 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:03] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 200 -
+2022-20-07 09:10:03 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:03] "GET /static/js/browser.min.js HTTP/1.1" 200 -
+2022-20-07 09:10:03 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:03] "GET /static/js/breakpoints.min.js HTTP/1.1" 200 -
+2022-20-07 09:10:03 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:03] "GET /static/js/main.js HTTP/1.1" 200 -
+2022-20-07 09:10:03 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:03] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 200 -
+2022-20-07 09:10:03 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:03] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:10:04 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:04] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-20-07 09:10:15 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:15] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 09:10:15 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:15] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:10:26 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:26] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:10:26 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:26] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:10:27 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:27] "GET /favicon.ico HTTP/1.1" 404 -
+2022-20-07 09:10:36 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:36] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 09:10:36 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:36] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:10:51 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:51] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:10:51 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:10:51] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:11:57 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:11:57] "GET / HTTP/1.1" 200 -
+2022-20-07 09:11:57 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:11:57] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-20-07 09:11:57 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:11:57] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-20-07 09:11:57 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:11:57] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-20-07 09:11:57 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:11:57] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-20-07 09:11:57 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:11:57] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-20-07 09:11:57 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:11:57] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-20-07 09:11:57 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:11:57] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 304 -
+2022-20-07 09:11:57 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:11:57] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 304 -
+2022-20-07 09:11:58 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:11:58] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:12:54 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:12:54] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 09:12:54 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:12:54] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:13:05 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:13:05] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:13:05 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:13:05] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:13:53 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:13:53] "GET / HTTP/1.1" 200 -
+2022-20-07 09:13:53 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:13:53] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:13:56 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:13:56] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 09:13:57 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:13:57] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 09:13:57 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:13:57] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:13:57 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:13:57] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:14:00 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:14:00] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:14:00 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:14:00] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:14:00 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:14:00] "GET /favicon.ico HTTP/1.1" 404 -
+2022-20-07 09:14:03 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:14:03] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:14:03 AM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 09:14:03] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:14:06 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:14:06] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 09:14:06 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:14:06] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:14:11 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:14:11] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:14:11 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:14:11] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:14:21 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:14:21] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 09:14:21 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:14:21] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:14:25 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:14:25] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:14:25 AM|werkzeug|INFO|192.168.0.133 - - [20/Jul/2022 09:14:25] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:16:40 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:40] "GET / HTTP/1.1" 200 -
+2022-20-07 09:16:40 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:40] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-20-07 09:16:40 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:40] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-20-07 09:16:40 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:40] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-20-07 09:16:40 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:40] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-20-07 09:16:40 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:40] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-20-07 09:16:40 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:40] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 304 -
+2022-20-07 09:16:40 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:40] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-20-07 09:16:40 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:40] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 304 -
+2022-20-07 09:16:40 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:40] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:16:40 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:40] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-20-07 09:16:53 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:53] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 09:16:53 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:53] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:16:57 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:57] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:16:57 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:57] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:16:57 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:16:57] "GET /favicon.ico HTTP/1.1" 404 -
+2022-20-07 09:20:03 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:20:03] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:20:03 AM|werkzeug|INFO|192.168.0.45 - - [20/Jul/2022 09:20:03] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:27:49 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:27:49] "GET / HTTP/1.1" 200 -
+2022-20-07 09:27:49 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:27:49] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-20-07 09:27:49 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:27:49] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-20-07 09:27:49 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:27:49] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-20-07 09:27:49 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:27:49] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-20-07 09:27:49 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:27:49] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-20-07 09:27:49 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:27:49] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-20-07 09:27:49 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:27:49] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 304 -
+2022-20-07 09:27:49 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:27:49] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 304 -
+2022-20-07 09:27:50 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:27:50] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:27:59 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:27:59] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 09:27:59 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:27:59] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:28:02 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:28:02] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:28:02 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:28:02] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:28:02 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:28:02] "GET /favicon.ico HTTP/1.1" 404 -
+2022-20-07 09:28:04 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:28:04] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 09:28:04 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:28:04] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:28:04 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:28:04] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-20-07 09:28:06 AM|root|INFO|RESERVADO:2022-07-17T21:55:35|None:2000003895199672|116450|1703-FU-MUL|1|paid
+2022-20-07 09:28:06 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-07-20 14:28:06', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 116450, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 2249.2500000000005, 'name': 'Cama Masaje Camilla Plegable 2 Secciones Profesional Spa'})], 'commitment_date': '2022-07-17T21:55:35', 'tracking_number': 'MEL Distribution/MEL00002289152159', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41521436363&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000003895199672', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-07-17T21:55:35', 'correo_marketplace': '', 'client_order_ref': 'DAHIRIMRQUEZ', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41521436363, 'comments': 'AUTOCONFIRMADO'}
+2022-20-07 09:28:12 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:28:12] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:28:12 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:28:12] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:28:37 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:28:37] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 09:28:37 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:28:37] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:28:37 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:28:37] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-20-07 09:28:39 AM|root|INFO|RESERVADO:2022-07-17T17:33:58|None:2000003893927386|99024|68325NP-INTEX|1|paid
+2022-20-07 09:28:39 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-07-20 14:28:39', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 99024, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 4659.086206896552, 'name': 'Lancha Inflable 5 Personas Rio Lago + Remos Y Bomba Intex'})], 'commitment_date': '2022-07-17T17:33:58', 'tracking_number': 'MEL Distribution/MEL00002289205067', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41520899575&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000003893927386', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-07-17T17:33:58', 'correo_marketplace': '', 'client_order_ref': 'KEVIN CENDON', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41520899575, 'comments': 'AUTOCONFIRMADO'}
+2022-20-07 09:28:45 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:28:45] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:28:45 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:28:45] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:37:03 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:37:03] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 09:37:03 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:37:03] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:37:03 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:37:03] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-20-07 09:37:06 AM|root|INFO|RESERVADO:2022-07-18T22:26:21|None:2000003901326666|116450|1703-FU-MUL|1|paid
+2022-20-07 09:37:06 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-07-20 14:37:06', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 116450, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 2249.2500000000005, 'name': 'Cama Masaje Camilla Plegable 2 Secciones Profesional Spa'})], 'commitment_date': '2022-07-18T22:26:21', 'tracking_number': 'MEL Distribution/MEL00002289614130', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41524083917&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000003901326666', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-07-18T22:26:21', 'correo_marketplace': '', 'client_order_ref': 'SGU7999523', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41524083917, 'comments': 'AUTOCONFIRMADO'}
+2022-20-07 09:37:11 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:37:11] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:37:11 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:37:11] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:38:15 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:38:15] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 09:38:15 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:38:15] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 09:38:15 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:38:15] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-20-07 09:38:17 AM|root|INFO|RESERVADO:2022-07-19T19:27:34|None:2000003906339090|113766|300287|1|paid
+2022-20-07 09:38:17 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-07-20 14:38:17', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 113766, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 827.0689655172414, 'name': 'Lupa Lampara Estetica Pedestal 8x Spa Facial Faciales De Led'})], 'commitment_date': '2022-07-19T19:27:34', 'tracking_number': 'MEL Distribution/MEL00002289687762', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41526251072&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000003906339090', 'seller_marketplace': 'SOMOS-REYES OFICIALES', 'date_created': '2022-07-19T19:27:34', 'correo_marketplace': '', 'client_order_ref': 'JUDITSAHARAIMCASTRELLON', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41526251072, 'comments': 'AUTOCONFIRMADO'}
+2022-20-07 09:38:21 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:38:21] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 09:38:21 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 09:38:21] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 10:03:07 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:03:07] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 10:03:07 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:03:07] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 10:03:07 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:03:07] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-20-07 10:03:09 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:03:09] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 10:03:09 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:03:09] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 10:03:20 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:03:20] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 10:03:20 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:03:20] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 10:03:24 AM|root|INFO|RESERVADO:2022-07-16T16:05:37|None:2000003889817588|39398|177106|1|paid
+2022-20-07 10:03:24 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-07-20 15:03:24', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 39398, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 392.2413793103449, 'name': 'Bruñidor Para Cilindro De Motor 2-7  Gearwrench'})], 'commitment_date': '2022-07-16T16:05:37', 'tracking_number': 'MEL Distribution/MEL00002289075307', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41519158736&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000003889817588', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-07-16T16:05:37', 'correo_marketplace': '', 'client_order_ref': 'REHE4091697', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 6, 'shipping_id': 41519158736, 'comments': 'AUTOCONFIRMADO'}
+2022-20-07 10:03:29 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:03:29] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 10:03:29 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:03:29] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 10:04:17 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:04:17] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 10:04:17 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:04:17] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 10:04:17 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:04:17] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-20-07 10:04:19 AM|root|INFO|RESERVADO:2022-07-19T18:43:12|None:2000003906076818|72040|CU-URTEC|1|paid
+2022-20-07 10:04:19 AM|root|INFO|PAYLOAD|{'partner_id': 73111, 'state': 'sale', 'confirmation_date': '2022-07-20 15:04:19', 'payment_term_id': 1, 'user_id': 6, 'order_line': [(0, 0, {'product_id': 72040, 'product_uom': 1, 'product_uom_qty': 1, 'price_unit': 823.2758620689656, 'name': 'Urrea Juego De Manerales Grandes Cu'})], 'commitment_date': '2022-07-19T18:43:12', 'tracking_number': 'MEL Distribution/MEL00002289703114', 'etiqueta_meli': 'https://api.mercadolibre.com/shipment_labels?shipment_ids=41526138046&response_type=zpl2&access_token=', 'marketplace': 'MERCADO LIBRE', 'marketplace_order_id': 'None:2000003906076818', 'seller_marketplace': 'SOMOS-REYES', 'date_created': '2022-07-19T18:43:12', 'correo_marketplace': '', 'client_order_ref': 'JERSA76', 'order_status': 'paid', 'warehouse_id': 1, 'picking_policy': 'one', 'combo': False, 'combo_detail': '', 'team_id': 3, 'l10n_mx_edi_payment_method_id': 1, 'shipping_id': 41526138046, 'comments': 'AUTOCONFIRMADO'}
+2022-20-07 10:04:24 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:04:24] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 10:04:24 AM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 10:04:24] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 12:42:33 PM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 12:42:33] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 12:42:46 PM|werkzeug|INFO|192.168.0.77 - - [20/Jul/2022 12:42:46] "GET /inicio HTTP/1.1" 405 -
+2022-20-07 02:43:32 PM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 14:43:32] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 02:43:32 PM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 14:43:32] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 02:43:34 PM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 14:43:34] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 02:43:34 PM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 14:43:34] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 02:43:36 PM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 14:43:36] "POST /inicio HTTP/1.1" 200 -
+2022-20-07 02:43:36 PM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 14:43:36] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-20-07 02:43:36 PM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 14:43:36] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-20-07 02:43:39 PM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 14:43:39] "POST /procesar HTTP/1.1" 200 -
+2022-20-07 02:43:39 PM|werkzeug|INFO|192.168.0.48 - - [20/Jul/2022 14:43:39] "GET /images/bg.jpg HTTP/1.1" 404 -

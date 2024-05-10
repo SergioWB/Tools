@@ -1,0 +1,23 @@
+2022-10-12 06:45:00 AM|werkzeug|WARNING| * Debugger is active!
+2022-10-12 06:45:00 AM|werkzeug|INFO| * Debugger PIN: 887-920-685
+2022-10-12 06:45:02 AM|werkzeug|INFO| * Detected change in '/usr/lib/python3.8/importlib/_bootstrap.py', reloading
+2022-10-12 06:45:02 AM|werkzeug|WARNING| * Debugger is active!
+2022-10-12 06:45:02 AM|werkzeug|INFO| * Debugger PIN: 887-920-685
+2022-14-12 11:20:34 AM|werkzeug|INFO|192.168.0.48 - - [14/Dec/2022 11:20:34] "GET /inicio HTTP/1.1" 405 -
+2022-14-12 11:20:35 AM|werkzeug|INFO|192.168.0.48 - - [14/Dec/2022 11:20:35] "GET /favicon.ico HTTP/1.1" 404 -
+2022-14-12 01:34:57 PM|werkzeug|INFO|192.168.0.48 - - [14/Dec/2022 13:34:57] "GET /inicio HTTP/1.1" 405 -
+2022-21-12 02:28:44 PM|werkzeug|INFO|192.168.0.48 - - [21/Dec/2022 14:28:44] "GET /inicio HTTP/1.1" 405 -
+2022-21-12 02:28:44 PM|werkzeug|INFO|192.168.0.48 - - [21/Dec/2022 14:28:44] "GET /favicon.ico HTTP/1.1" 404 -
+2022-22-12 04:59:41 PM|werkzeug|INFO|192.168.0.77 - - [22/Dec/2022 16:59:41] "GET / HTTP/1.1" 200 -
+2022-22-12 04:59:42 PM|werkzeug|INFO|192.168.0.77 - - [22/Dec/2022 16:59:42] "GET /static/css/main.css HTTP/1.1" 200 -
+2022-22-12 04:59:42 PM|werkzeug|INFO|192.168.0.77 - - [22/Dec/2022 16:59:42] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 200 -
+2022-22-12 04:59:42 PM|werkzeug|INFO|192.168.0.77 - - [22/Dec/2022 16:59:42] "GET /static/js/jquery.min.js HTTP/1.1" 200 -
+2022-22-12 04:59:42 PM|werkzeug|INFO|192.168.0.77 - - [22/Dec/2022 16:59:42] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 200 -
+2022-22-12 04:59:42 PM|werkzeug|INFO|192.168.0.77 - - [22/Dec/2022 16:59:42] "GET /static/js/browser.min.js HTTP/1.1" 200 -
+2022-22-12 04:59:42 PM|werkzeug|INFO|192.168.0.77 - - [22/Dec/2022 16:59:42] "GET /static/js/breakpoints.min.js HTTP/1.1" 200 -
+2022-22-12 04:59:42 PM|werkzeug|INFO|192.168.0.77 - - [22/Dec/2022 16:59:42] "GET /static/js/main.js HTTP/1.1" 200 -
+2022-22-12 04:59:42 PM|werkzeug|INFO|192.168.0.77 - - [22/Dec/2022 16:59:42] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 200 -
+2022-22-12 04:59:42 PM|werkzeug|INFO|192.168.0.77 - - [22/Dec/2022 16:59:42] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-22-12 04:59:43 PM|werkzeug|INFO|192.168.0.77 - - [22/Dec/2022 16:59:43] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-27-12 05:44:42 PM|werkzeug|INFO|192.168.0.48 - - [27/Dec/2022 17:44:42] "GET /inicio HTTP/1.1" 405 -
+2022-27-12 05:44:42 PM|werkzeug|INFO|192.168.0.48 - - [27/Dec/2022 17:44:42] "GET /favicon.ico HTTP/1.1" 404 -

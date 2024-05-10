@@ -1,0 +1,36 @@
+2022-14-11 08:17:18 AM|werkzeug|INFO| * Running on http://0.0.0.0:8001/ (Press CTRL+C to quit)
+2022-14-11 08:17:18 AM|werkzeug|INFO| * Restarting with stat
+2022-14-11 08:17:19 AM|werkzeug|WARNING| * Debugger is active!
+2022-14-11 08:17:19 AM|werkzeug|INFO| * Debugger PIN: 125-254-074
+2022-15-11 09:37:22 AM|werkzeug|INFO|192.168.0.109 - - [15/Nov/2022 09:37:22] "GET / HTTP/1.1" 200 -
+2022-15-11 09:37:22 AM|werkzeug|INFO|192.168.0.109 - - [15/Nov/2022 09:37:22] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-15-11 09:37:23 AM|werkzeug|INFO|192.168.0.109 - - [15/Nov/2022 09:37:23] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-15-11 09:37:23 AM|werkzeug|INFO|192.168.0.109 - - [15/Nov/2022 09:37:23] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 200 -
+2022-15-11 09:37:23 AM|werkzeug|INFO|192.168.0.109 - - [15/Nov/2022 09:37:23] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 200 -
+2022-15-11 09:37:23 AM|werkzeug|INFO|192.168.0.109 - - [15/Nov/2022 09:37:23] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-15-11 09:37:23 AM|werkzeug|INFO|192.168.0.109 - - [15/Nov/2022 09:37:23] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-15-11 09:37:23 AM|werkzeug|INFO|192.168.0.109 - - [15/Nov/2022 09:37:23] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-15-11 09:37:23 AM|werkzeug|INFO|192.168.0.109 - - [15/Nov/2022 09:37:23] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-15-11 09:37:23 AM|werkzeug|INFO|192.168.0.109 - - [15/Nov/2022 09:37:23] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-15-11 09:37:23 AM|werkzeug|INFO|192.168.0.109 - - [15/Nov/2022 09:37:23] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-15-11 04:42:41 PM|werkzeug|INFO|192.168.0.56 - - [15/Nov/2022 16:42:41] "GET / HTTP/1.1" 200 -
+2022-15-11 04:42:41 PM|werkzeug|INFO|192.168.0.56 - - [15/Nov/2022 16:42:41] "GET /static/css/main.css HTTP/1.1" 200 -
+2022-15-11 04:42:41 PM|werkzeug|INFO|192.168.0.56 - - [15/Nov/2022 16:42:41] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 200 -
+2022-15-11 04:42:41 PM|werkzeug|INFO|192.168.0.56 - - [15/Nov/2022 16:42:41] "GET /static/js/jquery.min.js HTTP/1.1" 200 -
+2022-15-11 04:42:41 PM|werkzeug|INFO|192.168.0.56 - - [15/Nov/2022 16:42:41] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 200 -
+2022-15-11 04:42:41 PM|werkzeug|INFO|192.168.0.56 - - [15/Nov/2022 16:42:41] "GET /static/js/main.js HTTP/1.1" 200 -
+2022-15-11 04:42:41 PM|werkzeug|INFO|192.168.0.56 - - [15/Nov/2022 16:42:41] "GET /static/js/browser.min.js HTTP/1.1" 200 -
+2022-15-11 04:42:41 PM|werkzeug|INFO|192.168.0.56 - - [15/Nov/2022 16:42:41] "GET /static/js/breakpoints.min.js HTTP/1.1" 200 -
+2022-15-11 04:42:41 PM|werkzeug|INFO|192.168.0.56 - - [15/Nov/2022 16:42:41] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 200 -
+2022-15-11 04:42:41 PM|werkzeug|INFO|192.168.0.56 - - [15/Nov/2022 16:42:41] "GET /images/bg.jpg HTTP/1.1" 404 -
+2022-15-11 04:42:41 PM|werkzeug|INFO|192.168.0.56 - - [15/Nov/2022 16:42:41] "GET /static/css/images/somosreyesfavicon.png HTTP/1.1" 200 -
+2022-16-11 10:48:41 AM|werkzeug|INFO|192.168.0.56 - - [16/Nov/2022 10:48:41] "GET / HTTP/1.1" 200 -
+2022-16-11 10:48:41 AM|werkzeug|INFO|192.168.0.56 - - [16/Nov/2022 10:48:41] "GET /static/css/main.css HTTP/1.1" 304 -
+2022-16-11 10:48:41 AM|werkzeug|INFO|192.168.0.56 - - [16/Nov/2022 10:48:41] "GET /static/js/browser.min.js HTTP/1.1" 304 -
+2022-16-11 10:48:41 AM|werkzeug|INFO|192.168.0.56 - - [16/Nov/2022 10:48:41] "GET /static/js/jquery.min.js HTTP/1.1" 304 -
+2022-16-11 10:48:41 AM|werkzeug|INFO|192.168.0.56 - - [16/Nov/2022 10:48:41] "GET /static/js/jquery.scrollex.min.js HTTP/1.1" 304 -
+2022-16-11 10:48:41 AM|werkzeug|INFO|192.168.0.56 - - [16/Nov/2022 10:48:41] "GET /static/js/breakpoints.min.js HTTP/1.1" 304 -
+2022-16-11 10:48:41 AM|werkzeug|INFO|192.168.0.56 - - [16/Nov/2022 10:48:41] "GET /static/js/main.js HTTP/1.1" 304 -
+2022-16-11 10:48:41 AM|werkzeug|INFO|192.168.0.56 - - [16/Nov/2022 10:48:41] "GET /static/css/fontawesome-all.min.css HTTP/1.1" 304 -
+2022-16-11 10:48:41 AM|werkzeug|INFO|192.168.0.56 - - [16/Nov/2022 10:48:41] "GET /static/css/images/logo_somos_reyes.png HTTP/1.1" 304 -
+2022-16-11 10:48:42 AM|werkzeug|INFO|192.168.0.56 - - [16/Nov/2022 10:48:42] "GET /images/bg.jpg HTTP/1.1" 404 -

@@ -1,0 +1,1639 @@
+// Include standard font and media definitions
+#include <font.defs>
+#include <media.defs>
+#include <raster.defs>
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Media dimensions are in PostScript's interpreter default units -- 1/72 inch.
+// With other units is problem with rounding.
+//
+// Prefered unit for MaxSize is inch, it is more precise.
+//
+// There is printable width in MaxSize. The media may be wider, but HWMargins
+// are zeros, so MaxSize describe maximum printable area. I don't know if it is
+// correct, but I don't know better result.
+//
+//////////////////////////////////////////////////////////////////////////////
+
+// WARNINGS:
+// - Printers G300 and G330 cann't have cutter...
+
+// Manufacturer, and version
+Version 1.1.9
+Manufacturer "GODEX"
+ModelNumber 48
+
+// List the fonts that are supported, in this case all standard
+// fonts...
+Font *
+
+// Each filter provided by the driver...
+Filter application/vnd.cups-raster 50 rastertoezpl
+
+// Only specified filter is acceptable.
+DriverType custom
+
+Duplex none
+
+HWMargins 0 0 0 0
+
+VariablePaperSize yes
+
+#po en    en.po      // English
+#po cs    cs.po      // Czech
+#po de    de.po      // Germany
+#po es    es.po      // Spanish
+#po fr    fr.po      // French
+#po hu    hu.po      // Hungarian
+#po it    it.po      // Intalian
+#po ja    ja.po      // Japanese
+#po ko    ko.po      // Korean
+#po pl    pl.po      // Polish
+#po pt    pt.po      // Portuguese
+#po ru    ru.po      // Russian
+#po tr    tr.po      // Turkish
+#po zh_CN zh_CN.po   // Simple Chinese
+#po zh_TW zh_TW.po   // Traditional Chinese
+
+//////////////////////////////////////////////////////////////////////////////
+//         Labels
+//////////////////////////////////////////////////////////////////////////////
+#media "w114h48/40x17mm"  114 48   //40mm 17mm        // w114h48
+#media "w114h57/40x20mm"  114 57   //40mm 20mm        // w114h57
+#media "w114h85/40x30mm"  114 85   //40mm 30mm        // w114h85
+#media "w114h100/40x35mm" 114 100  //40mm 35mm        // w114h100
+#media "w114h130/40x46mm" 114 130  //40mm 46mm        // w114h130
+#media "w142h57/50x20mm"  142 57   //50mm 20mm        // w142h57
+#media "w142h71/50x25mm"  142 71   //50mm 25mm        // w142h71
+#media "w142h85/50x30mm"  142 85   //50mm 30mm        // w142h85
+#media "w142h100/50x35mm" 142 100  //50mm 35mm        // w142h100
+#media "w142h114/50x40mm" 142 114  //50mm 40mm        // w142h114
+#media "w142h144/50x50mm" 142 142  //50mm 50mm        // w142h144
+#media "w154h114/54x40mm" 154 114  //54mm 40mm        // w154h114
+#media "w154h150/54x53mm" 154 150  //54mm 53mm        // w154h150
+#media "w154h215/54x76mm" 154 215  //54mm 76mm        // w154h215
+
+#media "w170h71/60x25mm"     170 71  //60mm  25mm     // w170h71
+#media "w170h85/60x30mm"     170 85  //60mm  30mm     // w170h85
+#media "w170h170/60x60mm"    170 170 //60mm  60mm     // w170h170
+#media "w170h198/60x70mm"    170 198 //60mm  70mm     // w170h198
+#media "w170h312/60x110mm"   170 312 //60mm  110mm    // w170h312
+#media "w227h85/80x30mm"     227 85  //80mm  30mm     // w227h85
+#media "w227h142/80x50mm"    227 142 //80mm  50mm     // w227h142
+#media "w227h340/80x120mm"   227 340 //80mm  120mm    // w227h340
+#media "w227h369/80x130mm"   227 369 //80mm  130mm    // w227h369
+#media "w283h43/100x15mm"    283 43  //100mm 15mm     // w283h43
+#media "w283h128/100x45mm"   283 128 //100mm 45mm     // w283h128
+#media "w283h142/100x50mm"   283 142 //100mm 50mm     // w283h142
+#media "w283h170/100x60mm"   283 170 //100mm 60mm     // w283h170
+#media "w283h198/100x70mm"   283 198 //100mm 70mm     // w283h198
+#media "w283h227/100x80mm"   283 227 //100mm 80mm     // w283h227
+#media "w283h283/100x100mm"  283 283 //100mm 100mm    // w283h283
+#media "w283h326/100x115mm"  283 326 //100mm 115mm    // w283h326
+#media "w283h369/100x130mm"  283 369 //100mm 130mm    // w283h369
+#media "w283h425/100x150mm"  283 425 //100mm 150mm    // w283h425
+#media "w283h595/100x210mm"  283 595 //100mm 210mm    // w283h595
+#media "w295h417/104x147mm"  295 417 //104mm 147mm    // w295h417
+
+#media "w340h283/120x100mm"  340 283 //120mm 100mm    // w340h283
+#media "w340h425/120x150mm"  340 425 //120mm 150mm    // w340h425
+#media "w340h567/120x200mm"  340 567 //120mm 200mm    // w340h567
+#media "w420h595/148x210mm"  420 595 //148mm 210mm    // w420h595
+#media "w454h159/160x56mm"   454 159 //160mm 56mm     // w454h159
+#media "w454h397/160x140mm"  454 397 //160mm 140mm    // w454h397
+
+#media "w595h421/210x148mm"  595 421 //210mm 148mm    // w595h421
+#media "w595h842/210x297mm"  595 842 //210mm 297mm    // w595h842
+#media "w609h792/215x279mm"  609 792 //215mm 279mm    // w609h792
+#media "w609h1009/215x356mm" 609 1009//215mm 356mm    // w609h1008
+
+// Option Group
+Group "General"
+  // Darkness
+  Darkness 0 "0/Default"
+  Darkness 1 1
+  Darkness 2 2
+  Darkness 3 3
+  Darkness 4 4
+  Darkness 5 5
+  Darkness 6 6
+  Darkness 7 7
+  Darkness 8 8
+  Darkness 9 9
+  Darkness 10 10
+  Darkness 11 11
+  Darkness 12 12
+  Darkness 13 13
+  Darkness 14 14
+  Darkness 15 15
+  Darkness 16 16
+  Darkness 17 17
+  Darkness 18 18
+  Darkness 19 19
+
+
+// Option Group
+Group "LabelSetup/Label setup"
+  // Another resource is select type of media (gap, mark, plain) and
+  // then selet length of seleting type.
+  // gap length
+  Option "gdxGapLength/Label gap length [mm]" PickOne AnySetup 10
+    Choice "0/Plain paper"  "<</OutputType(0)>>setpagedevice"
+    Choice "1" "<</OutputType(1)>>setpagedevice"
+   *Choice "2" "<</OutputType(2)>>setpagedevice"
+    Choice "3" "<</OutputType(3)>>setpagedevice"
+    Choice "4" "<</OutputType(4)>>setpagedevice"
+    Choice "5" "<</OutputType(5)>>setpagedevice"
+
+  // black mark length
+  Option "gdxBlackMark/Black mark length [mm]" PickOne AnySetup 10
+   *Choice "none/No black mark"  "<</OutputType(none)>>setpagedevice"
+    Choice "1" "<</OutputType(1)>>setpagedevice"
+    Choice "2" "<</OutputType(2)>>setpagedevice"
+    Choice "3" "<</OutputType(3)>>setpagedevice"
+    Choice "4" "<</OutputType(4)>>setpagedevice"
+    Choice "5" "<</OutputType(5)>>setpagedevice"
+    Choice "6" "<</OutputType(6)>>setpagedevice"
+    Choice "8" "<</OutputType(8)>>setpagedevice"
+    Choice "10" "<</OutputType(10)>>setpagedevice"
+    Choice "12" "<</OutputType(12)>>setpagedevice"
+    Choice "15" "<</OutputType(15)>>setpagedevice"
+    Choice "20" "<</OutputType(20)>>setpagedevice"
+
+  // black mark position
+  Option "gdxBlackPos/Black mark position [mm]" PickOne AnySetup 10
+    Choice "-20" "<</OutputType(-20)>>setpagedevice"
+    Choice "-15" "<</OutputType(-15)>>setpagedevice"
+    Choice "-12" "<</OutputType(-12)>>setpagedevice"
+    Choice "-10" "<</OutputType(-10)>>setpagedevice"
+    Choice "-8" "<</OutputType(-8)>>setpagedevice"
+    Choice "-6" "<</OutputType(-6)>>setpagedevice"
+    Choice "-5" "<</OutputType(-5)>>setpagedevice"
+    Choice "-4" "<</OutputType(-4)>>setpagedevice"
+    Choice "-3" "<</OutputType(-3)>>setpagedevice"
+    Choice "-2" "<</OutputType(-2)>>setpagedevice"
+    Choice "-1" "<</OutputType(-1)>>setpagedevice"
+   *Choice "0" "<</OutputType(0)>>setpagedevice"
+    Choice "1" "<</OutputType(1)>>setpagedevice"
+    Choice "2" "<</OutputType(2)>>setpagedevice"
+    Choice "3" "<</OutputType(3)>>setpagedevice"
+    Choice "4" "<</OutputType(4)>>setpagedevice"
+    Choice "5" "<</OutputType(5)>>setpagedevice"
+    Choice "6" "<</OutputType(6)>>setpagedevice"
+    Choice "8" "<</OutputType(8)>>setpagedevice"
+    Choice "10" "<</OutputType(10)>>setpagedevice"
+    Choice "12" "<</OutputType(12)>>setpagedevice"
+    Choice "15" "<</OutputType(15)>>setpagedevice"
+    Choice "20" "<</OutputType(20)>>setpagedevice"
+
+  // top margin (EZPL command ~Qx [-100-+100dots])
+  Option "gdxTop/Top margin [dots]" PickOne AnySetup 10
+    Choice "-100"  "<</OutputType(-100)>>setpagedevice"
+    Choice "-90"  "<</OutputType(-90)>>setpagedevice"
+    Choice "-80"  "<</OutputType(-80)>>setpagedevice"
+    Choice "-70"  "<</OutputType(-70)>>setpagedevice"
+    Choice "-60"  "<</OutputType(-60)>>setpagedevice"
+    Choice "-50"  "<</OutputType(-50)>>setpagedevice"
+    Choice "-40"  "<</OutputType(-40)>>setpagedevice"
+    Choice "-30"  "<</OutputType(-30)>>setpagedevice"
+    Choice "-20"  "<</OutputType(-20)>>setpagedevice"
+    Choice "-15"  "<</OutputType(-15)>>setpagedevice"
+    Choice "-10"  "<</OutputType(-10)>>setpagedevice"
+    Choice "-7"  "<</OutputType(-7)>>setpagedevice"
+    Choice "-5"  "<</OutputType(-5)>>setpagedevice"
+    Choice "-2"  "<</OutputType(-2)>>setpagedevice"
+    Choice "-1"  "<</OutputType(-1)>>setpagedevice"
+   *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+    Choice "0" "<</OutputType(0)>>setpagedevice"
+    Choice "1" "<</OutputType(1)>>setpagedevice"
+    Choice "2" "<</OutputType(2)>>setpagedevice"
+    Choice "5"  "<</OutputType(5)>>setpagedevice"
+    Choice "7"  "<</OutputType(7)>>setpagedevice"
+    Choice "10"  "<</OutputType(10)>>setpagedevice"
+    Choice "15"  "<</OutputType(15)>>setpagedevice"
+    Choice "20"  "<</OutputType(20)>>setpagedevice"
+    Choice "30"  "<</OutputType(30)>>setpagedevice"
+    Choice "40"  "<</OutputType(40)>>setpagedevice"
+    Choice "50"  "<</OutputType(50)>>setpagedevice"
+    Choice "60"  "<</OutputType(60)>>setpagedevice"
+    Choice "70"  "<</OutputType(70)>>setpagedevice"
+    Choice "80"  "<</OutputType(80)>>setpagedevice"
+    Choice "90"  "<</OutputType(90)>>setpagedevice"
+    Choice "100"  "<</OutputType(100)>>setpagedevice"
+
+  // left margin (EZPL command ^Rx [0-399dots])
+  Option "gdxLeft/Left margin [dots]" PickOne AnySetup 10
+   *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+    Choice "0" "<</OutputType(0)>>setpagedevice"
+    Choice "1" "<</OutputType(1)>>setpagedevice"
+    Choice "2" "<</OutputType(2)>>setpagedevice"
+    Choice "5"  "<</OutputType(5)>>setpagedevice"
+    Choice "7"  "<</OutputType(7)>>setpagedevice"
+    Choice "10"  "<</OutputType(10)>>setpagedevice"
+    Choice "15"  "<</OutputType(15)>>setpagedevice"
+    Choice "20"  "<</OutputType(20)>>setpagedevice"
+    Choice "30"  "<</OutputType(30)>>setpagedevice"
+    Choice "40"  "<</OutputType(40)>>setpagedevice"
+    Choice "50"  "<</OutputType(50)>>setpagedevice"
+    Choice "60"  "<</OutputType(60)>>setpagedevice"
+    Choice "70"  "<</OutputType(70)>>setpagedevice"
+    Choice "80"  "<</OutputType(80)>>setpagedevice"
+    Choice "90"  "<</OutputType(90)>>setpagedevice"
+    Choice "100"  "<</OutputType(100)>>setpagedevice"
+    Choice "110"  "<</OutputType(110)>>setpagedevice"
+    Choice "120"  "<</OutputType(120)>>setpagedevice"
+    Choice "130"  "<</OutputType(130)>>setpagedevice"
+    Choice "140"  "<</OutputType(140)>>setpagedevice"
+    Choice "150"  "<</OutputType(150)>>setpagedevice"
+    Choice "160"  "<</OutputType(160)>>setpagedevice"
+    Choice "170"  "<</OutputType(170)>>setpagedevice"
+    Choice "180"  "<</OutputType(180)>>setpagedevice"
+    Choice "190"  "<</OutputType(190)>>setpagedevice"
+    Choice "200"  "<</OutputType(200)>>setpagedevice"
+    Choice "220"  "<</OutputType(220)>>setpagedevice"
+    Choice "240"  "<</OutputType(240)>>setpagedevice"
+    Choice "260"  "<</OutputType(260)>>setpagedevice"
+    Choice "280"  "<</OutputType(280)>>setpagedevice"
+    Choice "300"  "<</OutputType(300)>>setpagedevice"
+    Choice "320"  "<</OutputType(320)>>setpagedevice"
+    Choice "340"  "<</OutputType(340)>>setpagedevice"
+    Choice "360"  "<</OutputType(360)>>setpagedevice"
+    Choice "380"  "<</OutputType(380)>>setpagedevice"
+    Choice "399"  "<</OutputType(399)>>setpagedevice"
+
+
+// Option Group
+Group "PrinterSetup/Printer setup"
+	// After Print
+	Option "gdxMode/After print" PickOne AnySetup 10
+		*Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+		 Choice "rew/Nothing"  "<</OutputType(rew)>>setpagedevice"
+		 Choice "str/Stripper" "<</OutputType(str)>>setpagedevice"
+		 Choice "app/Applicator" "<</OutputType(app)>>setpagedevice"
+		 //Choice "cut/Cutter" "<</OutputType(cut)>>setpagedevice"
+		 Choice "cutpage/Cut page" "<</CutMedia $CUPS_CUT_PAGE>>setpagedevice"
+		 Choice "cutset/Cut set" "<</CutMedia $CUPS_CUT_SET>>setpagedevice"
+		 //TODO
+		 //Choice "cutppage/Cut file (not implemented)" "<</CutMedia $CUPS_CUT_FILE>>setpagedevice"
+
+	// Stop position (EZPL command ^Ex [0-40mm])
+	Option "gdxOffset/Tear-off position [mm]" PickOne AnySetup 10
+		*Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+         Choice "0" "<</OutputType(0)>>setpagedevice"
+		 Choice "1" "<</OutputType(1)>>setpagedevice"
+		 Choice "2" "<</OutputType(2)>>setpagedevice"
+		 Choice "3" "<</OutputType(3)>>setpagedevice"
+		 Choice "4" "<</OutputType(4)>>setpagedevice"
+		 Choice "5" "<</OutputType(5)>>setpagedevice"
+		 Choice "6" "<</OutputType(6)>>setpagedevice"
+		 Choice "7" "<</OutputType(7)>>setpagedevice"
+		 Choice "8" "<</OutputType(8)>>setpagedevice"
+		 Choice "9" "<</OutputType(9)>>setpagedevice"
+		 Choice "10" "<</OutputType(10)>>setpagedevice"
+		 Choice "11" "<</OutputType(11)>>setpagedevice"
+		 Choice "12" "<</OutputType(12)>>setpagedevice"
+		 Choice "13" "<</OutputType(13)>>setpagedevice"
+		 Choice "14" "<</OutputType(14)>>setpagedevice"
+		 Choice "15" "<</OutputType(15)>>setpagedevice"
+		 Choice "16" "<</OutputType(16)>>setpagedevice"
+		 Choice "17" "<</OutputType(17)>>setpagedevice"
+		 Choice "18" "<</OutputType(18)>>setpagedevice"
+		 Choice "19" "<</OutputType(19)>>setpagedevice"
+		 Choice "20" "<</OutputType(20)>>setpagedevice"
+		 Choice "21" "<</OutputType(21)>>setpagedevice"
+		 Choice "22" "<</OutputType(22)>>setpagedevice"
+		 Choice "23" "<</OutputType(23)>>setpagedevice"
+		 Choice "24" "<</OutputType(24)>>setpagedevice"
+		 Choice "25" "<</OutputType(25)>>setpagedevice"
+		 Choice "26" "<</OutputType(26)>>setpagedevice"
+		 Choice "27" "<</OutputType(27)>>setpagedevice"
+		 Choice "28" "<</OutputType(28)>>setpagedevice"
+		 Choice "29" "<</OutputType(29)>>setpagedevice"
+		 Choice "30" "<</OutputType(30)>>setpagedevice"
+		 Choice "31" "<</OutputType(31)>>setpagedevice"
+		 Choice "32" "<</OutputType(32)>>setpagedevice"
+		 Choice "33" "<</OutputType(33)>>setpagedevice"
+		 Choice "34" "<</OutputType(34)>>setpagedevice"
+		 Choice "35" "<</OutputType(35)>>setpagedevice"
+		 Choice "36" "<</OutputType(36)>>setpagedevice"
+		 Choice "37" "<</OutputType(37)>>setpagedevice"
+		 Choice "38" "<</OutputType(38)>>setpagedevice"
+		 Choice "39" "<</OutputType(39)>>setpagedevice"
+		 Choice "40" "<</OutputType(40)>>setpagedevice"
+
+
+	// Removed, the mirror is implemeted be default (and is realized by ghoscript).
+	//Option "mirror/Mirror print" Boolean AnySetup 10
+	//	Choice True/Yes "<</MirrorPrint true>>setpagedevice"
+	// *Choice False/No "<</MirrorPrint false>>setpagedevice"
+
+	Option "negative/Negative print" Boolean AnySetup 10
+		Choice True/Yes  "<</NegativePrint true>>setpagedevice"
+	   *Choice False/No "<</NegativePrint false>>setpagedevice"
+
+	// Note: test on Godex EZ-1100P; mirror and negative work together, but in manual it isn't
+	// UIConstraints "*mirror *negative"
+
+	// Removed, the orientation is implemeted by default (and is realized by ghoscript).
+    // Rotate 180 deg
+	//Option "orientation/Rotate 180deg" Boolean AnySetup 10
+	//  Choice True/Yes "<</Orientation $CUPS_ORIENT_180>>setpagedevice"
+	// *Choice False/No "<</Orientation $CUPS_ORIENT_0>>setpagedevice"
+{
+//////////////////////////////////////////////////////////////////////////////
+// I prefer only one using of label name by MediaSize --
+// so MediaSizes are on more places :-(
+//////////////////////////////////////////////////////////////////////////////
+//         Supported page sizes for models to 48mm (1.89")!
+//////////////////////////////////////////////////////////////////////////////
+  MediaSize  w114h48
+  MediaSize  w114h57
+  MediaSize  w114h85
+  MediaSize  w114h100
+  MediaSize  w114h130
+
+//////////////////////////////////////////////////////////////////////////////
+//         Direct Termo models to 48mm (1.89")
+//////////////////////////////////////////////////////////////////////////////
+  {
+    Group "PrinterSetup/Printer setup"
+      // Speed
+      Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+       *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+        Choice "2" "<</OutputType(2)>>setpagedevice"
+        Choice "3" "<</OutputType(3)>>setpagedevice"
+        Choice "4" "<</OutputType(4)>>setpagedevice"
+    {
+     *Resolution k 1 0 0 0 "203dpi/203 DPI"
+      MaxSize 1.89in 44.9in // 48mm 1142mm
+      MinSize 15mm 4mm
+      ModelName "MX20"
+      PCFileName "godex-mx20.ppd"
+    }
+  }
+
+//////////////////////////////////////////////////////////////////////////////
+//         Supported page sizes for models to 54mm (2")!
+//////////////////////////////////////////////////////////////////////////////
+  MediaSize  w142h57
+  MediaSize  w142h71
+  MediaSize  w142h85
+  MediaSize  w142h100
+ *MediaSize  w142h114
+  MediaSize  w142h144
+  MediaSize  w154h114
+  MediaSize  w154h150
+  MediaSize  w154h215
+
+//////////////////////////////////////////////////////////////////////////////
+//         Direct Termo models to 54mm (2")
+//////////////////////////////////////////////////////////////////////////////
+  {
+	Group "PrinterSetup/Printer setup"
+		// Speed
+		Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+		   *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+			Choice "2" "<</OutputType(2)>>setpagedevice"
+			Choice "3" "<</OutputType(3)>>setpagedevice"
+			Choice "4" "<</OutputType(4)>>setpagedevice"
+    {
+	   *Resolution k 1 0 0 0 "203dpi/203 DPI"
+		  MaxSize 2.12in 68in //54mm 1727mm
+		  MinSize 15mm 4mm
+		  {
+		  	ModelName "EZ-DT-2"
+		  	PCFileName "godex-ezdt2.ppd"
+		  }
+		  {
+		  	ModelName "DT2"
+		  	PCFileName "godex-dt2.ppd"
+		  }
+    }
+    {
+	   *Resolution k 1 0 0 0 "300dpi/300 DPI"
+		  MaxSize 2.24in 126in //57mm 3200mm
+		  MinSize 15mm 4mm
+		  {
+		  	ModelName "DT230L+"
+		  	PCFileName "godex-dt230l+.ppd"
+		  }
+      {
+		  	ModelName "DT230iL+"
+		  	PCFileName "godex-dt230il+.ppd"
+		  }
+    }
+  }
+  {
+    Group "PrinterSetup/Printer setup"
+		// Speed
+		Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+		   *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+			Choice "2" "<</OutputType(2)>>setpagedevice"
+			Choice "3" "<</OutputType(3)>>setpagedevice"
+			Choice "4" "<</OutputType(4)>>setpagedevice"
+			Choice "5" "<</OutputType(5)>>setpagedevice"
+    {
+	   *Resolution k 1 0 0 0 "300dpi/300 DPI"
+		  MaxSize 2.24in 126in //57mm 3200mm
+		  MinSize 15mm 4mm
+		  {
+		  	ModelName "DT230+"
+		  	PCFileName "godex-dt230+.ppd"
+		  }
+      {
+		  	ModelName "DT230i+"
+		  	PCFileName "godex-dt230i+.ppd"
+		  }
+    }
+  }
+  {
+    Group "PrinterSetup/Printer setup"
+		// Speed
+		Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+		   *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+			Choice "2" "<</OutputType(2)>>setpagedevice"
+			Choice "3" "<</OutputType(3)>>setpagedevice"
+			Choice "4" "<</OutputType(4)>>setpagedevice"
+			Choice "5" "<</OutputType(5)>>setpagedevice"
+			Choice "6" "<</OutputType(6)>>setpagedevice"
+    {
+	   *Resolution k 1 0 0 0 "203dpi/203 DPI"
+		  MaxSize 2.12in 68in //54mm 1727mm
+		  MinSize 15mm 4mm
+		  {
+		  	ModelName "PE200"
+		  	PCFileName "godex-pe200.ppd"
+		  }
+		  {
+		  	ModelName "DT200L"
+		  	PCFileName "godex-DT200L.ppd"
+		  }
+		  {
+		  	ModelName "DT200iL"
+		  	PCFileName "godex-DT200iL.ppd"
+		  }		
+    }
+    {
+	   *Resolution k 1 0 0 0 "203dpi/203 DPI"
+		  MaxSize 2.12in 280in //54mm 7100mm
+		  MinSize 15mm 4mm
+		  {
+		  	ModelName "DT200L+"
+		  	PCFileName "godex-dt200l+.ppd"
+		  }
+      {
+		  	ModelName "DT200iL+"
+		  	PCFileName "godex-dt200il+.ppd"
+		  }
+    }
+  }
+  {
+    Group "PrinterSetup/Printer setup"
+		// Speed
+		Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+		   *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+		    Choice "2" "<</OutputType(2)>>setpagedevice"
+		    Choice "3" "<</OutputType(3)>>setpagedevice"
+		    Choice "4" "<</OutputType(4)>>setpagedevice"
+		    Choice "5" "<</OutputType(5)>>setpagedevice"
+		    Choice "6" "<</OutputType(6)>>setpagedevice"
+		    Choice "7" "<</OutputType(7)>>setpagedevice"
+    {
+	   *Resolution k 1 0 0 0 "203dpi/203 DPI"
+		  MaxSize 2.12in 68in //54mm 1727mm
+		  MinSize 15mm 4mm
+		  {   
+		  	ModelName "DT2x"
+		  	PCFileName "godex-dt2x.ppd"
+		  }
+		  {   
+		  	ModelName "DT200"
+		  	PCFileName "godex-DT200.ppd"
+		  }
+		  {   
+		  	ModelName "DT200i"
+		  	PCFileName "godex-DT200i.ppd"
+		  }
+    }
+    {
+	   *Resolution k 1 0 0 0 "203dpi/203 DPI"
+		  MaxSize 2.12in 280in //54mm 7100mm
+		  MinSize 15mm 4mm
+		  {   
+		  	ModelName "DT200+"
+		  	PCFileName "godex-dt200+.ppd"
+		  }
+      {   
+		  	ModelName "DT200i+"
+		  	PCFileName "godex-dt200i+.ppd"
+		  }
+    }
+  }
+  {
+	Group "PrinterSetup/Printer setup"
+		// Speed
+		Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+		   *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+			Choice "5" "<</OutputType(2)>>setpagedevice"
+			Choice "6" "<</OutputType(3)>>setpagedevice"
+		{
+		   *Resolution k 1 0 0 0 "203dpi/203 DPI"
+			MaxSize 50mm 1727mm
+			MinSize 4mm 30mm
+			ModelName "GTL-100"
+			PCFileName "godex-GTL-100.ppd"
+		}
+  }
+
+//////////////////////////////////////////////////////////////////////////////
+//         Termotransfer models width 54mm (2")
+//////////////////////////////////////////////////////////////////////////////
+  {
+    Group "PrinterSetup/Printer setup"
+      Option "gdxMedia/Printing mode" PickOne AnySetup 10
+       *Choice "default/Printer default"  "<</OutputType(none)>>setpagedevice"
+        Choice "tt/Termal transfer" "<</OutputType(tt)>>setpagedevice"
+        Choice "dt/Direct termal" "<</OutputType(dt)>>setpagedevice"
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+          Choice "6" "<</OutputType(6)>>setpagedevice"
+          Choice "7" "<</OutputType(7)>>setpagedevice"
+      // model name, media size, resolution
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 2.12in 68in // 54mm 1727mm
+        MinSize 15mm 4mm
+        ModelName "RT200i"
+        PCFileName "godex-rt200i.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 2.12in 68in // 54mm 1727mm
+        MinSize 15mm 4mm
+        ModelName "RT200"
+        PCFileName "godex-rt200.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 2.24in 30in // 56.9mm 762mm
+        MinSize 15mm 4mm
+        ModelName "RT230i"
+        PCFileName "godex-rt230i.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 2.24in 30in // 56.9mm 762mm
+        MinSize 15mm 4mm
+        ModelName "RT230"
+        PCFileName "godex-rt230.ppd"
+      }
+    }
+  }
+
+//////////////////////////////////////////////////////////////////////////////
+//         Supported page sizes for models to 72mm (2.8")!
+//////////////////////////////////////////////////////////////////////////////
+  MediaSize w170h71
+ *MediaSize w170h85
+  MediaSize w170h170
+  MediaSize w170h198
+  MediaSize w170h312
+
+//////////////////////////////////////////////////////////////////////////////
+//         Direct Termo models to 72mm (2.8")
+//////////////////////////////////////////////////////////////////////////////
+  {
+    Group "PrinterSetup/Printer setup"
+      // Speed
+      Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+        *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+        Choice "2" "<</OutputType(2)>>setpagedevice"
+        Choice "3" "<</OutputType(3)>>setpagedevice"
+        Choice "4" "<</OutputType(4)>>setpagedevice"
+    {
+     *Resolution k 1 0 0 0 "203dpi/203 DPI"
+      MaxSize 2.8in 30in // 72mm 762mm
+      MinSize 15mm 4mm
+      {
+        ModelName "MX30"
+        PCFileName "godex-mx30.ppd"
+      }
+      {
+        ModelName "MX30i"
+        PCFileName "godex-mx30i.ppd"
+      }
+    }
+    {
+     *Resolution k 1 0 0 0 "203dpi/203 DPI"
+      MaxSize 3.1in 374in // 80mm 9500mm
+      MinSize 39mm 4mm
+      {
+        ModelName "MX30+"
+        PCFileName "godex-mx30+.ppd"
+      }
+      {
+        ModelName "MX30+(L)"
+        PCFileName "godex-mx30+(l).ppd"
+      }
+      {
+        ModelName "MX30L+"
+        PCFileName "godex-mx30l+.ppd"
+      }
+      {
+        ModelName "MX30L+(L)"
+        PCFileName "godex-mx30l+(l).ppd"
+      }
+    }
+  }
+  {
+	Group "PrinterSetup/Printer setup"
+      // Speed
+      Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+      *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+      Choice "2" "<</OutputType(2)>>setpagedevice"
+      Choice "3" "<</OutputType(3)>>setpagedevice"
+      Choice "4" "<</OutputType(4)>>setpagedevice"
+		  Choice "5" "<</OutputType(5)>>setpagedevice"
+		  Choice "6" "<</OutputType(6)>>setpagedevice"
+    {
+     *Resolution k 1 0 0 0 "203dpi/203 DPI"
+      MaxSize 2.8in 30in // 72mm 762mm
+      MinSize 15mm 4mm
+      {
+        ModelName "PE300"
+        PCFileName "godex-pe300.ppd"
+      }
+    }
+  }
+
+//////////////////////////////////////////////////////////////////////////////
+//         Supported page sizes for models to 104mm (4")!
+//////////////////////////////////////////////////////////////////////////////
+  MediaSize w227h85
+  MediaSize w227h142
+  MediaSize w227h340
+  MediaSize w227h369
+  MediaSize w283h43
+  MediaSize w283h128
+ *MediaSize w283h142
+  MediaSize w283h170
+  MediaSize w283h198
+  MediaSize w283h227
+  MediaSize w283h283
+  MediaSize w283h326
+  MediaSize w283h369
+  MediaSize w283h425
+  MediaSize w283h595
+  MediaSize w295h417
+
+//////////////////////////////////////////////////////////////////////////////
+//         Direct Termo models to 104mm (4")
+//////////////////////////////////////////////////////////////////////////////
+  {
+    Group "PrinterSetup/Printer setup"
+      // Speed
+      Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+       *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+        Choice "2" "<</OutputType(2)>>setpagedevice"
+        Choice "3" "<</OutputType(3)>>setpagedevice"
+        Choice "4" "<</OutputType(4)>>setpagedevice"
+   *Resolution k 1 0 0 0 "203dpi/203 DPI"
+    MaxSize 4.25in 68in // 108mm 1727mm
+    MinSize 25mm 4mm
+    {
+      ModelName "EZ-DT-4"
+      PCFileName "godex-ezdt4.ppd"
+    }
+    {
+      ModelName "DT4"
+      PCFileName "godex-dt4.ppd"
+    }
+  }
+  {
+    Group "PrinterSetup/Printer setup"
+      // Speed
+      Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+       *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+        Choice "2" "<</OutputType(2)>>setpagedevice"
+        Choice "3" "<</OutputType(3)>>setpagedevice"
+        Choice "4" "<</OutputType(4)>>setpagedevice"
+        Choice "5" "<</OutputType(5)>>setpagedevice"
+    {
+     *Resolution k 1 0 0 0 "203dpi/203 DPI"
+      MaxSize 4.25in 68in // 108mm 1727mm
+      MinSize 25mm 4mm
+      {
+        ModelName "BP500L (DT)"
+        PCFileName "godex-bp500ldt.ppd"
+      }
+    }
+    {
+     *Resolution k 1 0 0 0 "300dpi/300 DPI"
+      MaxSize 4.17in 126in // 106mm 3200mm
+      MinSize 25mm 4mm
+      {
+        ModelName "DT43x+"
+        PCFileName "godex-dt43x+.ppd"
+      }
+    }
+  }
+  {
+    Group "PrinterSetup/Printer setup"
+      // Speed
+      Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+       *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+        Choice "2" "<</OutputType(2)>>setpagedevice"
+        Choice "3" "<</OutputType(3)>>setpagedevice"
+        Choice "4" "<</OutputType(4)>>setpagedevice"
+        Choice "5" "<</OutputType(5)>>setpagedevice"
+	      Choice "6" "<</OutputType(5)>>setpagedevice"
+    {
+     *Resolution k 1 0 0 0 "203dpi/203 DPI"
+      MaxSize 4.25in 68in // 108mm 1727mm
+      MinSize 25mm 4mm
+      {
+        ModelName "DT4L"
+        PCFileName "godex-dt4l.ppd"
+      }
+    }
+  }
+  {
+    Group "PrinterSetup/Printer setup"
+      // Speed
+      Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+       *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+        Choice "2" "<</OutputType(2)>>setpagedevice"
+        Choice "3" "<</OutputType(3)>>setpagedevice"
+        Choice "4" "<</OutputType(4)>>setpagedevice"
+        Choice "5" "<</OutputType(5)>>setpagedevice"
+        Choice "6" "<</OutputType(6)>>setpagedevice"
+        Choice "7" "<</OutputType(7)>>setpagedevice"
+    {
+     *Resolution k 1 0 0 0 "203dpi/203 DPI"
+      MaxSize 4.25in 68in // 108mm 1727mm
+      MinSize 25mm 4mm
+      {
+        ModelName "DT4x"
+        PCFileName "godex-dt4x.ppd"
+      }
+      {
+        ModelName "DT4C"
+        PCFileName "godex-dt4c.ppd"
+      }
+      {
+        ModelName "BP520L (DT)"
+        PCFileName "godex-bp520ldt.ppd"
+      }
+    }
+    {
+     *Resolution k 1 0 0 0 "203dpi/203 DPI"
+      MaxSize 4.25in 280in // 108mm 7100mm
+      MinSize 25mm 4mm
+      {
+        ModelName "DT4x+"
+        PCFileName "godex-dt4x+.ppd"
+      }
+    }
+  }
+
+//////////////////////////////////////////////////////////////////////////////
+//         Termotransfer models width 104mm (4")
+//////////////////////////////////////////////////////////////////////////////
+  {
+    Group "PrinterSetup/Printer setup"
+      Option "gdxMedia/Printing mode" PickOne AnySetup 10
+       *Choice "default/Printer default"  "<</OutputType(none)>>setpagedevice"
+        Choice "tt/Termal transfer" "<</OutputType(tt)>>setpagedevice"
+        Choice "dt/Direct termal" "<</OutputType(dt)>>setpagedevice"
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+          Choice "6" "<</OutputType(6)>>setpagedevice"
+          Choice "7" "<</OutputType(7)>>setpagedevice"
+          Choice "8" "<</OutputType(8)>>setpagedevice"
+          Choice "9" "<</OutputType(9)>>setpagedevice"
+          Choice "10" "<</OutputType(10)>>setpagedevice"
+          Choice "11" "<</OutputType(11)>>setpagedevice"
+          Choice "12" "<</OutputType(12)>>setpagedevice"
+          Choice "13" "<</OutputType(13)>>setpagedevice"
+          Choice "14" "<</OutputType(14)>>setpagedevice"
+          Choice "15" "<</OutputType(15)>>setpagedevice"
+          Choice "16" "<</OutputType(16)>>setpagedevice"
+      // model name, media size, resolution
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.25in 180in
+        MinSize 25mm 4mm
+        ModelName "GX4200i"
+        PCFileName "godex-gx4200i.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+          Choice "6" "<</OutputType(6)>>setpagedevice"
+          Choice "7" "<</OutputType(7)>>setpagedevice"
+          Choice "8" "<</OutputType(8)>>setpagedevice"
+          Choice "9" "<</OutputType(9)>>setpagedevice"
+          Choice "10" "<</OutputType(10)>>setpagedevice"
+          Choice "11" "<</OutputType(11)>>setpagedevice"
+          Choice "12" "<</OutputType(12)>>setpagedevice"
+          Choice "13" "<</OutputType(13)>>setpagedevice"
+          Choice "14" "<</OutputType(14)>>setpagedevice"
+      // model name, media size, resolution
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.25in 180in
+        MinSize 25mm 4mm
+        ModelName "ZX1200Xi"
+        PCFileName "godex-zx1200xi.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.09in 280in
+        MinSize 25mm 4mm
+        ModelName "ZX1200Xi+"
+        PCFileName "godex-zx1200xi+.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+          Choice "6" "<</OutputType(6)>>setpagedevice"
+          Choice "7" "<</OutputType(7)>>setpagedevice"
+          Choice "8" "<</OutputType(8)>>setpagedevice"
+          Choice "9" "<</OutputType(9)>>setpagedevice"
+          Choice "10" "<</OutputType(10)>>setpagedevice"
+          Choice "11" "<</OutputType(11)>>setpagedevice"
+          Choice "12" "<</OutputType(12)>>setpagedevice"
+      // model name, media size, resolution
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.09in 85in // 104mm 2159mm
+        MinSize 25mm 4mm
+        ModelName "GX4300i"
+        PCFileName "godex-gx4300i.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+          Choice "6" "<</OutputType(6)>>setpagedevice"
+          Choice "7" "<</OutputType(7)>>setpagedevice"
+          Choice "8" "<</OutputType(8)>>setpagedevice"
+          Choice "9" "<</OutputType(9)>>setpagedevice"
+          Choice "10" "<</OutputType(10)>>setpagedevice"
+      // model name, media size, resolution
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.09in 180in // 104mm 4572mm
+        MinSize 25mm 4mm
+        // which dimension is correct? 104mm is printable, 108mm is max medium width.
+        //MaxSize 108mm 4572mm
+        ModelName "ZX1200i"
+        PCFileName "godex-zx1200i.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.25in 280in // 108mm 7100mm
+        MinSize 25mm 4mm
+        ModelName "ZX1200i+"
+        PCFileName "godex-zx1200i+.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.16in 180in // 104mm 4572mm
+        MinSize 25mm 4mm
+        ModelName "ZX1300Xi"
+        PCFileName "godex-zx1300xi.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.17in 126in // 106mm 3200mm
+        MinSize 25mm 4mm
+        ModelName "ZX1300Xi+"
+        PCFileName "godex-zx1300xi+.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+          Choice "6" "<</OutputType(6)>>setpagedevice"
+          Choice "7" "<</OutputType(7)>>setpagedevice"
+          Choice "8" "<</OutputType(8)>>setpagedevice"
+      // model name, media size, resolution
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.25in 280in // 108mm 7100mm
+        MinSize 25mm 4mm
+        ModelName "RT823i+"
+        PCFileName "godex-rt823i+.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "600dpi/600 DPI"
+        MaxSize 4.17in 26in // 106mm 660mm
+        MinSize 25mm 4mm
+        ModelName "GX4600i"
+        PCFileName "godex-gx4600i.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+          Choice "6" "<</OutputType(6)>>setpagedevice"
+          Choice "7" "<</OutputType(7)>>setpagedevice"
+      // model name, media size, resolution
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.09in 180in // 104mm 4572mm
+        MinSize 25mm 4mm
+        {
+          ModelName "EZ-2200P"
+          PCFileName "godex-ez2200p.ppd"
+        }
+        {
+          ModelName "EZ2250i"
+          PCFileName "godex-ez2250i.ppd"
+        }
+      }
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.13in 180in // 105mm 4572mm
+        MinSize 25mm 4mm
+        {
+          ModelName "EZ-2200+"
+          PCFileName "godex-ez2200+.ppd"
+        }
+      }
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.25in 68in // 108mm 1727mm
+        {
+          MinSize 20mm 4mm
+          {
+            ModelName "RT700i"
+            PCFileName "godex-rt700i.ppd"
+          }
+          {
+            ModelName "RT700x"
+            PCFileName "godex-rt700x.ppd"
+          }
+        }
+        {
+          MinSize 25mm 4mm
+          {
+            ModelName "RT700iW"
+            PCFileName "godex-rt700iw.ppd"
+          }
+          {
+            ModelName "BP520L"
+            PCFileName "godex-bp520l.ppd"
+          }
+        }
+      }
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.25in 280in // 108mm 7100mm
+        MinSize 25mm 4mm
+        {
+          ModelName "RT700i+"
+          PCFileName "godex-rt700i+.ppd"
+        }
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.09in 85in // 104mm 2159mm
+        MinSize 25mm 4mm
+        ModelName "ZX1300i"
+        PCFileName "godex-zx1300i.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.17in 126in // 106mm 3200mm
+        MinSize 25mm 4mm
+        ModelName "ZX1300i+"
+        PCFileName "godex-zx1300i+.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+          Choice "6" "<</OutputType(6)>>setpagedevice"
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.09in 100in // 104mm 2540mm
+        MinSize 25mm 4mm
+        ModelName "EZ2050"
+        PCFileName "godex-ez2050.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.09in 180in // 104mm 4572mm
+        MinSize 25mm 4mm
+        ModelName "EZ-2100+"
+        PCFileName "godex-ez2100+.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.25in 68in // 108mm 1727mm
+        MinSize 25mm 4mm
+        {
+          ModelName "EZ-1200P"
+          PCFileName "godex-ez1200p.ppd"
+        }
+        {
+          ModelName "EZ-1200+"
+          PCFileName "godex-ez1200+.ppd"
+        }
+        {
+          ModelName "EZPi-1200"
+          PCFileName "godex-ezpi1200.ppd"
+        }
+        {
+          ModelName "EZ320"
+          PCFileName "godex-ez320.ppd"
+        }
+        {
+          ModelName "EZ520"
+          PCFileName "godex-ez520.ppd"
+        }
+      }
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.25in 3999mm
+        MinSize 25mm 4mm
+        {
+          ModelName "ZX420"
+          PCFileName "godex-zx420.ppd"
+        }
+        {
+          ModelName "ZX420i"
+          PCFileName "godex-zx420i.ppd"
+        }
+      }
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.25in 7100mm
+        MinSize 25mm 4mm
+        {
+          ModelName "ZX420+"
+          PCFileName "godex-zx420+.ppd"
+        }
+        {
+          ModelName "ZX420i+"
+          PCFileName "godex-zx420i+.ppd"
+        }
+        {
+          ModelName "G500+"
+          PCFileName "godex-g500+.ppd"
+        }
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.09in 85in // 104mm 2159mm
+        MinSize 25mm 4mm
+        ModelName "EZ-2300P"
+        PCFileName "godex-ez2300p.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.17in 126in // 106mm 3200mm
+        MinSize 25mm 4mm
+        ModelName "RT833i+"
+        PCFileName "godex-rt833i+.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.17in 180in // 106mm 4572mm
+        MinSize 25mm 4mm
+        ModelName "EZ-2300+"
+        PCFileName "godex-ez2300+.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.25in 68in // 108mm 1727mm
+        {
+          MinSize 25mm 4mm
+          {
+            ModelName "G500"
+            PCFileName "godex-g500.ppd"
+          }
+          {
+            ModelName "ZA12X"
+            PCFileName "godex-za12x.ppd"
+          }
+          {
+            ModelName "RT700"
+            PCFileName "godex-rt700.ppd"
+          }
+          {
+            ModelName "BP500L"
+            PCFileName "godex-bp500l.ppd"
+          }
+	        {
+	          ModelName "GE300"
+            PCFileName "godex-ge300.ppd"	
+	        }
+        }
+        {
+          MinSize 20mm 4mm
+          {
+            ModelName "RT823i"
+            PCFileName "godex-rt823i.ppd"
+          }
+        }
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.09in 45in // 104mm 2159mm
+        MinSize 25mm 4mm
+        ModelName "EZ2350i"
+        PCFileName "godex-ez2350i.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.17in 126in // 106mm 3200mm
+        MinSize 25mm 4mm
+        {
+          ModelName "RT730i+"
+          PCFileName "godex-rt730i+.ppd"
+        }
+        {
+          ModelName "G530+"
+          PCFileName "godex-g530+.ppd"
+        }
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.16in 30in // 105.7mm 762mm
+        {
+          MinSize 25mm 4mm
+          {
+            ModelName "RT730iW"
+            PCFileName "godex-rt730iw.ppd"
+          }
+          {
+            ModelName "BP530L"
+            PCFileName "godex-bp530l.ppd"
+          }
+        }
+        {
+          MinSize 20mm 4mm
+          {
+            ModelName "RT730i"
+            PCFileName "godex-rt730i.ppd"
+          }
+          {
+            ModelName "RT730x"
+            PCFileName "godex-rt730x.ppd"
+          }
+          {
+            ModelName "RT833i"
+            PCFileName "godex-rt833i.ppd"
+          }
+        }
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 4.25in 68in // 108mm 1727mm
+        MinSize 25mm 4mm
+        {
+          ModelName "EZ-1100P"
+          PCFileName "godex-ez1100p.ppd"
+        }
+        {
+          ModelName "EZ-1100+"
+          PCFileName "godex-ez1100+.ppd"
+        }
+        {
+          ModelName "EZ-1105"
+          PCFileName "godex-ez1105.ppd"
+        }
+        {
+          ModelName "G300"
+          PCFileName "godex-g300.ppd"
+        }
+        {
+          ModelName "EZ120"
+          PCFileName "godex-ez120.ppd"
+        }
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.09in 45in // 104mm 1143mm
+        MinSize 25mm 4mm
+        ModelName "EZ2150"
+        PCFileName "godex-ez2150.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.16in 30in // 105.7mm 762mm
+        MinSize 25mm 4mm
+        {
+          ModelName "EZ-1300P"
+          PCFileName "godex-ez1300p.ppd"
+        }
+        {
+          ModelName "EZ-1300+"
+          PCFileName "godex-ez1300+.ppd"
+        }
+        {
+          ModelName "EZPi-1300"
+          PCFileName "godex-ezpi1300.ppd"
+        }
+        {
+          ModelName "G530"
+          PCFileName "godex-g530.ppd"
+        }
+        {
+          ModelName "ZA13X"
+          PCFileName "godex-za13x.ppd"
+        }
+        {
+          ModelName "RT730"
+          PCFileName "godex-rt730.ppd"
+        }
+        {
+          ModelName "EZ330"
+          PCFileName "godex-ez330.ppd"
+        }
+        {
+          ModelName "EZ530"
+          PCFileName "godex-ez530.ppd"
+        }
+	      {
+	        ModelName "GE330"
+          PCFileName "godex-ge330.ppd"
+	      }
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.16in 1859mm // 105.7mm 73.2in
+        MinSize 25mm 4mm
+        {
+          ModelName "ZX430"
+          PCFileName "godex-zx430.ppd"
+        }
+        {
+          ModelName "ZX430i"
+          PCFileName "godex-zx430i.ppd"
+        }
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.17in 126in // 106mm 3200mm
+        MinSize 25mm 4mm
+        {
+          ModelName "ZX430+"
+          PCFileName "godex-zx430+.ppd"
+        }
+        {
+          ModelName "ZX430i+"
+          PCFileName "godex-zx430i+.ppd"
+        }
+      }
+      {
+       *Resolution k 1 0 0 0 "600dpi/600 DPI"
+        MaxSize 4.17in 31in // 106mm 800mm
+        MinSize 25mm 4mm
+        {
+          ModelName "ZX1600i+"
+          PCFileName "godex-zx1600i+.ppd"
+        }
+        {
+          ModelName "RT863i+"
+          PCFileName "godex-rt863i+.ppd"
+        }
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 4.16in 30in // 105.7mm 762mm
+        MinSize 25mm 4mm
+        {
+          ModelName "G330"
+          PCFileName "godex-g330.ppd"
+        }
+        {
+          ModelName "EZ-1305"
+          PCFileName "godex-ez1305.ppd"
+        }
+        {
+          ModelName "EZ130"
+          PCFileName "godex-ez130.ppd"
+        }
+      }
+      {
+       *Resolution k 1 0 0 0 "600dpi/600 DPI"
+        MaxSize 4.09in 26in // 104mm 660mm
+        MinSize 25mm 4mm
+        ModelName "ZX1600i"
+        PCFileName "godex-zx1600i.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "600dpi/600 DPI"
+        MaxSize 4.16in 15in // 105.6mm 381mm
+        MinSize 20mm 4mm
+        {
+          ModelName "RT860i"
+          PCFileName "godex-rt860i.ppd"
+        }
+        {
+          ModelName "RT863i"
+          PCFileName "godex-rt863i.ppd"
+        }
+      }
+    }
+  }
+
+//////////////////////////////////////////////////////////////////////////////
+//         Supported page sizes for models to 168mm (6")!
+//////////////////////////////////////////////////////////////////////////////
+  MediaSize w340h283
+  MediaSize w340h425
+  MediaSize w340h567
+ *MediaSize w420h595
+  MediaSize w454h159
+  MediaSize w454h397
+
+//////////////////////////////////////////////////////////////////////////////
+//         Termotransfer models width 168mm (6")
+//////////////////////////////////////////////////////////////////////////////
+  {
+    Option "gdxMedia/Printing mode" PickOne AnySetup 10
+     *Choice "default/Printer default"  "<</OutputType(none)>>setpagedevice"
+      Choice "tt/Termal transfer" "<</OutputType(tt)>>setpagedevice"
+      Choice "dt/Direct termal" "<</OutputType(dt)>>setpagedevice"
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+          Choice "6" "<</OutputType(6)>>setpagedevice"
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 6.61in 118in // 168mm 3000mm
+        MinSize 50.8mm 4mm
+        ModelName "EZ-6200P"
+        PCFileName "godex-ez6200p.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 6.61in 180in // 168mm 4572mm
+        MinSize 50.8mm 4mm
+        ModelName "EZ-6200+"
+        PCFileName "godex-ez6200+.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+          Choice "6" "<</OutputType(6)>>setpagedevice"
+	        Choice "7" "<</OutputType(7)>>setpagedevice"
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 168mm 3000mm
+        MinSize 50.8mm 4mm
+        ModelName "EZ6250i"
+        PCFileName "godex-ez6250i.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 6.61in 54in // 168mm 1371mm
+        MinSize 50.8mm 4mm
+        ModelName "EZ-6300P"
+        PCFileName "godex-ez6300p.ppd"
+      }
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 6.61in 180in // 168mm 4572mm
+        MinSize 50.8mm 4mm
+        ModelName "EZ-6300+"
+        PCFileName "godex-ez6300+.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+	        Choice "5" "<</OutputType(5)>>setpagedevice"
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 168mm 1371mm
+        MinSize 50.8mm 4mm
+        ModelName "EZ6350i"
+        PCFileName "godex-ez6350i.ppd"
+      }
+    }
+  }
+}
+
+{
+//////////////////////////////////////////////////////////////////////////////
+//         Supported page sizes for models to 168mm (6")!
+//////////////////////////////////////////////////////////////////////////////
+// we must respect minimal width, we define all MediaSize
+  MediaSize w283h43
+  MediaSize w283h128
+  MediaSize w283h142
+  MediaSize w283h170
+  MediaSize w283h198
+  MediaSize w283h227
+  MediaSize w283h283
+  MediaSize w283h326
+  MediaSize w283h369
+  MediaSize w283h425
+  MediaSize w283h595
+  MediaSize w295h417
+
+  MediaSize w340h283
+  MediaSize w340h425
+  MediaSize w340h567
+  MediaSize w420h595
+  MediaSize w454h159
+  MediaSize w454h397
+
+ *MediaSize w595h421
+  MediaSize w595h842
+  MediaSize w609h792
+  MediaSize w609h1009
+
+//////////////////////////////////////////////////////////////////////////////
+//         Termotransfer models width 220mm (8.64")
+//////////////////////////////////////////////////////////////////////////////
+  {
+    Option "gdxMedia/Printing mode" PickOne AnySetup 10
+     *Choice "default/Printer default"  "<</OutputType(none)>>setpagedevice"
+      Choice "tt/Termal transfer" "<</OutputType(tt)>>setpagedevice"
+      Choice "dt/Direct termal" "<</OutputType(dt)>>setpagedevice"
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+          Choice "6" "<</OutputType(6)>>setpagedevice"
+      {
+       *Resolution k 1 0 0 0 "203dpi/203 DPI"
+        MaxSize 8.50in 40in
+        MinSize 4in 1in
+        ModelName "HD820i"
+        PCFileName "godex-hd820i.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+          Choice "5" "<</OutputType(5)>>setpagedevice"
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 8.64in 40in
+        MinSize 4in 1in
+        ModelName "HD830i"
+        PCFileName "godex-hd830i.ppd"
+      }
+    }
+    {
+      Group "PrinterSetup/Printer setup"
+        // Speed
+        Option "gdxRate/Print speed [inch/s]" PickOne AnySetup 10
+         *Choice "none/Printer default" "<</OutputType(none)>>setpagedevice"
+          Choice "2" "<</OutputType(2)>>setpagedevice"
+          Choice "3" "<</OutputType(3)>>setpagedevice"
+          Choice "4" "<</OutputType(4)>>setpagedevice"
+      {
+       *Resolution k 1 0 0 0 "300dpi/300 DPI"
+        MaxSize 8.64in 59in
+        MinSize 4in 1in
+        ModelName "HD830i+"
+        PCFileName "godex-hd830i+.ppd"
+      }
+    }
+  }
+}

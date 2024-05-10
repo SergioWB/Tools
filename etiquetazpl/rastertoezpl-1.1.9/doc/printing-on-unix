@@ -1,0 +1,96 @@
+Printing system
+===============
+
+This driver is written for CUPS printing system. Cups is one of the available
+printing systems for Linux and Unix systems, and now CUPS is one of the most
+used printing systems. More, CUPS is developed and used by Apple and used in
+macOS too. Our driver can be used for all systems that use CUPS.
+
+We deliver our driver for CUPS (linux) in the source code, so it is necessary
+to compile it in user's system. This is very general purpose that should works
+in various systems.
+
+
+Printer methods
+===============
+
+Generally, you can print in three different ways on thermotransfer printers:
+
+ 1. Via CUPS, the same way as to other printers. (You need printer driver and
+    full configured printer in CUPS.)
+
+ 2. Sending printer commands (raw data) via CUPS -- CUPS "only" redirect data
+    to the printer. You should install printer in CUPS with any driver (for
+    example 'generic text-only printer', and you should configure printer
+    connection (port).
+
+ 3. Direct communication with the printer. (Printer commands are directly sent
+    to printer from your application.)
+
+
+The printer driver is necessary only for point 1. For point 2 you need to
+install printer but no matter which driver you use.
+
+The direct printing (3) is without CUPS, you send data directly to printer.
+
+
+CUPS driver
+```````````
+You can print any data format that is known by CUPS (and which you can print
+on other printers).
+
+Example:
+
+ $ lp -d printer file_to_print.pdf
+ $ lp -d printer file_to_print.jpg
+ $ lp -d printer file_to_print.txt
+
+
+Raw print using CUPS
+````````````````````
+You send printer commands to printer CUPS spool. The printer commands aren't
+interpreted by CUPS, they are resent to the printer.
+
+Example:
+
+ $ lp -o raw -d printer_without_driver printer_commands_file.prn
+
+Parameter '-o raw' switch to raw print mode.
+
+
+Direct print
+````````````
+You send printer commands directly to printer (printer port). It's necessary to
+know the printer port and have access rights for this port.
+
+The simplest way is to use the ethernet and command 'netcat' or 'nc'. Serial
+port has to be configured before using, see below.
+
+
+Example:
+
+ $ nc -q 2 printer_ethernet_name 9100 < printer_commands_file.prn
+
+ Parameter '-q 2' is for closing the communication after end of file.
+
+
+Serial port
+===========
+
+For configuration of serial port are commands 'setserial' or 'minicom'. To test
+serial port should use command 'screen'. To set up and open serial port use:
+
+  $ screen /dev/ttyS0 9600,ixon,ixoff,crtscts
+
+, where '/dev/ttyS0' is serial port name, '9600,ixon,ixoff,crtscts' are
+required parameters of the port.
+
+Everything that you were typing in command 'screen' is directly sent to serial
+port (and printer when is connected). And everything that is sent from printer
+is shown in the command 'screen'. To send a file on command 'screen', press
+'Ctrl-A', then ':' and after screen enters into command line mode. Type screen
+command 'exec !! cat 103.prn', where 'exec' is screen command, '!!' defines
+redirection of command output, 'cat 103.prn' is system (Unix) command to run.
+
+To terminate screen use 'Ctrl-A Ctrl-\' and then 'y'.
+

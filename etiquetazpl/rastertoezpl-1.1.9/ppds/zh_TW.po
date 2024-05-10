@@ -1,0 +1,465 @@
+msgid "-100"
+msgstr "-100"
+
+msgid "-90"
+msgstr "-90"
+
+msgid "-80"
+msgstr "-80"
+
+msgid "-70"
+msgstr "-70"
+
+msgid "-60"
+msgstr "-60"
+
+msgid "-50"
+msgstr "-50"
+
+msgid "-40"
+msgstr "-40"
+
+msgid "-30"
+msgstr "-30"
+
+msgid "-20"
+msgstr "-20"
+
+msgid "-15"
+msgstr "-15"
+
+msgid "-12"
+msgstr "-12"
+
+msgid "-10"
+msgstr "-10"
+
+msgid "-8"
+msgstr "-8"
+
+msgid "-7"
+msgstr "-7"
+
+msgid "-6"
+msgstr "-6"
+
+msgid "-5"
+msgstr "-5"
+
+msgid "-4"
+msgstr "-4"
+
+msgid "-3"
+msgstr "-3"
+
+msgid "-2"
+msgstr "-2"
+
+msgid "-1"
+msgstr "-1"
+
+msgid "0"
+msgstr "0"
+
+msgid "1"
+msgstr "1"
+
+msgid "2"
+msgstr "2"
+
+msgid "3"
+msgstr "3"
+
+msgid "4"
+msgstr "4"
+
+msgid "5"
+msgstr "5"
+
+msgid "6"
+msgstr "6"
+
+msgid "7"
+msgstr "7"
+
+msgid "8"
+msgstr "8"
+
+msgid "9"
+msgstr "9"
+
+msgid "10"
+msgstr "10"
+
+msgid "11"
+msgstr "11"
+
+msgid "12"
+msgstr "12"
+
+msgid "13"
+msgstr "13"
+
+msgid "14"
+msgstr "14"
+
+msgid "15"
+msgstr "15"
+
+msgid "16"
+msgstr "16"
+
+msgid "17"
+msgstr "17"
+
+msgid "18"
+msgstr "18"
+
+msgid "19"
+msgstr "19"
+
+msgid "20"
+msgstr "20"
+
+msgid "21"
+msgstr "21"
+
+msgid "22"
+msgstr "22"
+
+msgid "23"
+msgstr "23"
+
+msgid "24"
+msgstr "24"
+
+msgid "25"
+msgstr "25"
+
+msgid "26"
+msgstr "26"
+
+msgid "27"
+msgstr "27"
+
+msgid "28"
+msgstr "28"
+
+msgid "29"
+msgstr "29"
+
+msgid "30"
+msgstr "30"
+
+msgid "31"
+msgstr "31"
+
+msgid "32"
+msgstr "32"
+
+msgid "33"
+msgstr "33"
+
+msgid "34"
+msgstr "34"
+
+msgid "35"
+msgstr "35"
+
+msgid "36"
+msgstr "36"
+
+msgid "37"
+msgstr "37"
+
+msgid "38"
+msgstr "38"
+
+msgid "39"
+msgstr "39"
+
+msgid "40"
+msgstr "40"
+
+msgid "50"
+msgstr "50"
+
+msgid "60"
+msgstr "60"
+
+msgid "70"
+msgstr "70"
+
+msgid "80"
+msgstr "80"
+
+msgid "90"
+msgstr "90"
+
+msgid "100"
+msgstr "100"
+
+msgid "110"
+msgstr "110"
+
+msgid "120"
+msgstr "120"
+
+msgid "130"
+msgstr "130"
+
+msgid "140"
+msgstr "140"
+
+msgid "150"
+msgstr "150"
+
+msgid "160"
+msgstr "160"
+
+msgid "170"
+msgstr "170"
+
+msgid "180"
+msgstr "180"
+
+msgid "190"
+msgstr "190"
+
+msgid "200"
+msgstr "200"
+
+msgid "220"
+msgstr "220"
+
+msgid "240"
+msgstr "240"
+
+msgid "260"
+msgstr "260"
+
+msgid "280"
+msgstr "280"
+
+msgid "300"
+msgstr "300"
+
+msgid "320"
+msgstr "320"
+
+msgid "340"
+msgstr "340"
+
+msgid "360"
+msgstr "360"
+
+msgid "380"
+msgstr "380"
+
+msgid "399"
+msgstr "399"
+
+msgid "40x17mm"
+msgstr "40x17mm"
+
+msgid "40x20mm"
+msgstr "40x20mm"
+
+msgid "40x30mm"
+msgstr "40x30mm"
+
+msgid "40x35mm"
+msgstr "40x35mm"
+
+msgid "40x46mm"
+msgstr "40x46mm"
+
+msgid "50x20mm"
+msgstr "50x20mm"
+
+msgid "50x25mm"
+msgstr "50x25mm"
+
+msgid "50x30mm"
+msgstr "50x30mm"
+
+msgid "50x35mm"
+msgstr "50x35mm"
+
+msgid "50x40mm"
+msgstr "50x40mm"
+
+msgid "50x50mm"
+msgstr "50x50mm"
+
+msgid "54x40mm"
+msgstr "54x40mm"
+
+msgid "54x53mm"
+msgstr "54x53mm"
+
+msgid "54x76mm"
+msgstr "54x76mm"
+
+msgid "60x25mm"
+msgstr "60x25mm"
+
+msgid "60x30mm"
+msgstr "60x30mm"
+
+msgid "60x60mm"
+msgstr "60x60mm"
+
+msgid "60x70mm"
+msgstr "60x70mm"
+
+msgid "60x110mm"
+msgstr "60x110mm"
+
+msgid "80x30mm"
+msgstr "80x30mm"
+
+msgid "80x50mm"
+msgstr "80x50mm"
+
+msgid "80x120mm"
+msgstr "80x120mm"
+
+msgid "80x130mm"
+msgstr "80x130mm"
+
+msgid "100x15mm"
+msgstr "100x15mm"
+
+msgid "100x45mm"
+msgstr "100x45mm"
+
+msgid "100x50mm"
+msgstr "100x50mm"
+
+msgid "100x60mm"
+msgstr "100x60mm"
+
+msgid "100x70mm"
+msgstr "100x70mm"
+
+msgid "100x80mm"
+msgstr "100x80mm"
+
+msgid "100x100mm"
+msgstr "100x100mm"
+
+msgid "100x115mm"
+msgstr "100x115mm"
+
+msgid "100x130mm"
+msgstr "100x130mm"
+
+msgid "100x150mm"
+msgstr "100x150mm"
+
+msgid "100x210mm"
+msgstr "100x210mm"
+
+msgid "104x147mm"
+msgstr "104x147mm"
+
+msgid "120x100mm"
+msgstr "120x100mm"
+
+msgid "120x150mm"
+msgstr "120x150mm"
+
+msgid "120x200mm"
+msgstr "120x200mm"
+
+msgid "148x210mm"
+msgstr "148x210mm"
+
+msgid "160x56mm"
+msgstr "160x56mm"
+
+msgid "160x140mm"
+msgstr "160x140mm"
+
+msgid "Label gap length [mm]"
+msgstr "標籤間距 [mm]"
+
+msgid "Plain paper"
+msgstr "連續紙"
+
+msgid "Black mark length [mm]"
+msgstr "黑線寬度 [mm]"
+
+msgid "No black mark"
+msgstr "No black mark"
+
+msgid "Black mark position [mm]"
+msgstr "黑線標記之距離 [mm]"
+
+msgid "Darkness"
+msgstr "列印明暗度"
+
+msgid "Default"
+msgstr "Default"
+
+msgid "After print"
+msgstr "After print"
+
+msgid "Printer default"
+msgstr "Printer default"
+
+msgid "Nothing"
+msgstr "Nothing"
+
+msgid "Stripper"
+msgstr "Stripper"
+
+msgid "Applicator"
+msgstr "Applicator"
+
+msgid "Cut page"
+msgstr "Cut page"
+
+msgid "Cut set"
+msgstr "Cut set"
+
+msgid "Negative print"
+msgstr "Negative print"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "Tear-off position [mm]"
+msgstr "停歇點設定 [mm]"
+
+msgid "Top margin [dots]"
+msgstr "上邊界起印點[dot]"
+
+msgid "Left margin [dots]"
+msgstr "左邊界起印點[dot]"
+
+msgid "Printing mode"
+msgstr "列印模式"
+
+msgid "Termal transfer"
+msgstr "熱轉模式"
+
+msgid "Direct termal"
+msgstr "熱感模式"
+
+msgid "Print speed [inch/s]"
+msgstr "列印速度 [inch/s]"
+
+msgid "Resolution"
+msgstr "解析度"
+
+msgid "Label setup"
+msgstr "標籤"
+
+msgid "Printer setup"
+msgstr "印表機設定"
+

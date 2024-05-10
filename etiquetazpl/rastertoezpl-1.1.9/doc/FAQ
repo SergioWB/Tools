@@ -1,0 +1,32 @@
+FAQ
+~~~
+1. Compilation and installation was successful, but CUPS system for printer
+notify on: 'Filter "rastertoezpl" for printer "..." not available: Permission
+denied' or in state of printing jobs is: ".../rastertoezpl failed".
+  - CUPS system doesn't have any access to the filter. Check mode of the path
+    and of the rastertoezpl filter (read and execute for all). If you use
+    security system (e.g. AppArmor, SELinux) check settings.
+
+  - for AppArmor user
+    If your system use AppArmor, check if the installed filter is accessible
+    and executable from CUPS daemon over AppArmor setting. Or you can put
+    AppArmor on CUPS to complain mode run
+      $ sudo aa-complain /usr/sbin/cupsd
+    and check if the problem is in setting of AppArmor. Edit AppArmor config
+    file /etc/apparmor.d/usr.sbin.cupsd and line with permission for new filter
+      "/usr/local/libexec/rastertoezpl/rastertoezpl Uxr,"
+    add to section /usr/sbin/cupsd (of course, the path must be directed to the
+    file, not to a symbolic link!).
+    
+    And then activate AppArmor with:
+      $ sudo aa-enforce /usr/sbin/cupsd .
+
+
+2. PPD files are installed, but not in CUPS menu.
+  The PPD files are installed in a path through that CUPS doesn't walk. You can
+  follow one of these actions:
+  - Create symbolic link in a path that CUPS walked through to the installed
+    directory with PPD files. (See parameters CREATE_PPDLINK and PPDLINK.)
+  - During installation of the printer set the path of PPD files. (See
+    parameter PPDDIR.)
+  - Select PPD file manually.

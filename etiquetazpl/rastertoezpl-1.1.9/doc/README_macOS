@@ -1,0 +1,25 @@
+Install Godex filter on macOS
+=============================
+
+Compiling
+~~~~~~~~~
+For compile filter on macOS are needed a compiler, make utilities and header
+files for CUPS and other used libraries.  All these components are in a Xcode
+package, which is available via the Mac App Store free of charge.
+
+Compiling and installation is described in README.
+
+
+Installation printer in system
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If the filter, including PPDs, is installed correctly, then installation of Godex
+printers is the same as others.
+
+
+Printing
+~~~~~~~~
+For setting printer and media parameters you must display details in a print
+menu and select "Printer Features".  There you can set a media type
+(plain/labels; black mark; darkness), rotation, mirror, negative, print mode
+(thermo/thermotransfer) and print speed.  (The parameters depend on type of
+printer.)

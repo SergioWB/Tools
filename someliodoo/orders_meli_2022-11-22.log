@@ -1,0 +1,4 @@
+2022-22-11 11:01:03 AM|werkzeug|INFO| * Running on http://0.0.0.0:8001/ (Press CTRL+C to quit)
+2022-22-11 11:01:03 AM|werkzeug|INFO| * Restarting with stat
+2022-22-11 11:01:03 AM|werkzeug|WARNING| * Debugger is active!
+2022-22-11 11:01:03 AM|werkzeug|INFO| * Debugger PIN: 200-440-777

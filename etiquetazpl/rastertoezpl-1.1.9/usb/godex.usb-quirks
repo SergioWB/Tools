@@ -1,0 +1,23 @@
+# USB backend 'quirks' file.
+#
+# This file lists known issues with various vendors or printers.  Each
+# line contains either a comment (starting with #) or the USB vendor ID,
+# product ID (omit for all vendor products), and a list of known issues:
+#
+#   blacklist     The printer is not functional with the USB backend.
+#   no-reattach   Do no re-attach usblp kernel module after printing.
+#   soft-reset    Do a soft reset after printing for cleanup.
+#   unidir        Only supported unidirectional I/O
+#   usb-init      Needs vendor USB initialization string.
+#   vendor-class  Uses vendor-specific class or subclass.
+#   whitelist     The printer is functional with the USB backend.
+
+# All Godex devices
+# If printer is accessed only by CUPS, you can use the parameter "no-reattach"
+# too for faster response.
+# for Arm9 models
+# 0x195f unidir no-reattach soft-reset
+
+# for Atmel models
+# 0x195f unidir no-reattach
+0x195f unidir no-reattach soft-reset
