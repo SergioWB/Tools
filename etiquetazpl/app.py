@@ -12,7 +12,7 @@ import logging
 import zipfile
 import socket
 import os 
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s', datefmt='%Y-%d-%m %I:%M:%S %p',level=logging.INFO)
 
@@ -386,13 +386,10 @@ def index():
 def inicio():
 	global user_id, password, user_name
 
-	user_name = session['usuario']
-
-	#user_id = 
-	user_id, user_name, password = get_password_user(user_name)
-
-	logging.info('Password: ' + str(password))
-
+	#usuario_odoo = request.form.get("usuario_odoo")
+	#session['usuario'] = usuario_odoo
+	#user_name = session['usuario']
+	#user_id, user_name, password = get_password_user(user_name)
 
 	try:
 		localizacion = request.form.get("localizacion")
@@ -401,10 +398,13 @@ def inicio():
 
 		usuario_odoo = request.form.get("usuario_odoo")
 		session['usuario'] = usuario_odoo
-		usuario = session['usuario']
+		user_name = session['usuario']
+
+		user_id, user_name, password = get_password_user(user_name)
+
 		logging.info('La ubicacion es: ' + str(ubicacion))
-		logging.info('El usuario es: ' + str(usuario))
-		return render_template("formulario.html", ubicacion=ubicacion, usuario=usuario)
+		logging.info('El usuario es: ' + str(user_name))
+		return render_template("formulario.html", ubicacion=ubicacion, usuario=user_name)
 
 	except Exception as e:
 		time.sleep(2)
@@ -452,7 +452,12 @@ def procesar():
 					response_fedex = ejecute_fedex_label(order_id_valpick)
 					#logging.info(response_fedex)
 					if response_fedex.get('state') == True:
-						respuesta = 'La orden '+name_so+' es de FEDEX pero ya fue impresa el dia: ' + response_fedex.get('shplbl_print_date')
+						# Get fecha actual CDMX
+						gap_utc_hours = -6
+						gap_timedelta = timedelta(hours=gap_utc_hours)
+						print_label_date = datetime.strptime(response_fedex.get('shplbl_print_date'), "%Y-%m-%d %H:%M:%S")
+						print_label_date = print_label_date + gap_timedelta
+						respuesta = 'La orden '+name_so+' es de FEDEX pero ya fue impresa el dia: ' + str(print_label_date)
 						order_id = order_id
 					else:
 						respuesta = 'La orden '+name_so+' es de FEDEX y se imprimio de manera correcta'
