@@ -24,7 +24,6 @@
 				<!-- Header -->
 					<header id="header" class="alt">
 						 <strong>Ubicacion: </strong>{{ubicacion}}<br>
-						 <strong>Usuario: </strong>{{usuario}}<br>
 					</header>
 
 				<!-- Wrapper -->
@@ -36,7 +35,7 @@
 									<a href="#" class="image"><img src="{{ url_for('static', filename='css/images/logo_somos_reyes.png') }}" alt="" /></a>
 
 									<div class="content">
-										<h2 class="major">Recuperación Guía</h2>
+										<h2 class="major">Recuperación Guía Mercado Libre</h2>
 										<form method="POST" action="{{url_for('procesar')}}" autocomplete="off">
 								            <input autofocus id="name_so" name="name_so" required type="text" placeholder="Codigo de Barras Orden de Venta">
 
@@ -71,5 +70,9 @@
                    }); 
                 });
             </script>
+
+
+			
+
 	</body>
 </html>

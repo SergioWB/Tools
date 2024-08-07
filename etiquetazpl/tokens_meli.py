@@ -11,9 +11,9 @@ import pytz
 import datetime
 import time
 
-time.sleep(4)
+time.sleep(1)
 
-if __name__ == '__main__':
+def get_all_tokens():
 	try:
 		client_id='5703097592380294'
 		client_secret='Fn5yHq1e1DBgy2EiRk7rLhsyRexcZYAQ'
@@ -63,4 +63,5 @@ if __name__ == '__main__':
 	except Exception as e:
 		raise e
 
-	ap.app.run(host='0.0.0.0', port=8000, debug=True)
+if __name__ == '__main__':
+	get_all_tokens()

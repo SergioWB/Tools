@@ -10,10 +10,8 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
-
-		
 		<link href="{{ url_for('static', filename='css/images/somosreyesfavicon.png') }}" rel="shortcut icon" type="image/x-icon">
-
+		
 		<noscript><link rel="stylesheet" href="//css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -23,8 +21,7 @@
 
 				<!-- Header -->
 					<header id="header" class="alt">
-						 <strong>Ubicacion: </strong>{{ubicacion}}<br>
-						 <strong>Usuario: </strong>{{usuario}}<br>
+						
 					</header>
 
 				<!-- Wrapper -->
@@ -36,9 +33,9 @@
 									<a href="#" class="image"><img src="{{ url_for('static', filename='css/images/logo_somos_reyes.png') }}" alt="" /></a>
 
 									<div class="content">
-										<h2 class="major">Recuperación Guía</h2>
-										<form method="POST" action="{{url_for('procesar')}}" autocomplete="off">
-								            <input autofocus id="name_so" name="name_so" required type="text" placeholder="Codigo de Barras Orden de Venta">
+										<h2 class="major">Ubicación de la Impresora</h2>
+										<form method="POST" action="{{url_for('inicio')}}" autocomplete="off">
+								            <input autofocus id="localizacion" name="localizacion" required type="text" placeholder="Ubicación de Impresora">
 
 								            <br><br>
 								            <input type="submit" value="Enviar">
@@ -60,16 +57,20 @@
 		    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
 		    <script>
                 $(document).ready(function(){
-                	$("#name_so").select();
-                	$("#name_so").focus();
+                	$("#ubicacion").select();
+                	$("#ubicacion").focus();
                  $("#limpiar").click(function() {
                      //alert("Hola Mundo con jQuery!");
-                     $("#name_so").select();
-                     $("#name_so").focus();
+                     $("#ubicacion").select();
+                     $("#ubicacion").focus();
                      
 
                    }); 
                 });
             </script>
+
+
+			
+
 	</body>
 </html>

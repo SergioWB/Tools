@@ -14,11 +14,7 @@ import socket
 import os 
 from datetime import datetime, timedelta
 import time
-import tokens_meli as tk_meli
-
 logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s', datefmt='%Y-%d-%m %I:%M:%S %p',level=logging.INFO)
-
-logging.info('\n')
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -98,18 +94,6 @@ def ejecute_fedex_label(valpick_id):
 	except Exception as e:
 		logging.error ('Error:'+str(e))
 		return False
-
-def get_label_case(filename, marketplace, carrier):
-	# Cargar los datos del archivo JSON
-    with open(filename, 'r') as file:
-        data = json.load(file)
-    
-    # Buscar el valor en los datos
-    if marketplace in data and carrier in data[marketplace]:
-        return data[marketplace][carrier]
-    else:
-        return None
-
 ######################################
 
 def get_json_payload(service, method, *args):
@@ -152,7 +136,7 @@ def get_order_id(name):
 		if user_id:
 			search_domain = [['name', '=', name]]
 			payload = json.dumps({"jsonrpc": "2.0", "method": "call", "params": {"service": "object", "method": "execute", "args": [db_name, user_id, password, "sale.order", "search_read",
-									search_domain, ['channel_order_reference', 'name', 'yuju_seller_id', 'yuju_carrier_tracking_ref', 'team_id']]}})
+									search_domain, ['channel_order_reference', 'name', 'yuju_seller_id', 'yuju_carrier_tracking_ref']]}})
 			res = requests.post(json_endpoint, data=payload, headers=headers).json()
 			#logging.info(default_code+str(res))
 			#print (res)
@@ -161,9 +145,8 @@ def get_order_id(name):
 			seller_marketplace = res['result'][0]['yuju_seller_id']
 			order_odoo_id = res['result'][0]['id']
 			guide_number = res['result'][0]['yuju_carrier_tracking_ref']
-			team_id = res['result'][0]['team_id'][1] # La repuesta es [id, team]
 
-			return dict(marketplace_order_id = marketplace_order_id, seller_marketplace =seller_marketplace, order_odoo_id = order_odoo_id, guide_number=guide_number, team_id=team_id)
+			return dict(marketplace_order_id = marketplace_order_id, seller_marketplace =seller_marketplace, order_odoo_id = order_odoo_id, guide_number=guide_number)
 		else:
 			logging.error("Error: No se tiene un id de usuario, revisa el listado de usuarios")
 			return False
@@ -187,12 +170,12 @@ def get_picking_id(so_name):
 		response = requests.post(json_endpoint, data=payload, headers=headers)
 
 		if user_id:
-			search_domain = [['origin', '=', so_name], ['name', 'like', 'AG/PICK']]
+			search_domain = [['origin', '=', so_name], ['name', 'like', 'WH/PICK']]
 			payload = get_json_payload("object", "execute_kw",db_name, user_id, password,'stock.picking', 'search_read', [search_domain, ['name','origin','imprimio_etiqueta_meli']],
 			{'limit': 1})
 			res = requests.post(json_endpoint, data=payload, headers=headers).json()
 			#logging.info(default_code+str(res))
-			logging.info(f'Respuesta en get_picking_id: {res}')
+			#print (res)
 			
 			name_picking = res['result'][0]['name']
 			picking_id = res['result'][0]['id']
@@ -201,7 +184,7 @@ def get_picking_id(so_name):
 			logging.error("Failed: wrong credentials")	
 			return False
 	except Exception as e:
-		logging.error ('Error en get_picking_id:'+str(e))
+		logging.error ('Error:'+str(e))
 		return False
 
 def update_imprimio_etiqueta_meli_picking(picking_id):
@@ -212,19 +195,31 @@ def update_imprimio_etiqueta_meli_picking(picking_id):
 		return True
 
 	except Exception as e:
-		logging.error(f'Error: update_imprimio_etiqueta_meli()| {str(e)}')
+		print("Error: update_imprimio_etiqueta_meli()| "+str(e))
 		return False
 
 def ubicacion_impresoras():
 	archivo_comfiguracion = dir_path + '/config_dev.json'
-	#print (archivo_comfiguracion)
+	print (archivo_comfiguracion)
 	with open(archivo_comfiguracion, 'r') as file:
 		config = json.load(file)
-	#print (config)
+
+	print (config)
+
 	IMPRESORA1 = config['IMPRESORA1']
-	#print ('IMPRESORA1',IMPRESORA1)
+	print ('IMPRESORA1',IMPRESORA1)
 	IMPRESORA2 = config['IMPRESORA2']
-	#print ('IMPRESORA2',IMPRESORA2)
+	print ('IMPRESORA2',IMPRESORA1)
+	"""EMPACADO = config['EMPACADO']
+	print('EMPACADO',EMPACADO)
+	PICKING = config['PICKING']
+	print ('PICKING',PICKING)
+	PICKING = config['EMPACADO2']
+	print ('EMPACADO2',PICKING)
+	PICKING = config['EMPACADO3']
+	print ('EMPACADO3',PICKING)"""
+
+
 	return config
 
 
@@ -238,14 +233,13 @@ def imprime_zpl(so_name, ubicacion, order_odoo_id):
 
 	mysocket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)         
 
-	#print ('Ubicacion de la impresora: ', ubicacion)
+	print ('Ubicacion de la impresora: ', ubicacion)
 
 	ubicaciones = ubicacion_impresoras()
 	
 	host = ubicaciones.get(ubicacion)
-	logging.info(f'EL IP DE LA IMPRESORA  {ubicacion} ES: {host}')
 
-	#print ('IP de la Impresora:', host)
+	print ('IP de la Impresora:', host)
 	port = 9100
 	#port = 5432
 	respuesta_imprime_zpl = ''
@@ -253,18 +247,16 @@ def imprime_zpl(so_name, ubicacion, order_odoo_id):
 	try:
 
 		datos=bytes(zpl_hack, 'utf-8')
-		#print (datos)
+		print (datos)
 		
 		mysocket.connect((host, port)) #connecting to host
 		mysocket.send(datos)#using bytes
 
 		mysocket.close () #closing connection
-		logging.info('Etiqueta para la orden ' +so_name+' se ha impreso con exito')
+		print ('Etiqueta para la orden ' +so_name+' se ha impreso con exito')
 		resultado = update_imprimio_etiqueta_meli(order_odoo_id)
 		picking = get_picking_id(so_name)
-		logging.info(f'Picking es :  {picking}')
 		picking_id = picking.get('picking_id')
-
 		
 		resultado_pick = update_imprimio_etiqueta_meli_picking(picking_id)
 		
@@ -281,7 +273,7 @@ def imprime_zpl(so_name, ubicacion, order_odoo_id):
 		
 		return respuesta_imprime_zpl
 	except Exception as e:
-		logging.error(f'Error en la conexión con la impresora ZPL: {str(e)}')
+		print(" Error en la conexión con la impresora ZPL "+str(e))
 		return "|Error en la conexión con la impresora ZPL: "+str(e)
 		
 
@@ -310,7 +302,7 @@ def recupera_meli_token(user_id):
 		#print access_token
 		return access_token	
 	except Exception as e:
-		logging.error(f'Error recupera_meli_token() {str(e)}: ')
+		print ('Error recupera_meli_token() : '+str(e) )
 		return False
 
 def get_zpl_meli(shipment_ids,so_name, access_token, ubicacion, order_odoo_id):
@@ -352,10 +344,10 @@ def get_order_meli(order_id, access_token):
 		status =  r.json()['status']
 		#print (json.dumps(r.json(), indent=4, sort_keys=True))
 		#----RECUPERA TAMBIEN EL ID DEL SELLER
-		logging.info(f'shipping_id: {shipping_id}, seller_id: {seller_id}, status: {status}')
+		print(shipping_id, seller_id, status)
 		return dict(shipping_id = shipping_id, seller_id =seller_id, status=status)
 	except Exception as e:
-		logging.error(f' Error get_order_meli: {str(e)}')
+		print (' Error get_order_meli: '+ str(e))
 		return False
 
 def get_shipment_meli(shipping_id, access_token):
@@ -381,7 +373,7 @@ def get_shipment_meli(shipping_id, access_token):
 
         return dict(status=status, date_delivered=date_delivered)
     except Exception as e:
-        logging.error(f' Error get_shipment_meli: {str(e)}')
+        print (' Error get_shipment_meli: '+ str(e))
         return False
 
 app = Flask(__name__)
@@ -433,26 +425,8 @@ def procesar():
 		seller_marketplace = order_odoo.get('seller_marketplace')
 		order_odoo_id = order_odoo.get('order_odoo_id')
 		guide_number = order_odoo.get('guide_number')
-		team_id = order_odoo.get('team_id')
 
-		try:
-			carrier = guide_number.lower().split("::")[0]
-			marketplace = team_id.lower().split("_")[1]
-			if carrier == 'walmart':
-				carrier = guide_number.lower().split("::")[1][0]
-				if carrier == 'y':
-					carrier = 'yaltec'
-				else:
-					carrier = 'colecta'
-			elif carrier == 'amazon':
-				carrier = 'colecta'
-			elif carrier == 'coppel':
-				carrier = 'colecta'
-		except Exception as e:
-			carrier = "None"
-			marketplace = "None"
-
-		logging.info(f'ODOO: {order_id}, {name_so}, {seller_marketplace}, {guide_number}, {team_id}, {ubicacion}, {carrier}, {marketplace}')
+		logging.info(f'ODOO: {order_id}, {name_so}, {seller_marketplace}, {guide_number}')
 		orders_id = []
 
 		# REVISAR
@@ -467,21 +441,15 @@ def procesar():
 
 			try:
 
-				# Revisar el caso de etiqueta que es:
-				label_case = get_label_case('labels_types.json', marketplace, carrier)
-
 				if not guide_number:
 					order_id = ''
 					respuesta = 'Esta orden de venta aun no tiene numero de guia'
 					formulario = 'error.html'
 					break
 
-				# SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
-				if 'fedex' in guide_number.lower() or label_case in [6,7,8,9,10,11,12,13,14,15]: # FeDex::12345678    LISTA DE CASOS PERMITIDOS DEL JSON labels_types.json   
-					if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre': #team_id.lower() == 'team_liverpool' or
-						respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
-						break
-					# Coidgo para imprimir etiqueta Fedex
+
+				if 'fedex' in guide_number.lower(): # FeDex::12345678
+					# Coidgo apra imprimir etiqueta Fedex
 					order_id_valpick = search_valpick_id(name_so)
 					response_fedex = ejecute_fedex_label(order_id_valpick)
 					#logging.info(response_fedex)
@@ -491,40 +459,30 @@ def procesar():
 						gap_timedelta = timedelta(hours=gap_utc_hours)
 						print_label_date = datetime.strptime(response_fedex.get('shplbl_print_date'), "%Y-%m-%d %H:%M:%S")
 						print_label_date = print_label_date + gap_timedelta
-						respuesta = 'La orden '+name_so+f' es de {marketplace.upper()} con carrier {carrier.upper()} pero ya fue impresa el dia: ' + str(print_label_date)
+						respuesta = 'La orden '+name_so+' es de FEDEX pero ya fue impresa el dia: ' + str(print_label_date)
 						order_id = order_id
 					else:
-						respuesta = 'La orden '+name_so+f' es de {marketplace.upper()} con el carrier {carrier.upper()} y se imprimió de manera correcta'
+						respuesta = 'La orden '+name_so+' es de FEDEX y se imprimio de manera correcta'
 						order_id = order_id
 
 				else:
 					if  seller_marketplace == '160190870':
 						#SOMOS-REYES OFICIALES
 						user_id_ = 160190870
-						market_ml = 'SOMOS-REYES OFICIALES'
 					elif seller_marketplace == '25523702' :
 						#SOMOS-REYES VENTAS
 						user_id_ = 25523702
-						market_ml = 'SOMOS-REYES VENTAS'
 					elif seller_marketplace == '1029905409':
 						#SOMOS-REYES SKYBRANDS
 						user_id_ = 1029905409
-						market_ml = 'SKYBRANDS'
-					else:
-						respuesta = 'Esta orden NO es procesable en el sitio web'
-						break
 					
-					logging.info(f'El marketplace es: {market_ml}')
 					access_token = recupera_meli_token(user_id_)
 
 					order_meli = get_order_meli(order_id, access_token)
 					logging.info(f' \n Orden {order_id}, Usuario id {user_id_}, Orden MELI {order_meli} \n')
 
 					if order_meli == False:
-						#respuesta = 'Esta orden de venta aun no se le adjunta etiqueta de envio en Mercado Libre (o tokens incorrectos) \n ESPERAR MAXIMO 30 MINUTOS'
-						tk_meli.get_all_tokens()
-						#respuesta = 'Tokens incorrectos ¡ESPERAR MAXIMO 30 MINUTOS E INTENTAR DE NUEVO!'
-						respuesta = 'Recuperando Tokens... ¡VUELVE A INTENTAR!'
+						respuesta = 'Esta orden de venta aun no se le adjunta etiqueta de envio en Mercado Libre (o tokens incorrectos)'
 						formulario = 'error.html'
 						break
 					
@@ -546,13 +504,11 @@ def procesar():
 							respuesta = get_zpl_meli(shipment_ids,name_so, access_token, ubicacion, order_odoo_id)
 			except Exception as e:
 				logging.error(f'ERROR: {e}')
-				respuesta = f'Error de conexión, {e}'
 
 		print('respuesta:', respuesta)
 		formulario = 'mostrar.html'
 	except Exception as e:
 		order_id = ''
-		logging.info(f'ERROR de try en PROCESAR {str(e)}')
 		respuesta = str(e)
 		formulario = 'error.html'
 		

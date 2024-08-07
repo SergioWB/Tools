@@ -6,7 +6,7 @@ import datetime
 
 def obtener_token_meli_oficiales(client_id, client_secret):
     try:
-        token_dir='/home/sergio/servidor-Tlalne/meli/tokens_meli_oficiales.txt'
+        token_dir='/home/server-tnp/meli/tokens_meli_oficiales.txt'
         archivo_tokens=open(token_dir, 'w')
 
         headers = {

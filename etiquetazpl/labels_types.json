@@ -1,0 +1,30 @@
+{
+  "amazon": {
+    "paquetexpress": 1,
+    "fedex": 2,
+    "estafeta": 3,
+    "colecta": 4,
+    "dhl": 5
+  },
+  "walmart": {
+    "dhl": 6,
+    "fedex": 7,
+    "colecta": 8,
+    "yaltec": 9
+  },
+  "shein": {
+    "imile": 10,
+    "j&texpress": 11
+  },
+  "coppel": {
+    "colecta": 12,
+    "dhl": 13,
+    "estafeta": 14,
+    "fedex": 15
+  },
+  "liverpool": {
+    "fedex": 16,
+    "estafeta": 17,
+    "ups": 18
+  }
+}

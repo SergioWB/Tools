@@ -4,7 +4,7 @@ import requests
 import pytz
 import datetime
 
-def obtener_token_meli(client_id, client_secret):
+def obtener_token_meli_sk(client_id, client_secret):
     try:
         token_dir='/home/server-tnp/meli/tokens_meli_skyBrands.txt'
         archivo_tokens=open(token_dir, 'w')
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     try:
         client_id='8920137353952549'
         client_secret='QsdkoNvT041FtklmLm3PfyaZoueT9cz0'
-        access_tokens = obtener_token_meli(client_id, client_secret)
+        access_tokens = obtener_token_meli_sk(client_id, client_secret)
         
         if access_tokens:
             access_token = access_tokens['access_token']

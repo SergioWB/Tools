@@ -1,1 +1,1 @@
-{"access_token":"APP_USR-5630132812404309-050920-8223c11762edbf7718009f42b9509f2b-160190870","token_type":"Bearer","expires_in":21600,"scope":"offline_access read write","user_id":160190870,"refresh_token":"TG-663d6f69b871e30001adc648-160190870"}
+{"access_token":"APP_USR-5630132812404309-080716-b220f5de7b9a615d244829fbd3011e89-160190870","token_type":"Bearer","expires_in":21600,"scope":"offline_access read write","user_id":160190870,"refresh_token":"TG-66b3d949741f1f0001c52370-160190870"}

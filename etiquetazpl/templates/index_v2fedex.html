@@ -10,10 +10,8 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
-
-		
 		<link href="{{ url_for('static', filename='css/images/somosreyesfavicon.png') }}" rel="shortcut icon" type="image/x-icon">
-
+		
 		<noscript><link rel="stylesheet" href="//css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -23,8 +21,7 @@
 
 				<!-- Header -->
 					<header id="header" class="alt">
-						 <strong>Ubicacion: </strong>{{ubicacion}}<br>
-						 <strong>Usuario: </strong>{{usuario}}<br>
+						
 					</header>
 
 				<!-- Wrapper -->
@@ -36,9 +33,29 @@
 									<a href="#" class="image"><img src="{{ url_for('static', filename='css/images/logo_somos_reyes.png') }}" alt="" /></a>
 
 									<div class="content">
-										<h2 class="major">Recuperación Guía</h2>
-										<form method="POST" action="{{url_for('procesar')}}" autocomplete="off">
-								            <input autofocus id="name_so" name="name_so" required type="text" placeholder="Codigo de Barras Orden de Venta">
+										<h2 class="major">Ingresar la información</h2>
+										<form method="POST" action="{{url_for('inicio')}}" autocomplete="off">
+								            <!--<input autofocus id="localizacion" name="localizacion" required type="text" placeholder="Ubicación de Impresora"> -->
+								            <select autofocus id="localizacion" name="localizacion" required>
+											    <option value="" disabled selected hidden>Ubicación de Impresora</option>
+											    <option value="IMPRESORA1">IMPRESORA1</option>
+											    <option value="IMPRESORA2">IMPRESORA2</option>
+											    <option value="IMPRESORA3">IMPRESORA3</option>
+											    <option value="IMPRESORA4">IMPRESORA4</option>
+											    <option value="IMPRESORA5">IMPRESORA5</option>
+											</select>
+
+								            <br>
+								            <select autofocus id="usuario_odoo" name="usuario_odoo" required>
+											    <option value="" disabled selected hidden>Selecciona un usuario</option>
+											    <option value="will@wonderbrands.co">William Colin</option>
+											    <option value="handheld2.somosreyes@gmail.com">Abigail Copado Ayala</option>
+											    <option value="empaque@somos-reyes.com">Jesus Quiroz</option>
+											    <option value="devoluciones.somosreyes@gmail.com">Juan Manuel Camilo Santiago</option>
+											    <option value="almacen2@somos-reyes.com">Italivy Rodriguez</option>
+											    <option value="preguntas.somosreyes@gmail.com">Yolanda Rendon</option>
+											    
+											</select>
 
 								            <br><br>
 								            <input type="submit" value="Enviar">
@@ -60,12 +77,12 @@
 		    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
 		    <script>
                 $(document).ready(function(){
-                	$("#name_so").select();
-                	$("#name_so").focus();
+                	$("#ubicacion").select();
+                	$("#ubicacion").focus();
                  $("#limpiar").click(function() {
                      //alert("Hola Mundo con jQuery!");
-                     $("#name_so").select();
-                     $("#name_so").focus();
+                     $("#ubicacion").select();
+                     $("#ubicacion").focus();
                      
 
                    }); 
