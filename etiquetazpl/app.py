@@ -291,11 +291,11 @@ def recupera_meli_token(user_id):
 		token_dir=''
   
 		if user_id == 25523702:# Usuario de SOMOS REYES VENTAS
-			token_dir='/home/server-tnp/meli/tokens_meli.txt' 
+			token_dir='/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt' 
 		elif user_id == 160190870:# Usuario de SOMOS REYES OFICIALES
-			token_dir='/home/server-tnp/meli/tokens_meli_oficiales.txt'
+			token_dir='/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli_oficiales.txt'
 		elif user_id == 1029905409:# Usuario de SKYBRANDS
-			token_dir='/home/server-tnp/meli/tokens_meli_skyBrands.txt'
+			token_dir='/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli_skyBrands.txt'
 		
 		#print token_dir
 

@@ -6,7 +6,7 @@ import datetime
 
 def obtener_token_meli_sk(client_id, client_secret):
     try:
-        token_dir='/home/server-tnp/meli/tokens_meli_skyBrands.txt'
+        token_dir='/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli_skyBrands.txt'
         archivo_tokens=open(token_dir, 'w')
 
         headers = {
