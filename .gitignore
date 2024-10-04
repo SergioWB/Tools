@@ -8,3 +8,5 @@ __pycache__/
 
 # Ignorar archivos temporales de edición
 *.swp
+
+.idea/

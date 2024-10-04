@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import sys
-sys.path.append('/home/server-tnp')
+sys.path.append('/home/ubuntu/Documents/server-Tln/Tools')
 
 from meli import get_access_token_meli
 from meli import get_access_token_meli_oficiales
