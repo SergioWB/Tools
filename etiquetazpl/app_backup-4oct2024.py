@@ -25,27 +25,14 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 # server_url  = 'https://wonderbrands-v2-12847658.dev.odoo.com'
 # db_name = 'wonderbrands-v2-12847658'
-server_url = 'https://wonderbrands.odoo.com'
-db_name = 'wonderbrands-main-4539884'
-# username = 'will@wonderbrands.co'
-# password = 'admin123'
+server_url = 'http://ec2-184-72-194-239.compute-1.amazonaws.com'  # 'https://wonderbrands.odoo.com'
+db_name = 'somosreyes15'  # 'wonderbrands-main-4539884'
+
 json_endpoint = "%s/jsonrpc" % server_url
 
 logging.warning("TEST DATABSE")
 
 headers = {"Content-Type": "application/json"}
-
-
-######### TIME DECORATOR #############
-def measure_time(func):
-    def wrapper(*args, **kwargs):
-        start_time = time.time()  # Tiempo inicial
-        result = func(*args, **kwargs)
-        elapsed_time = time.time() - start_time  # Tiempo final
-        logging.info(f"\nFUNCIÓN '{func.__name__}' TOMÓ {elapsed_time:.4f} [seg].\n")
-        return result
-
-    return wrapper
 
 
 ########## NEW FUNCTIONS #############
@@ -206,7 +193,6 @@ def get_order_id(name):
         return False
 
 
-@measure_time
 def update_imprimio_etiqueta_meli(order_odoo_id):
     try:
         write_data = {'imprimio_etiqueta_meli': True}
@@ -219,7 +205,6 @@ def update_imprimio_etiqueta_meli(order_odoo_id):
         return False
 
 
-@measure_time
 def get_picking_id(so_name):
     try:
         payload = get_json_payload("common", "version")
@@ -245,7 +230,6 @@ def get_picking_id(so_name):
         return False
 
 
-@measure_time
 def update_imprimio_etiqueta_meli_picking(picking_id):
     try:
         write_data = {'imprimio_etiqueta_meli': True}
@@ -272,22 +256,15 @@ def ubicacion_impresoras():
     return config
 
 
-@measure_time
 def imprime_zpl(so_name, ubicacion, order_odoo_id):
-    start_time = time.time()
-
     etiqueta_imprimir = dir_path + '/Etiquetas/Etiqueta_' + so_name + '/Etiqueta de envio.txt'
     zpl_meli = open(etiqueta_imprimir)
-    elapsed_time1 = time.time() - start_time
     zpl = zpl_meli.read()
-    elapsed_time2 = time.time() - start_time
 
     zpl_hack = (zpl.replace(' 54030', ' 54030 - ' + so_name))
-    elapsed_time3 = time.time() - start_time
     # print ('ZPL :  \n',zpl_hack)
 
     mysocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    elapsed_time4 = time.time() - start_time
 
     # print ('Ubicacion de la impresora: ', ubicacion)
 
@@ -306,27 +283,17 @@ def imprime_zpl(so_name, ubicacion, order_odoo_id):
         datos = bytes(zpl_hack, 'utf-8')
         # print (datos)
 
-        elapsed_time5 = time.time() - start_time
         mysocket.connect((host, port))  # connecting to host
-        elapsed_time6 = time.time() - start_time
         mysocket.send(datos)  # using bytes
-        elapsed_time7 = time.time() - start_time
 
         mysocket.close()  # closing connection
-        elapsed_time8 = time.time() - start_time
-
         logging.info('Etiqueta para la orden ' + so_name + ' se ha impreso con exito')
         resultado = update_imprimio_etiqueta_meli(order_odoo_id)
-        elapsed_time9 = time.time() - start_time
         picking = get_picking_id(so_name)
-        elapsed_time10 = time.time() - start_time
         logging.info(f'Picking es :  {picking}')
         picking_id = picking.get('picking_id')
 
-        elapsed_time11 = time.time() - start_time
-
         resultado_pick = update_imprimio_etiqueta_meli_picking(picking_id)
-        elapsed_time12 = time.time() - start_time
 
         if resultado:
             respuesta_imprime_zpl += '|Etiqueta para la orden ' + so_name + ' se ha impreso con exito'
@@ -342,22 +309,19 @@ def imprime_zpl(so_name, ubicacion, order_odoo_id):
     except Exception as e:
         logging.error(f'Error en la conexión con la impresora ZPL: {str(e)}')
         return "|Error en la conexión con la impresora ZPL: " + str(e)
-    finally:
-        logging.info(
-            f"\nTIEMPO EN {elapsed_time1:.4f}, {elapsed_time2:.4f}, {elapsed_time3:.4f}, {elapsed_time4:.4f}, {elapsed_time5:.4f}, {elapsed_time6:.4f}, {elapsed_time7:.4f}, {elapsed_time8:.4f}, {elapsed_time9:.4f}, {elapsed_time10:.4f}, {elapsed_time11:.4f}, {elapsed_time12:.4f}[seg].\n")
 
 
-@measure_time
 def recupera_meli_token(user_id):
     try:
         # print 'USER ID:', user_id
         token_dir = ''
+
         if user_id == 25523702:  # Usuario de SOMOS REYES VENTAS
-            token_dir = '/home/server-tnp/meli/tokens_meli.txt'
+            token_dir = '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt'
         elif user_id == 160190870:  # Usuario de SOMOS REYES OFICIALES
-            token_dir = '/home/server-tnp/meli/tokens_meli_oficiales.txt'
+            token_dir = '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli_oficiales.txt'
         elif user_id == 1029905409:  # Usuario de SKYBRANDS
-            token_dir = '/home/server-tnp/meli/tokens_meli_skyBrands.txt'
+            token_dir = '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli_skyBrands.txt'
 
         # print token_dir
 
@@ -376,7 +340,6 @@ def recupera_meli_token(user_id):
         return False
 
 
-@measure_time
 def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
     try:
 
@@ -406,7 +369,6 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         return respuesta
 
 
-@measure_time
 def get_order_meli(order_id, access_token):
     try:
         headers = {'Accept': 'application/json', 'content-type': 'application/json'}
@@ -425,7 +387,6 @@ def get_order_meli(order_id, access_token):
         return False
 
 
-@measure_time
 def get_shipment_meli(shipping_id, access_token):
     try:
         headers = {'Accept': 'application/json', 'content-type': 'application/json'}
@@ -545,17 +506,14 @@ def procesar():
                     order_id = ''
                     respuesta = 'Esta orden de venta aun no tiene numero de guia'
                     formulario = 'error.html'
-
                     break
 
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
-                if 'fedex' in guide_number.lower() or label_case in [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-                                                                     17,
-                                                                     18]:  # FeDex::2,7,15,16    LISTA DE CASOS PERMITIDOS DEL JSON labels_types.json
+                if 'fedex' in guide_number.lower() or label_case in [6, 7, 8, 9, 10, 11, 12, 13, 14,
+                                                                     15]:  # FeDex::12345678    LISTA DE CASOS PERMITIDOS DEL JSON labels_types.json
                     if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
                         respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
                         break
-
                     # Coidgo para imprimir etiqueta Fedex
                     order_id_valpick = search_valpick_id(name_so)
                     response_fedex = ejecute_fedex_label(order_id_valpick)
@@ -587,11 +545,8 @@ def procesar():
                         # SOMOS-REYES SKYBRANDS
                         user_id_ = 1029905409
                         market_ml = 'SKYBRANDS'
-                    # elif seller_marketplace == '156001758': #SO3245440
-                    #	user_id_ = 156001758
-                    #	market_ml = 'TEST'
                     else:
-                        respuesta = f'Esta orden NO es procesable en el sitio web. SM: {seller_marketplace}'
+                        respuesta = 'Esta orden NO es procesable en el sitio web'
                         break
 
                     logging.info(f'El marketplace es: {market_ml}')
