@@ -19,21 +19,8 @@ import tokens_meli as tk_meli
 logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s', datefmt='%Y-%d-%m %I:%M:%S %p',
                     level=logging.INFO)
 
-class NoStaticImagesFilter(logging.Filter):
-    def filter(self, record):
-        message = record.getMessage()
-        # Agregar un print para depuración
-        print(f"Evaluando mensaje: {message}")  # Para ver los mensajes que llegan al filtro
-        if "/static/" in message or "/images/" in message:
-            print("Mensaje filtrado!")  # Para saber cuándo se filtra un mensaje
-            return False  # Bloquea el mensaje
-        return True  # Permite otros mensajes
-
-# Obtener el root logger (que es el logger principal si no has especificado otro)
-root_logger = logging.getLogger()
-
-# Agregar el filtro al root logger
-root_logger.addFilter(NoStaticImagesFilter())
+# Establecer el nivel de logging para werkzeug a WARNING
+logging.getLogger('werkzeug').setLevel(logging.WARNING)
 
 logging.info('\n')
 
