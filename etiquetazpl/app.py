@@ -24,7 +24,9 @@ class NoStaticImagesFilter(logging.Filter):
         message = record.getMessage()
         # Filtrar mensajes que contengan "/static/" o "/images/"
         if "/static/" in message or "/images/" in message:
+            print('FALSEEEEEEEE')
             return False  # Bloquea el mensaje
+        print('TRUEEEEE')
         return True  # Permite el resto de mensajes
 
 # Obtener el root logger (que es el logger principal si no has especificado otro)
