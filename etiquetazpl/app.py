@@ -19,6 +19,17 @@ import tokens_meli as tk_meli
 logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s', datefmt='%Y-%d-%m %I:%M:%S %p',
                     level=logging.INFO)
 
+class NoStaticImagesFilter(logging.Filter):
+    def filter(self, record):
+        # Filtrar los mensajes que provienen de las rutas /static/ y /images/
+        return "/static/" not in record.getMessage() and "/images/" not in record.getMessage()
+
+# Obtener el root logger (que es el logger principal si no has especificado otro)
+root_logger = logging.getLogger()
+
+# Agregar el filtro al root logger
+root_logger.addFilter(NoStaticImagesFilter())
+
 logging.info('\n')
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
