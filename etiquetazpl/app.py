@@ -23,10 +23,10 @@ logging.info('\n')
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-#server_url  = 'https://wonderbrands-v2-12847658.dev.odoo.com'
-#db_name = 'wonderbrands-v2-12847658'
-server_url  ='https://wonderbrands.odoo.com'
-db_name = 'wonderbrands-main-4539884'
+server_url  = 'http://ec2-184-72-194-239.compute-1.amazonaws.com'
+db_name = 'somosreyes15'
+#server_url  ='https://wonderbrands.odoo.com'
+#db_name = 'wonderbrands-main-4539884'
 #username = 'will@wonderbrands.co'
 #password = 'admin123'
 json_endpoint = "%s/jsonrpc" % server_url
