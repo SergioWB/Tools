@@ -21,8 +21,11 @@ logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s', dat
 
 class NoStaticImagesFilter(logging.Filter):
     def filter(self, record):
-        # Filtrar los mensajes que provienen de las rutas /static/ y /images/
-        return "/static/" not in record.getMessage() and "/images/" not in record.getMessage()
+        message = record.getMessage()
+        # Filtrar mensajes que contengan "/static/" o "/images/"
+        if "/static/" in message or "/images/" in message:
+            return False  # Bloquea el mensaje
+        return True  # Permite el resto de mensajes
 
 # Obtener el root logger (que es el logger principal si no has especificado otro)
 root_logger = logging.getLogger()
