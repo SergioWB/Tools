@@ -540,6 +540,13 @@ def procesar():
     try:
         name_so = request.form.get("name_so")
         order_odoo = get_order_id(name_so)
+        if order_odoo == False:
+            order_id = ''
+            logging.info(f'ERROR en credenciales Odoo para {ubicacion}')
+            respuesta = f'ERROR en credenciales Odoo para {ubicacion}'
+            formulario = 'error.html'
+            return render_template(formulario, name_so=name_so, order_id=order_id, respuesta=respuesta)
+
         order_id = order_odoo.get('marketplace_order_id')
         seller_marketplace = order_odoo.get('seller_marketplace')
         order_odoo_id = order_odoo.get('order_odoo_id')
