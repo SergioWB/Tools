@@ -26,10 +26,10 @@ logging.info('\n')
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-# server_url  = 'https://wonderbrands-v2-12847658.dev.odoo.com'
-# db_name = 'wonderbrands-v2-12847658'
-server_url = 'http://ec2-184-72-194-239.compute-1.amazonaws.com'  # 'https://wonderbrands.odoo.com'
-db_name = 'somosreyes15'  # 'wonderbrands-main-4539884'
+# server_url  = 'https://wonderbrands.odoo.com'
+# db_name = 'wonderbrands-main-4539884'
+server_url = 'http://ec2-184-72-194-239.compute-1.amazonaws.com'
+db_name = 'somosreyes15'
 
 json_endpoint = "%s/jsonrpc" % server_url
 
@@ -48,13 +48,13 @@ def get_password_user(usuario):
     return None
 
 
-def search_valpick_id(so_name):
+def search_valpick_id(so_name, type='/VALPICK/'):  #/VALPICK/  /PICK/
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
 
         if so_name:
-            search_domain = [['origin', '=', so_name], ['name', 'like', '/VALPICK/']]
+            search_domain = [['origin', '=', so_name], ['name', 'like', type]]
             payload = json.dumps({"jsonrpc": "2.0", "method": "call",
                                   "params": {"service": "object", "method": "execute",
                                              "args": [db_name, user_id, password, "stock.picking", "search_read",
@@ -126,6 +126,82 @@ def get_label_case(filename, marketplace, carrier):
     else:
         return None
 
+def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
+    try:
+        # Buscar el ID del picking (VALPICK o PICK dependiendo del tipo pasado)
+        transfer_id = search_valpick_id(so_name, type)
+
+        # Si no se encuentra el picking, retorna False
+        if not transfer_id:
+            logging.info(f"No se encontró un traslado para el tipo: {type}")
+            return False
+        else:
+            payload_check_state = json.dumps({
+                "jsonrpc": "2.0",
+                "method": "call",
+                "params": {
+                    "service": "object",
+                    "method": "execute",
+                    "args": [db_name, user_id, password, "stock.picking", "read", [transfer_id], ["id", "state"]]
+                }
+            })
+            response_check_state = requests.post(json_endpoint, data=payload_check_state, headers=headers).json()
+            picking_state = response_check_state.get('result', [{}])[0].get('state', '')
+
+        # Definir los payloads para las acciones
+        payload_set_quantities = json.dumps({
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+                "service": "object",
+                "method": "execute",
+                "args": [db_name, user_id, password, "stock.picking", "action_set_quantities_to_reservation",
+                         [transfer_id]]
+            }
+        })
+
+        payload_validate = json.dumps({
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+                "service": "object",
+                "method": "execute",
+                "args": [db_name, user_id, password, "stock.picking", "button_validate", [transfer_id]]
+            }
+        })
+
+        # Primero se setean las cantidades si es que aún no se ha hecho.
+        requests.post(json_endpoint, data=payload_set_quantities, headers=headers).json()
+
+        # Si ya esta hecho, termina
+        if picking_state != 'done':
+            # Intentar validar el transfer (Pick o Valpick)
+            response_validate = requests.post(json_endpoint, data=payload_validate, headers=headers).json()
+            if response_validate.get('result'):
+                logging.info(f"{type}: {transfer_id} ha sido validado y ahora está en estado 'done'.")
+                return True
+            else:
+                print(f"{type}: {transfer_id}: aun no está validado")
+                # Si no se ha intentado aún con "/PICK/", se hace ahora
+                if not tried_pick:
+                    logging.info("Intentando validar el PICK en lugar del VALPICK.")
+                    pick_validated = set_pick_done(so_name, "/PICK/", tried_pick=True)
+
+                    # Si el PICK se valida correctamente, intentamos nuevamente validar el VALPICK
+                    if pick_validated:
+                        logging.info("PICK validado correctamente. Reintentando validar el VALPICK.")
+                        return set_pick_done(so_name, "/VALPICK/", tried_pick=True)  # Intentar nuevamente con VALPICK
+                else:
+                    logging.info("Ya se intentó con /PICK/, deteniendo recursión.")
+                    return False
+        else:
+            logging.info(f"{type}: {transfer_id} ya está hecho")
+            return False
+
+    except Exception as e:
+        logging.info(f"Error al cambiar el estado a done: {str(e)}")
+        return False
+
 
 ######################################
 
@@ -144,7 +220,7 @@ def get_json_payload(service, method, *args):
 
 def get_user_id():
     try:
-        payload = get_json_payload("common", "login", db_name, username, password)
+        payload = get_json_payload("common", "login", db_name, user_name, password)
         response = requests.post(json_endpoint, data=payload, headers=headers)
 
         user_id = response.json()['result']
@@ -512,8 +588,7 @@ def procesar():
                     break
 
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
-                if 'fedex' in guide_number.lower() or label_case in [6, 7, 8, 9, 10, 11, 12, 13, 14,
-                                                                     15]:  # FeDex::12345678    LISTA DE CASOS PERMITIDOS DEL JSON labels_types.json
+                if 'fedex' in guide_number.lower() or label_case in [6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:  # FeDex::12345678    LISTA DE CASOS PERMITIDOS DEL JSON labels_types.json
                     if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
                         respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
                         break
@@ -534,6 +609,7 @@ def procesar():
                     else:
                         respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {carrier.upper()} y se imprimió de manera correcta'
                         order_id = order_id
+                        set_pick_done(name_so)
 
                 else:
                     if seller_marketplace == '160190870':
@@ -582,6 +658,7 @@ def procesar():
                             respuesta = 'La orden ' + name_so + ' ya ha sido entregada el dia: ' + date_delivered + ',  no se imprimirá la etiqueta.'
                         else:
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
+                            set_pick_done(name_so)
             except Exception as e:
                 logging.error(f'ERROR: {e}')
                 respuesta = f'Error de conexión, {e}'
