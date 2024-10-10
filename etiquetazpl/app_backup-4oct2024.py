@@ -17,7 +17,7 @@ import time
 import tokens_meli as tk_meli
 
 __description__ = """
-        Backup de la app que actualmente funciona en la instancia del EC2
+        Backup de la app que actualmente funciona en la instancia del EC2 al 04 oct 2024
 """
 
 logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s', datefmt='%Y-%d-%m %I:%M:%S %p',
