@@ -137,6 +137,7 @@ def load_label_types(filename, carrier):
 
 def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
     try:
+        user_id, user_name, password = get_password_user('data@wonderbrands.co')
         # Buscar el ID del picking (VALPICK o PICK dependiendo del tipo pasado)
         transfer_id = search_valpick_id(so_name, type)
 
