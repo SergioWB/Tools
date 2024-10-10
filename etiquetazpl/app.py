@@ -580,7 +580,7 @@ def procesar():
 
             try:
                 logging.info('**************************')
-                logging.info(carrier, guide_number)
+                logging.info(f'{carrier}/{guide_number}' )
                 logging.info('**************************')
                 if not guide_number or not carrier:
                     order_id = ''
