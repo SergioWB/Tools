@@ -126,15 +126,6 @@ def get_label_case(filename, marketplace, carrier):
     else:
         return None
 
-def load_label_types(filename, carrier):
-    with open(filename, 'r') as file:
-        data = json.load(file)
-
-    if carrier in data:
-        return data[carrier]
-    else:
-        return False
-
 def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
     try:
         # Buscar el ID del picking (VALPICK o PICK dependiendo del tipo pasado)
@@ -268,12 +259,11 @@ def get_order_id(name):
             print('channel_order_reference', marketplace_order_id)
             seller_marketplace = res['result'][0]['yuju_seller_id']
             order_odoo_id = res['result'][0]['id']
-            carrier = res['result'][0]['select_carrier']
-            team_id = res['result'][0]['team_id'][1]  # La repuesta es [id, team]
             guide_number = res['result'][0]['yuju_carrier_tracking_ref']
+            team_id = res['result'][0]['team_id'][1]  # La repuesta es [id, team]
 
             return dict(marketplace_order_id=marketplace_order_id, seller_marketplace=seller_marketplace,
-                        order_odoo_id=order_odoo_id, carrier=carrier, team_id=team_id, guide_number=guide_number)
+                        order_odoo_id=order_odoo_id, guide_number=guide_number, team_id=team_id)
         else:
             logging.error("Error: No se tiene un id de usuario, revisa el listado de usuarios")
             return False
@@ -550,7 +540,7 @@ def procesar():
     try:
         name_so = request.form.get("name_so")
         order_odoo = get_order_id(name_so)
-        if order_odoo == False: # Verificar si las credenciales de Odoo son correctas.
+        if order_odoo == False:
             order_id = ''
             logging.info(f'ERROR en credenciales Odoo para {ubicacion}')
             respuesta = f'ERROR en credenciales Odoo para {ubicacion}'
@@ -560,11 +550,25 @@ def procesar():
         order_id = order_odoo.get('marketplace_order_id')
         seller_marketplace = order_odoo.get('seller_marketplace')
         order_odoo_id = order_odoo.get('order_odoo_id')
-        team_id = order_odoo.get('team_id')
         guide_number = order_odoo.get('guide_number')
+        team_id = order_odoo.get('team_id')
 
-        carrier = order_odoo.get('carrier')
-        marketplace = team_id.lower().split("_")[1]
+        try:
+            carrier = guide_number.lower().split("::")[0]
+            marketplace = team_id.lower().split("_")[1]
+            if carrier == 'walmart':
+                carrier = guide_number.lower().split("::")[1][0]
+                if carrier == 'y':
+                    carrier = 'yaltec'
+                else:
+                    carrier = 'colecta'
+            elif carrier == 'amazon':
+                carrier = 'colecta'
+            elif carrier == 'coppel':
+                carrier = 'colecta'
+        except Exception as e:
+            carrier = "None"
+            marketplace = "None"
 
         logging.info(f'ODOO: {order_id}, {name_so}, {seller_marketplace}, {guide_number}, {team_id}, {ubicacion}, {carrier}, {marketplace}')
         orders_id = []
@@ -580,17 +584,17 @@ def procesar():
 
             try:
 
+                # Revisar el caso de etiqueta que es:
+                label_case = get_label_case('labels_types.json', marketplace, carrier)
+
                 if not guide_number:
                     order_id = ''
                     respuesta = 'Esta orden de venta aun no tiene numero de guia'
                     formulario = 'error.html'
                     break
 
-                # Revisar el caso de etiqueta que es:
-                label_case = load_label_types('label_typesV2.json', carrier)
-
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
-                if label_case != False:  # Si el caso está en los carriers existentes en la lista
+                if 'fedex' in guide_number.lower() or label_case in [6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:  # FeDex::12345678    LISTA DE CASOS PERMITIDOS DEL JSON labels_types.json
                     if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
                         respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
                         break
@@ -613,7 +617,7 @@ def procesar():
                         order_id = order_id
                         set_pick_done(name_so)
 
-                elif team_id.lower() == 'team_mercadolibre': # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
+                else:
                     if seller_marketplace == '160190870':
                         # SOMOS-REYES OFICIALES
                         user_id_ = 160190870
@@ -661,9 +665,6 @@ def procesar():
                         else:
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
                             set_pick_done(name_so)
-
-                else:
-                    respuesta = f'El carrier de esta orden: {carrier} no existe, por lo que no peude ser procesada.'
             except Exception as e:
                 logging.error(f'ERROR: {e}')
                 respuesta = f'Error de conexión, {e}'

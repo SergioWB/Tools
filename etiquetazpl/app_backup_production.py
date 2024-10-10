@@ -18,24 +18,34 @@ import tokens_meli as tk_meli
 
 logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s', datefmt='%Y-%d-%m %I:%M:%S %p',
                     level=logging.INFO)
-
-# Establecer el nivel de logging para werkzeug a WARNING
 logging.getLogger('werkzeug').setLevel(logging.WARNING)
-
 logging.info('\n')
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-# server_url  = 'https://wonderbrands.odoo.com'
-# db_name = 'wonderbrands-main-4539884'
-server_url = 'http://ec2-184-72-194-239.compute-1.amazonaws.com'
-db_name = 'somosreyes15'
-
+# server_url  = 'https://wonderbrands-v2-12847658.dev.odoo.com'
+# db_name = 'wonderbrands-v2-12847658'
+server_url = 'https://wonderbrands.odoo.com'
+db_name = 'wonderbrands-main-4539884'
+# username = 'will@wonderbrands.co'
+# password = 'admin123'
 json_endpoint = "%s/jsonrpc" % server_url
 
 logging.warning("TEST DATABSE")
 
 headers = {"Content-Type": "application/json"}
+
+
+######### TIME DECORATOR #############
+def measure_time(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()  # Tiempo inicial
+        result = func(*args, **kwargs)
+        elapsed_time = time.time() - start_time  # Tiempo final
+        logging.info(f"\nFUNCIÓN '{func.__name__}' TOMÓ {elapsed_time:.4f} [seg].\n")
+        return result
+
+    return wrapper
 
 
 ########## NEW FUNCTIONS #############
@@ -48,13 +58,13 @@ def get_password_user(usuario):
     return None
 
 
-def search_valpick_id(so_name, type='/VALPICK/'):  #/VALPICK/  /PICK/
+def search_valpick_id(so_name):
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
 
         if so_name:
-            search_domain = [['origin', '=', so_name], ['name', 'like', type]]
+            search_domain = [['origin', '=', so_name], ['name', 'like', '/VALPICK/']]
             payload = json.dumps({"jsonrpc": "2.0", "method": "call",
                                   "params": {"service": "object", "method": "execute",
                                              "args": [db_name, user_id, password, "stock.picking", "search_read",
@@ -126,91 +136,6 @@ def get_label_case(filename, marketplace, carrier):
     else:
         return None
 
-def load_label_types(filename, carrier):
-    with open(filename, 'r') as file:
-        data = json.load(file)
-
-    if carrier in data:
-        return data[carrier]
-    else:
-        return False
-
-def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
-    try:
-        # Buscar el ID del picking (VALPICK o PICK dependiendo del tipo pasado)
-        transfer_id = search_valpick_id(so_name, type)
-
-        # Si no se encuentra el picking, retorna False
-        if not transfer_id:
-            logging.info(f"No se encontró un traslado para el tipo: {type}")
-            return False
-        else:
-            payload_check_state = json.dumps({
-                "jsonrpc": "2.0",
-                "method": "call",
-                "params": {
-                    "service": "object",
-                    "method": "execute",
-                    "args": [db_name, user_id, password, "stock.picking", "read", [transfer_id], ["id", "state"]]
-                }
-            })
-            response_check_state = requests.post(json_endpoint, data=payload_check_state, headers=headers).json()
-            picking_state = response_check_state.get('result', [{}])[0].get('state', '')
-
-        # Definir los payloads para las acciones
-        payload_set_quantities = json.dumps({
-            "jsonrpc": "2.0",
-            "method": "call",
-            "params": {
-                "service": "object",
-                "method": "execute",
-                "args": [db_name, user_id, password, "stock.picking", "action_set_quantities_to_reservation",
-                         [transfer_id]]
-            }
-        })
-
-        payload_validate = json.dumps({
-            "jsonrpc": "2.0",
-            "method": "call",
-            "params": {
-                "service": "object",
-                "method": "execute",
-                "args": [db_name, user_id, password, "stock.picking", "button_validate", [transfer_id]]
-            }
-        })
-
-        # Primero se setean las cantidades si es que aún no se ha hecho.
-        requests.post(json_endpoint, data=payload_set_quantities, headers=headers).json()
-
-        # Si ya esta hecho, termina
-        if picking_state != 'done':
-            # Intentar validar el transfer (Pick o Valpick)
-            response_validate = requests.post(json_endpoint, data=payload_validate, headers=headers).json()
-            if response_validate.get('result'):
-                logging.info(f"{type}: {transfer_id} ha sido validado y ahora está en estado 'done'.")
-                return True
-            else:
-                print(f"{type}: {transfer_id}: aun no está validado")
-                # Si no se ha intentado aún con "/PICK/", se hace ahora
-                if not tried_pick:
-                    logging.info("Intentando validar el PICK en lugar del VALPICK.")
-                    pick_validated = set_pick_done(so_name, "/PICK/", tried_pick=True)
-
-                    # Si el PICK se valida correctamente, intentamos nuevamente validar el VALPICK
-                    if pick_validated:
-                        logging.info("PICK validado correctamente. Reintentando validar el VALPICK.")
-                        return set_pick_done(so_name, "/VALPICK/", tried_pick=True)  # Intentar nuevamente con VALPICK
-                else:
-                    logging.info("Ya se intentó con /PICK/, deteniendo recursión.")
-                    return False
-        else:
-            logging.info(f"{type}: {transfer_id} ya está hecho")
-            return False
-
-    except Exception as e:
-        logging.info(f"Error al cambiar el estado a done: {str(e)}")
-        return False
-
 
 ######################################
 
@@ -229,7 +154,7 @@ def get_json_payload(service, method, *args):
 
 def get_user_id():
     try:
-        payload = get_json_payload("common", "login", db_name, user_name, password)
+        payload = get_json_payload("common", "login", db_name, username, password)
         response = requests.post(json_endpoint, data=payload, headers=headers)
 
         user_id = response.json()['result']
@@ -268,12 +193,11 @@ def get_order_id(name):
             print('channel_order_reference', marketplace_order_id)
             seller_marketplace = res['result'][0]['yuju_seller_id']
             order_odoo_id = res['result'][0]['id']
-            carrier = res['result'][0]['select_carrier']
-            team_id = res['result'][0]['team_id'][1]  # La repuesta es [id, team]
             guide_number = res['result'][0]['yuju_carrier_tracking_ref']
+            team_id = res['result'][0]['team_id'][1]  # La repuesta es [id, team]
 
             return dict(marketplace_order_id=marketplace_order_id, seller_marketplace=seller_marketplace,
-                        order_odoo_id=order_odoo_id, carrier=carrier, team_id=team_id, guide_number=guide_number)
+                        order_odoo_id=order_odoo_id, guide_number=guide_number, team_id=team_id)
         else:
             logging.error("Error: No se tiene un id de usuario, revisa el listado de usuarios")
             return False
@@ -282,6 +206,7 @@ def get_order_id(name):
         return False
 
 
+@measure_time
 def update_imprimio_etiqueta_meli(order_odoo_id):
     try:
         write_data = {'imprimio_etiqueta_meli': True}
@@ -294,6 +219,7 @@ def update_imprimio_etiqueta_meli(order_odoo_id):
         return False
 
 
+@measure_time
 def get_picking_id(so_name):
     try:
         payload = get_json_payload("common", "version")
@@ -319,6 +245,7 @@ def get_picking_id(so_name):
         return False
 
 
+@measure_time
 def update_imprimio_etiqueta_meli_picking(picking_id):
     try:
         write_data = {'imprimio_etiqueta_meli': True}
@@ -345,15 +272,22 @@ def ubicacion_impresoras():
     return config
 
 
+@measure_time
 def imprime_zpl(so_name, ubicacion, order_odoo_id):
+    start_time = time.time()
+
     etiqueta_imprimir = dir_path + '/Etiquetas/Etiqueta_' + so_name + '/Etiqueta de envio.txt'
     zpl_meli = open(etiqueta_imprimir)
+    elapsed_time1 = time.time() - start_time
     zpl = zpl_meli.read()
+    elapsed_time2 = time.time() - start_time
 
     zpl_hack = (zpl.replace(' 54030', ' 54030 - ' + so_name))
+    elapsed_time3 = time.time() - start_time
     # print ('ZPL :  \n',zpl_hack)
 
     mysocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    elapsed_time4 = time.time() - start_time
 
     # print ('Ubicacion de la impresora: ', ubicacion)
 
@@ -372,17 +306,27 @@ def imprime_zpl(so_name, ubicacion, order_odoo_id):
         datos = bytes(zpl_hack, 'utf-8')
         # print (datos)
 
+        elapsed_time5 = time.time() - start_time
         mysocket.connect((host, port))  # connecting to host
+        elapsed_time6 = time.time() - start_time
         mysocket.send(datos)  # using bytes
+        elapsed_time7 = time.time() - start_time
 
         mysocket.close()  # closing connection
+        elapsed_time8 = time.time() - start_time
+
         logging.info('Etiqueta para la orden ' + so_name + ' se ha impreso con exito')
         resultado = update_imprimio_etiqueta_meli(order_odoo_id)
+        elapsed_time9 = time.time() - start_time
         picking = get_picking_id(so_name)
+        elapsed_time10 = time.time() - start_time
         logging.info(f'Picking es :  {picking}')
         picking_id = picking.get('picking_id')
 
+        elapsed_time11 = time.time() - start_time
+
         resultado_pick = update_imprimio_etiqueta_meli_picking(picking_id)
+        elapsed_time12 = time.time() - start_time
 
         if resultado:
             respuesta_imprime_zpl += '|Etiqueta para la orden ' + so_name + ' se ha impreso con exito'
@@ -398,19 +342,22 @@ def imprime_zpl(so_name, ubicacion, order_odoo_id):
     except Exception as e:
         logging.error(f'Error en la conexión con la impresora ZPL: {str(e)}')
         return "|Error en la conexión con la impresora ZPL: " + str(e)
+    finally:
+        logging.info(
+            f"\nTIEMPO EN {elapsed_time1:.4f}, {elapsed_time2:.4f}, {elapsed_time3:.4f}, {elapsed_time4:.4f}, {elapsed_time5:.4f}, {elapsed_time6:.4f}, {elapsed_time7:.4f}, {elapsed_time8:.4f}, {elapsed_time9:.4f}, {elapsed_time10:.4f}, {elapsed_time11:.4f}, {elapsed_time12:.4f}[seg].\n")
 
 
+@measure_time
 def recupera_meli_token(user_id):
     try:
         # print 'USER ID:', user_id
         token_dir = ''
-
         if user_id == 25523702:  # Usuario de SOMOS REYES VENTAS
-            token_dir = '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt'
+            token_dir = '/home/server-tnp/meli/tokens_meli.txt'
         elif user_id == 160190870:  # Usuario de SOMOS REYES OFICIALES
-            token_dir = '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli_oficiales.txt'
+            token_dir = '/home/server-tnp/meli/tokens_meli_oficiales.txt'
         elif user_id == 1029905409:  # Usuario de SKYBRANDS
-            token_dir = '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli_skyBrands.txt'
+            token_dir = '/home/server-tnp/meli/tokens_meli_skyBrands.txt'
 
         # print token_dir
 
@@ -429,6 +376,7 @@ def recupera_meli_token(user_id):
         return False
 
 
+@measure_time
 def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
     try:
 
@@ -458,6 +406,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         return respuesta
 
 
+@measure_time
 def get_order_meli(order_id, access_token):
     try:
         headers = {'Accept': 'application/json', 'content-type': 'application/json'}
@@ -476,6 +425,7 @@ def get_order_meli(order_id, access_token):
         return False
 
 
+@measure_time
 def get_shipment_meli(shipping_id, access_token):
     try:
         headers = {'Accept': 'application/json', 'content-type': 'application/json'}
@@ -548,25 +498,42 @@ def procesar():
     ubicacion = session['ubicacion']
     e = None
     try:
+        logging.info("**********************************")
         name_so = request.form.get("name_so")
+        logging.info(name_so)
         order_odoo = get_order_id(name_so)
-        if order_odoo == False: # Verificar si las credenciales de Odoo son correctas.
-            order_id = ''
-            logging.info(f'ERROR en credenciales Odoo para {ubicacion}')
-            respuesta = f'ERROR en credenciales Odoo para {ubicacion}'
-            formulario = 'error.html'
-            return render_template(formulario, name_so=name_so, order_id=order_id, respuesta=respuesta)
-
+        logging.info(order_odoo)
         order_id = order_odoo.get('marketplace_order_id')
+        logging.info(order_id)
         seller_marketplace = order_odoo.get('seller_marketplace')
+        logging.info(seller_marketplace)
         order_odoo_id = order_odoo.get('order_odoo_id')
-        team_id = order_odoo.get('team_id')
+        logging.info(order_odoo_id)
         guide_number = order_odoo.get('guide_number')
+        logging.info(guide_number)
+        team_id = order_odoo.get('team_id')
+        logging.info(team_id)
+        logging.info("**********************************")
 
-        carrier = order_odoo.get('carrier')
-        marketplace = team_id.lower().split("_")[1]
+        try:
+            carrier = guide_number.lower().split("::")[0]
+            marketplace = team_id.lower().split("_")[1]
+            if carrier == 'walmart':
+                carrier = guide_number.lower().split("::")[1][0]
+                if carrier == 'y':
+                    carrier = 'yaltec'
+                else:
+                    carrier = 'colecta'
+            elif carrier == 'amazon':
+                carrier = 'colecta'
+            elif carrier == 'coppel':
+                carrier = 'colecta'
+        except Exception as e:
+            carrier = "None"
+            marketplace = "None"
 
-        logging.info(f'ODOO: {order_id}, {name_so}, {seller_marketplace}, {guide_number}, {team_id}, {ubicacion}, {carrier}, {marketplace}')
+        logging.info(
+            f'ODOO: {order_id}, {name_so}, {seller_marketplace}, {guide_number}, {team_id}, {ubicacion}, {carrier}, {marketplace}')
         orders_id = []
 
         # REVISAR
@@ -580,20 +547,24 @@ def procesar():
 
             try:
 
+                # Revisar el caso de etiqueta que es:
+                label_case = get_label_case('labels_types.json', marketplace, carrier)
+
                 if not guide_number:
                     order_id = ''
                     respuesta = 'Esta orden de venta aun no tiene numero de guia'
                     formulario = 'error.html'
+
                     break
 
-                # Revisar el caso de etiqueta que es:
-                label_case = load_label_types('label_typesV2.json', carrier)
-
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
-                if label_case != False:  # Si el caso está en los carriers existentes en la lista
+                if 'fedex' in guide_number.lower() or label_case in [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+                                                                     17,
+                                                                     18]:  # FeDex::2,7,15,16    LISTA DE CASOS PERMITIDOS DEL JSON labels_types.json
                     if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
                         respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
                         break
+
                     # Coidgo para imprimir etiqueta Fedex
                     order_id_valpick = search_valpick_id(name_so)
                     response_fedex = ejecute_fedex_label(order_id_valpick)
@@ -611,9 +582,8 @@ def procesar():
                     else:
                         respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {carrier.upper()} y se imprimió de manera correcta'
                         order_id = order_id
-                        set_pick_done(name_so)
 
-                elif team_id.lower() == 'team_mercadolibre': # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
+                else:
                     if seller_marketplace == '160190870':
                         # SOMOS-REYES OFICIALES
                         user_id_ = 160190870
@@ -626,8 +596,11 @@ def procesar():
                         # SOMOS-REYES SKYBRANDS
                         user_id_ = 1029905409
                         market_ml = 'SKYBRANDS'
+                    # elif seller_marketplace == '156001758': #SO3245440
+                    #	user_id_ = 156001758
+                    #	market_ml = 'TEST'
                     else:
-                        respuesta = 'Esta orden NO es procesable en el sitio web'
+                        respuesta = f'Esta orden NO es procesable en el sitio web. SM: {seller_marketplace}'
                         break
 
                     logging.info(f'El marketplace es: {market_ml}')
@@ -660,10 +633,6 @@ def procesar():
                             respuesta = 'La orden ' + name_so + ' ya ha sido entregada el dia: ' + date_delivered + ',  no se imprimirá la etiqueta.'
                         else:
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
-                            set_pick_done(name_so)
-
-                else:
-                    respuesta = f'El carrier de esta orden: {carrier} no existe, por lo que no peude ser procesada.'
             except Exception as e:
                 logging.error(f'ERROR: {e}')
                 respuesta = f'Error de conexión, {e}'
