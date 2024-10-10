@@ -663,7 +663,7 @@ def procesar():
                             set_pick_done(name_so)
 
                 else:
-                    respuesta = f'El carrier de esta orden: {label_case.upper()} no existe, por lo que no peude ser procesada.'
+                    respuesta = f'El carrier de esta orden: {carrier.upper()} no existe, por lo que no peude ser procesada.'
             except Exception as e:
                 logging.error(f'ERROR: {e}')
                 respuesta = f'Error de conexión, {e}'
