@@ -605,11 +605,11 @@ def procesar():
                         print_label_date = datetime.strptime(response_fedex.get('shplbl_print_date'),
                                                              "%Y-%m-%d %H:%M:%S")
                         print_label_date = print_label_date + gap_timedelta
-                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con carrier {carrier.upper()} pero ya fue impresa el dia: ' + str(
+                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con carrier {label_case.upper()} pero ya fue impresa el dia: ' + str(
                             print_label_date)
                         order_id = order_id
                     else:
-                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {carrier.upper()} y se imprimió de manera correcta'
+                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {label_case.upper()} y se imprimió de manera correcta'
                         order_id = order_id
                         set_pick_done(name_so)
 
@@ -663,7 +663,7 @@ def procesar():
                             set_pick_done(name_so)
 
                 else:
-                    respuesta = f'El carrier de esta orden: {carrier} no existe, por lo que no peude ser procesada.'
+                    respuesta = f'El carrier de esta orden: {label_case.upper()} no existe, por lo que no peude ser procesada.'
             except Exception as e:
                 logging.error(f'ERROR: {e}')
                 respuesta = f'Error de conexión, {e}'
