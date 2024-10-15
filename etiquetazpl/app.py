@@ -284,7 +284,7 @@ def get_order_id(name):
             print('channel_order_reference', marketplace_order_id)
             seller_marketplace = res['result'][0]['yuju_seller_id']
             order_odoo_id = res['result'][0]['id']
-            carrier = res['result'][0]['select_carrier']
+            carrier = res['result'][0]['x_studio_paquetera_carrier'] # 'x_studio_paquetera_carrier' / 'select_carrier'
             team_id = res['result'][0]['team_id'][1]  # La repuesta es [id, team]
             guide_number = res['result'][0]['yuju_carrier_tracking_ref']
 
