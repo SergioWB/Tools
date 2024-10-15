@@ -16,6 +16,12 @@ from datetime import datetime, timedelta
 import time
 import tokens_meli as tk_meli
 
+__description__ = """
+        Version 3.0
+        Extiende la version 2.0 para permitir que se impriman guias del carrier segun viene de
+        'yuju_carrier_tracking_ref' (guide_number) o de 'select_carrier' (carrier).
+"""
+
 logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s', datefmt='%Y-%d-%m %I:%M:%S %p',
                     level=logging.INFO)
 
@@ -48,7 +54,7 @@ def get_password_user(usuario):
     return None
 
 
-def search_valpick_id(so_name, type='/VALPICK/'):  #/VALPICK/  /PICK/
+def search_valpick_id(so_name, type='/VALPICK/'):  # /VALPICK/  /PICK/
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -126,6 +132,7 @@ def get_label_case(filename, marketplace, carrier):
     else:
         return None
 
+
 def load_label_types(filename, carrier):
     with open(filename, 'r') as file:
         data = json.load(file)
@@ -135,9 +142,17 @@ def load_label_types(filename, carrier):
     else:
         return False
 
+
 def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
     try:
-        user_id, user_name, password = get_password_user('data@wonderbrands.co')
+        """
+        Habilitar esta linea para que los movimientos de Pick y Valpick se validen con usuario data.
+        La desventaja es que la contraseña de data se expone en un json.
+        Si no se habilita, los movimientos se validan con el usuario que se conecta la sesion.
+
+        # user_id, user_name, password = get_password_user('data@wonderbrands.co')
+
+        """
         # Buscar el ID del picking (VALPICK o PICK dependiendo del tipo pasado)
         transfer_id = search_valpick_id(so_name, type)
 
@@ -261,7 +276,7 @@ def get_order_id(name):
                                              "args": [db_name, user_id, password, "sale.order", "search_read",
                                                       search_domain,
                                                       ['channel_order_reference', 'name', 'yuju_seller_id',
-                                                       'yuju_carrier_tracking_ref', 'team_id', 'x_studio_paquetera_carrier']]}})
+                                                       'yuju_carrier_tracking_ref', 'team_id']]}})
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
             # print (res)
@@ -269,7 +284,7 @@ def get_order_id(name):
             print('channel_order_reference', marketplace_order_id)
             seller_marketplace = res['result'][0]['yuju_seller_id']
             order_odoo_id = res['result'][0]['id']
-            carrier = res['result'][0]['x_studio_paquetera_carrier'] # select_carrier / Nuevo campo Carrier
+            carrier = res['result'][0]['select_carrier']
             team_id = res['result'][0]['team_id'][1]  # La repuesta es [id, team]
             guide_number = res['result'][0]['yuju_carrier_tracking_ref']
 
@@ -551,13 +566,6 @@ def procesar():
     try:
         name_so = request.form.get("name_so")
         order_odoo = get_order_id(name_so)
-        # if order_odoo == False: # Verificar si las credenciales de Odoo son correctas.
-        #     order_id = ''
-        #     logging.info(f'ERROR en credenciales Odoo para {ubicacion}')
-        #     respuesta = f'ERROR en credenciales Odoo para {ubicacion}'
-        #     formulario = 'error.html'
-        #     return render_template(formulario, name_so=name_so, order_id=order_id, respuesta=respuesta)
-
         order_id = order_odoo.get('marketplace_order_id')
         seller_marketplace = order_odoo.get('seller_marketplace')
         order_odoo_id = order_odoo.get('order_odoo_id')
@@ -567,7 +575,26 @@ def procesar():
         carrier = order_odoo.get('carrier')
         marketplace = team_id.lower().split("_")[1]
 
-        logging.info(f'ODOO: {order_id}, {name_so}, {seller_marketplace}, {guide_number}, {team_id}, {ubicacion}, {carrier}, {marketplace}')
+        # ******* Fusion de logica con guide_number y carrier *******
+        if carrier == False:
+            try:
+                carrier = guide_number.lower().split("::")[0]
+                if carrier == 'walmart':
+                    carrier = guide_number.lower().split("::")[1][0]
+                    if carrier == 'y':
+                        carrier = 'yaltec'
+                    else:
+                        carrier = 'colecta'
+                elif carrier == 'amazon':
+                    carrier = 'colecta'
+                elif carrier == 'coppel':
+                    carrier = 'colecta'
+            except Exception as e:
+                carrier = "None"
+                marketplace = "None"
+
+        logging.info(
+            f'ODOO: {order_id}, {name_so}, {seller_marketplace}, {guide_number}, {team_id}, {ubicacion}, {carrier}, {marketplace}')
         orders_id = []
 
         # REVISAR
@@ -580,20 +607,24 @@ def procesar():
         for order_id in orders_id:
 
             try:
-                logging.info('**************************')
-                logging.info(f'{carrier}/{guide_number}' )
-                logging.info('**************************')
-                if not guide_number or not carrier:
+
+                if not guide_number and not carrier:
                     order_id = ''
                     respuesta = 'Esta orden de venta aun no tiene numero de guia'
                     formulario = 'error.html'
                     break
 
                 # Revisar el caso de etiqueta que es:
-                label_case = load_label_types('label_typesV2.json', carrier)
+                label_case_guide_number_logic = get_label_case('label_types.json', marketplace,
+                                                               carrier)  # Tipo de etiqueta con la logica de obtener el carrier del campo guide number
+                label_type_carrier_logic = load_label_types('labels_typesV2.json',
+                                                            carrier)  # Tipo de etiqueta con la logica de obtener el carrier del campo carrier
 
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
-                if label_case != False:  # Si el caso está en los carriers existentes en la lista
+                if label_type_carrier_logic != False or (
+                        'fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13,
+                                                                                             14,
+                                                                                             15]):  # Si el caso está en los carriers existentes en la lista
                     if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
                         respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
                         break
@@ -608,15 +639,15 @@ def procesar():
                         print_label_date = datetime.strptime(response_fedex.get('shplbl_print_date'),
                                                              "%Y-%m-%d %H:%M:%S")
                         print_label_date = print_label_date + gap_timedelta
-                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con carrier {label_case.upper()} pero ya fue impresa el dia: ' + str(
+                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con carrier {carrier.upper()} pero ya fue impresa el dia: ' + str(
                             print_label_date)
                         order_id = order_id
                     else:
-                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {label_case.upper()} y se imprimió de manera correcta'
+                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {carrier.upper()} y se imprimió de manera correcta'
                         order_id = order_id
                         set_pick_done(name_so)
 
-                elif team_id.lower() == 'team_mercadolibre': # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
+                elif team_id.lower() == 'team_mercadolibre':  # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
                     if seller_marketplace == '160190870':
                         # SOMOS-REYES OFICIALES
                         user_id_ = 160190870
@@ -666,7 +697,7 @@ def procesar():
                             set_pick_done(name_so)
 
                 else:
-                    respuesta = f'El carrier de esta orden: {carrier.upper()} no existe, por lo que no peude ser procesada.'
+                    respuesta = f'El carrier de esta orden: {carrier} no existe, por lo que no peude ser procesada.'
             except Exception as e:
                 logging.error(f'ERROR: {e}')
                 respuesta = f'Error de conexión, {e}'
