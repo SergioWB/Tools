@@ -149,9 +149,9 @@ def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
         Habilitar esta linea para que los movimientos de Pick y Valpick se validen con usuario data.
         La desventaja es que la contraseña de data se expone en un json.
         Si no se habilita, los movimientos se validan con el usuario que se conecta la sesion.
-        
+
         # user_id, user_name, password = get_password_user('data@wonderbrands.co')
-        
+
         """
         # Buscar el ID del picking (VALPICK o PICK dependiendo del tipo pasado)
         transfer_id = search_valpick_id(so_name, type)
@@ -276,15 +276,14 @@ def get_order_id(name):
                                              "args": [db_name, user_id, password, "sale.order", "search_read",
                                                       search_domain,
                                                       ['channel_order_reference', 'name', 'yuju_seller_id',
-                                                       'yuju_carrier_tracking_ref', 'team_id']]}})
+                                                       'yuju_carrier_tracking_ref', 'team_id', 'x_studio_paquetera_carrier']]}})
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
             # print (res)
             marketplace_order_id = res['result'][0]['channel_order_reference']
-            print('channel_order_reference', marketplace_order_id)
             seller_marketplace = res['result'][0]['yuju_seller_id']
             order_odoo_id = res['result'][0]['id']
-            carrier = res['result'][0]['select_carrier']
+            carrier = res['result'][0]['x_studio_paquetera_carrier'] # 'x_studio_paquetera_carrier' / 'select_carrier'
             team_id = res['result'][0]['team_id'][1]  # La repuesta es [id, team]
             guide_number = res['result'][0]['yuju_carrier_tracking_ref']
 
@@ -593,7 +592,6 @@ def procesar():
                 carrier = "None"
                 marketplace = "None"
 
-
         logging.info(
             f'ODOO: {order_id}, {name_so}, {seller_marketplace}, {guide_number}, {team_id}, {ubicacion}, {carrier}, {marketplace}')
         orders_id = []
@@ -616,11 +614,16 @@ def procesar():
                     break
 
                 # Revisar el caso de etiqueta que es:
-                label_case_guide_number_logic = get_label_case('label_types.json', marketplace, carrier) # Tipo de etiqueta con la logica de obtener el carrier del campo guide number
-                label_type_carrier_logic = load_label_types('labels_typesV2.json', carrier) # Tipo de etiqueta con la logica de obtener el carrier del campo carrier
+                label_case_guide_number_logic = get_label_case('labels_types.json', marketplace,
+                                                               carrier)  # Tipo de etiqueta con la logica de obtener el carrier del campo guide number
+                label_type_carrier_logic = load_label_types('labels_typesV2.json',
+                                                            carrier)  # Tipo de etiqueta con la logica de obtener el carrier del campo carrier
 
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
-                if label_type_carrier_logic != False or ('fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13, 14, 15]):  # Si el caso está en los carriers existentes en la lista
+                if label_type_carrier_logic != False or (
+                        'fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13,
+                                                                                             14,
+                                                                                             15]):  # Si el caso está en los carriers existentes en la lista
                     if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
                         respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
                         break

@@ -23,7 +23,7 @@ __description__ = """
         1. Validación automática del PICK y VALPICK si aun no se han hecho.
         2. Nueva lógica para manejar el carrier con el nuevo campo select_carrier. Se 
         cambia por la logica anterior.
-        La lista de los carriers ahora está en label_typesV2.json    
+        La lista de los carriers ahora está en labels_typesV2.json    
 """
 
 logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s', datefmt='%Y-%d-%m %I:%M:%S %p',
@@ -603,7 +603,7 @@ def procesar():
                     break
 
                 # Revisar el caso de etiqueta que es:
-                label_case = load_label_types('label_typesV2.json', carrier)
+                label_case = load_label_types('labels_typesV2.json', carrier)
 
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
                 if label_case != False:  # Si el caso está en los carriers existentes en la lista

@@ -614,7 +614,7 @@ def procesar():
                     break
 
                 # Revisar el caso de etiqueta que es:
-                label_case_guide_number_logic = get_label_case('label_types.json', marketplace,
+                label_case_guide_number_logic = get_label_case('labels_types.json', marketplace,
                                                                carrier)  # Tipo de etiqueta con la logica de obtener el carrier del campo guide number
                 label_type_carrier_logic = load_label_types('labels_typesV2.json',
                                                             carrier)  # Tipo de etiqueta con la logica de obtener el carrier del campo carrier

@@ -590,7 +590,7 @@ def procesar():
                     break
 
                 # Revisar el caso de etiqueta que es:
-                label_case = load_label_types('label_typesV2.json', carrier)
+                label_case = load_label_types('labels_typesV2.json', carrier)
 
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
                 if label_case != False:  # Si el caso está en los carriers existentes en la lista
