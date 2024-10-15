@@ -28,7 +28,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 # server_url  = 'https://wonderbrands.odoo.com'
 # db_name = 'wonderbrands-main-4539884'
-server_url = 'http://ec2-184-72-194-239.compute-1.amazonaws.com'
+server_url = 'http://ec2-54-86-185-165.compute-1.amazonaws.com'
 db_name = 'somosreyes15'
 
 json_endpoint = "%s/jsonrpc" % server_url
@@ -551,12 +551,12 @@ def procesar():
     try:
         name_so = request.form.get("name_so")
         order_odoo = get_order_id(name_so)
-        if order_odoo == False: # Verificar si las credenciales de Odoo son correctas.
-            order_id = ''
-            logging.info(f'ERROR en credenciales Odoo para {ubicacion}')
-            respuesta = f'ERROR en credenciales Odoo para {ubicacion}'
-            formulario = 'error.html'
-            return render_template(formulario, name_so=name_so, order_id=order_id, respuesta=respuesta)
+        # if order_odoo == False: # Verificar si las credenciales de Odoo son correctas.
+        #     order_id = ''
+        #     logging.info(f'ERROR en credenciales Odoo para {ubicacion}')
+        #     respuesta = f'ERROR en credenciales Odoo para {ubicacion}'
+        #     formulario = 'error.html'
+        #     return render_template(formulario, name_so=name_so, order_id=order_id, respuesta=respuesta)
 
         order_id = order_odoo.get('marketplace_order_id')
         seller_marketplace = order_odoo.get('seller_marketplace')
@@ -673,6 +673,17 @@ def procesar():
 
         print('respuesta:', respuesta)
         formulario = 'mostrar.html'
+
+    except AttributeError:
+        order_id = ''
+        logging.info(f'ERROR en credenciales Odoo para {ubicacion}')
+        respuesta = f'ERROR en credenciales Odoo para {ubicacion}'
+        formulario = 'error.html'
+    except TypeError:
+        order_id = ''
+        logging.info(f'Información incompleta en Odoo para la orden: {name_so}')
+        respuesta = f'Información incompleta en Odoo para la orden: {name_so}'
+        formulario = 'error.html'
     except Exception as e:
         order_id = ''
         logging.info(f'ERROR de try en PROCESAR {str(e)}')

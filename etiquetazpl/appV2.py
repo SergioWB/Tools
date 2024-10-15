@@ -16,6 +16,16 @@ from datetime import datetime, timedelta
 import time
 import tokens_meli as tk_meli
 
+__description__ = """
+        Version 2.0
+        Esta versión agrega las siguientes funcionalidades:
+        
+        1. Validación automática del PICK y VALPICK si aun no se han hecho.
+        2. Nueva lógica para manejar el carrier con el nuevo campo select_carrier. Se 
+        cambia por la logica anterior.
+        La lista de los carriers ahora está en label_typesV2.json    
+"""
+
 logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s', datefmt='%Y-%d-%m %I:%M:%S %p',
                     level=logging.INFO)
 
@@ -137,6 +147,12 @@ def load_label_types(filename, carrier):
 
 def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
     try:
+        """
+        Habilitar esta linea para que los movimientos de Pick y Valpick se validen con usuario data.
+        La desventaja es que la contraseña de data se expone en un json.
+        Si no se habilita, los movimientos se validan con el usuario que se conecta la sesion.
+        """
+        # user_id, user_name, password = get_password_user('data@wonderbrands.co')
         # Buscar el ID del picking (VALPICK o PICK dependiendo del tipo pasado)
         transfer_id = search_valpick_id(so_name, type)
 
@@ -550,12 +566,12 @@ def procesar():
     try:
         name_so = request.form.get("name_so")
         order_odoo = get_order_id(name_so)
-        if order_odoo == False: # Verificar si las credenciales de Odoo son correctas.
-            order_id = ''
-            logging.info(f'ERROR en credenciales Odoo para {ubicacion}')
-            respuesta = f'ERROR en credenciales Odoo para {ubicacion}'
-            formulario = 'error.html'
-            return render_template(formulario, name_so=name_so, order_id=order_id, respuesta=respuesta)
+        # if order_odoo == False: # Verificar si las credenciales de Odoo son correctas.
+        #     order_id = ''
+        #     logging.info(f'ERROR en credenciales Odoo para {ubicacion}')
+        #     respuesta = f'ERROR en credenciales Odoo para {ubicacion}'
+        #     formulario = 'error.html'
+        #     return render_template(formulario, name_so=name_so, order_id=order_id, respuesta=respuesta)
 
         order_id = order_odoo.get('marketplace_order_id')
         seller_marketplace = order_odoo.get('seller_marketplace')
@@ -580,7 +596,7 @@ def procesar():
 
             try:
 
-                if not guide_number:
+                if not guide_number or not carrier:
                     order_id = ''
                     respuesta = 'Esta orden de venta aun no tiene numero de guia'
                     formulario = 'error.html'
@@ -670,6 +686,16 @@ def procesar():
 
         print('respuesta:', respuesta)
         formulario = 'mostrar.html'
+    except AttributeError:
+        order_id = ''
+        logging.info(f'ERROR en credenciales Odoo para {ubicacion}')
+        respuesta = f'ERROR en credenciales Odoo para {ubicacion}'
+        formulario = 'error.html'
+    except TypeError:
+        order_id = ''
+        logging.info(f'Información incompleta en Odoo para la orden: {name_so}')
+        respuesta = f'Información incompleta en Odoo para la orden: {name_so}'
+        formulario = 'error.html'
     except Exception as e:
         order_id = ''
         logging.info(f'ERROR de try en PROCESAR {str(e)}')
