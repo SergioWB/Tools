@@ -620,7 +620,7 @@ def procesar():
                                                             carrier)  # Tipo de etiqueta con la logica de obtener el carrier del campo carrier
 
                 if label_case_guide_number_logic != False:
-                    print_label_case = label_case_guide_number_logic
+                    print_label_case = carrier 
                 elif label_type_carrier_logic != False:
                     print_label_case = label_type_carrier_logic
                 else:
