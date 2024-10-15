@@ -276,12 +276,11 @@ def get_order_id(name):
                                              "args": [db_name, user_id, password, "sale.order", "search_read",
                                                       search_domain,
                                                       ['channel_order_reference', 'name', 'yuju_seller_id',
-                                                       'yuju_carrier_tracking_ref', 'team_id']]}})
+                                                       'yuju_carrier_tracking_ref', 'team_id', 'x_studio_paquetera_carrier']]}})
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
             # print (res)
             marketplace_order_id = res['result'][0]['channel_order_reference']
-            print('channel_order_reference', marketplace_order_id)
             seller_marketplace = res['result'][0]['yuju_seller_id']
             order_odoo_id = res['result'][0]['id']
             carrier = res['result'][0]['x_studio_paquetera_carrier'] # 'x_studio_paquetera_carrier' / 'select_carrier'
