@@ -619,6 +619,13 @@ def procesar():
                 label_type_carrier_logic = load_label_types('labels_typesV2.json',
                                                             carrier)  # Tipo de etiqueta con la logica de obtener el carrier del campo carrier
 
+                if label_case_guide_number_logic != False:
+                    print_label_case = label_case_guide_number_logic
+                elif label_type_carrier_logic != False:
+                    print_label_case = label_type_carrier_logic
+                else:
+                    print_label_case = 'NO ENCONTRADO'
+
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
                 if label_type_carrier_logic != False or (
                         'fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13,
@@ -638,11 +645,11 @@ def procesar():
                         print_label_date = datetime.strptime(response_fedex.get('shplbl_print_date'),
                                                              "%Y-%m-%d %H:%M:%S")
                         print_label_date = print_label_date + gap_timedelta
-                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con carrier {carrier.upper()} pero ya fue impresa el dia: ' + str(
+                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con carrier {print_label_case.upper()} pero ya fue impresa el dia: ' + str(
                             print_label_date)
                         order_id = order_id
                     else:
-                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {carrier.upper()} y se imprimió de manera correcta'
+                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se imprimió de manera correcta'
                         order_id = order_id
                         set_pick_done(name_so)
 
@@ -696,7 +703,7 @@ def procesar():
                             set_pick_done(name_so)
 
                 else:
-                    respuesta = f'El carrier de esta orden: {carrier} no existe, por lo que no peude ser procesada.'
+                    respuesta = f'El carrier de esta orden: {print_label_case} no existe, por lo que no peude ser procesada.'
             except Exception as e:
                 logging.error(f'ERROR: {e}')
                 respuesta = f'Error de conexión, {e}'

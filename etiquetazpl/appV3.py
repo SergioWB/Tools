@@ -572,6 +572,7 @@ def procesar():
         guide_number = order_odoo.get('guide_number')
 
         carrier = order_odoo.get('carrier')
+        print(f'////// Carrier: {carrier} ///////')
         marketplace = team_id.lower().split("_")[1]
 
         # ******* Fusion de logica con guide_number y carrier *******
