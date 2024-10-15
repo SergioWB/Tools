@@ -130,7 +130,7 @@ def get_label_case(filename, marketplace, carrier):
     if marketplace in data and carrier in data[marketplace]:
         return data[marketplace][carrier]
     else:
-        return None
+        return False
 
 
 def load_label_types(filename, carrier):
@@ -625,6 +625,8 @@ def procesar():
                     print_label_case = label_type_carrier_logic
                 else:
                     print_label_case = 'NO ENCONTRADO'
+
+                print(print_label_case)
 
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
                 if label_type_carrier_logic != False or (
