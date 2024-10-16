@@ -257,7 +257,7 @@ def print_zpl(so_name, ubicacion, order_odoo_id):
 
         print_zpl_response = ''
 
-        data = bytes(zpl_hack, 'utf-8')
+        data = base64.b64encode(bytes(zpl_hack, 'utf-8')).decode('utf-8')
 
         # Payload para el print node
         payload = {
