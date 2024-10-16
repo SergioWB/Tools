@@ -17,9 +17,11 @@ import time
 import tokens_meli as tk_meli
 
 __description__ = """
-        Version 3.0
-        Extiende la version 2.0 para permitir que se impriman guias del carrier segun viene de
-        'yuju_carrier_tracking_ref' (guide_number) o de 'select_carrier' (carrier).
+        Version 4.0
+        Extiende la version 3.0 para permitir realizar la conexion con las impresoras termicas.
+        Realizamos la conexion con la API de Print node.
+        Cambia la logica para la obtencion del usuario de odoo, realizamos el match con el numero de impresora:
+        
 """
 
 logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s', datefmt='%Y-%d-%m %I:%M:%S %p',
@@ -48,7 +50,7 @@ headers = {"Content-Type": "application/json"}
 def get_password_user(usuario):
     with open('credentials.json') as f:
         data = json.load(f)
-        for usuario_data in data:
+        for usuario_data in data["USUARIOS"]:
             if usuario_data["USUARIO"] == usuario:
                 return usuario_data["ID_ODOO"], usuario_data["USUARIO"], usuario_data["CONTRASEÑA"]
     return None
@@ -228,7 +230,14 @@ def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
         return False
 
 
-######################################
+#################################################
+########## FUNCTIONS API Print Node #############
+def get_api_key():
+    with open('credentials.json') as f:
+        data = json.load(f)
+        return data.get("API_KEY")
+
+##################################################
 
 def get_json_payload(service, method, *args):
     return json.dumps({
@@ -352,11 +361,6 @@ def ubicacion_impresoras():
     # print (archivo_comfiguracion)
     with open(archivo_comfiguracion, 'r') as file:
         config = json.load(file)
-    # print (config)
-    IMPRESORA1 = config['IMPRESORA1']
-    # print ('IMPRESORA1',IMPRESORA1)
-    IMPRESORA2 = config['IMPRESORA2']
-    # print ('IMPRESORA2',IMPRESORA2)
     return config
 
 

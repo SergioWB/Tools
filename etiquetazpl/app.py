@@ -206,7 +206,7 @@ def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
                 logging.info(f"{type}: {transfer_id} ha sido validado y ahora está en estado 'done'.")
                 return True
             else:
-                print(f"{type}: {transfer_id}: aun no está validado")
+                logging.info(f"{type}: {transfer_id}: aun no está validado")
                 # Si no se ha intentado aún con "/PICK/", se hace ahora
                 if not tried_pick:
                     logging.info("Intentando validar el PICK en lugar del VALPICK.")
@@ -279,7 +279,7 @@ def get_order_id(name):
                                                        'yuju_carrier_tracking_ref', 'team_id', 'x_studio_paquetera_carrier']]}})
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
-            # print (res)
+            logging.info(f'RESPONSE INFOOOOO {res}')
             marketplace_order_id = res['result'][0]['channel_order_reference']
             seller_marketplace = res['result'][0]['yuju_seller_id']
             order_odoo_id = res['result'][0]['id']
@@ -620,13 +620,12 @@ def procesar():
                                                             carrier)  # Tipo de etiqueta con la logica de obtener el carrier del campo carrier
 
                 if label_case_guide_number_logic != False:
-                    print_label_case = carrier 
+                    print_label_case = carrier
                 elif label_type_carrier_logic != False:
                     print_label_case = label_type_carrier_logic
                 else:
                     print_label_case = 'NO ENCONTRADO'
 
-                print(print_label_case)
 
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
                 if label_type_carrier_logic != False or (
@@ -710,7 +709,7 @@ def procesar():
                 logging.error(f'ERROR: {e}')
                 respuesta = f'Error de conexión, {e}'
 
-        print('respuesta:', respuesta)
+        logging.info(f'// Respuesta: {respuesta} //')
         formulario = 'mostrar.html'
 
     except AttributeError:
