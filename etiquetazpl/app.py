@@ -7,6 +7,7 @@ import urllib.request
 import getpass
 import http
 import requests
+from requests.auth import HTTPBasicAuth
 from pprint import pprint
 import logging
 import zipfile
@@ -15,11 +16,14 @@ import os
 from datetime import datetime, timedelta
 import time
 import tokens_meli as tk_meli
+import base64
 
 __description__ = """
-        Version 3.0
-        Extiende la version 2.0 para permitir que se impriman guias del carrier segun viene de
-        'yuju_carrier_tracking_ref' (guide_number) o de 'select_carrier' (carrier).
+        Version 4.0
+        Extiende la version 3.0 para permitir realizar la conexion con las impresoras termicas.
+        Realizamos la conexion con la API de Print node.
+        Cambia la logica para la obtencion del usuario de odoo, realizamos el match con el numero de impresora:
+
 """
 
 logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s', datefmt='%Y-%d-%m %I:%M:%S %p',
@@ -48,7 +52,7 @@ headers = {"Content-Type": "application/json"}
 def get_password_user(usuario):
     with open('credentials.json') as f:
         data = json.load(f)
-        for usuario_data in data:
+        for usuario_data in data["USUARIOS"]:
             if usuario_data["USUARIO"] == usuario:
                 return usuario_data["ID_ODOO"], usuario_data["USUARIO"], usuario_data["CONTRASEÑA"]
     return None
@@ -228,7 +232,85 @@ def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
         return False
 
 
-######################################
+#################################################
+########## FUNCTIONS API Print Node #############
+def get_api_key():
+    with open('credentials.json') as f:
+        data = json.load(f)
+        return data.get("API_KEY")
+
+
+print_node_api_key = get_api_key()
+
+
+def print_zpl(so_name, ubicacion, order_odoo_id):
+    try:
+        title = f"{so_name}"
+        label_path = dir_path + '/Etiquetas/Etiqueta_' + so_name + '/Etiqueta de envio.txt'
+        zpl_meli = open(label_path)
+        zpl = zpl_meli.read()
+        zpl_hack = (zpl.replace(' 54030', ' 54030 - ' + so_name))
+        printer_id = get_printer_id(ubicacion)["ID"]
+        printer_name = get_printer_id(ubicacion)["NOMBRE"]
+
+        logging.info(f'EL NOMBRE DE LA IMPRESORA  {ubicacion} ES: {printer_name}')
+
+        print_zpl_response = ''
+
+        data = bytes(zpl_hack, 'utf-8')
+
+        # Payload para el print node
+        payload = {
+            "printerId": printer_id,
+            "title": title,
+            "contentType": "raw_base64",
+            "content": data,
+            "source": "Local File Example"
+        }
+
+        # Realizar la solicitud POST para enviar el trabajo de impresión
+        url = "https://api.printnode.com/printjobs"
+        headers = {"Content-Type": "application/json"}
+
+        response = requests.post(url, json=payload, auth=HTTPBasicAuth(print_node_api_key, ''), headers=headers)
+        # Verificar si la respuesta es exitosa y procesar los datos
+        if response.status_code == 201:
+            response_data = response.json()
+            logging.info('Etiqueta para la orden ' + so_name + ' se ha impreso con exito')
+            resultado = update_imprimio_etiqueta_meli(order_odoo_id)
+            picking = get_picking_id(so_name)
+            logging.info(f'Picking es :  {picking}')
+            picking_id = picking.get('picking_id')
+            resultado_pick = update_imprimio_etiqueta_meli_picking(picking_id)
+
+            if resultado:
+                print_zpl_response += '|Etiqueta para la orden ' + so_name + ' se ha impreso con exito'
+            else:
+                print_zpl_response += '|No se marco la impresión de la Guía para ' + so_name
+
+            if resultado_pick:
+                print_zpl_response += '|Se marco impresión de Etiqueta para el Picking de la orden: ' + so_name + ' con exito'
+            else:
+                print_zpl_response += '|No Se marco impresión de Etiqueta para el Picking de la orden:: ' + so_name
+
+            return print_zpl_response
+        else:
+            print(f"Error al enviar el trabajo de impresión: {response.status_code} - {response.text}")
+
+    except Exception as e:
+        logging.error(f'Error en la conexión con la impresora ZPL: {str(e)}')
+        return "|Error en la conexión con la impresora ZPL: " + str(e)
+
+
+def get_printer_id(location):
+    with open('config_printers_ids.json', 'r') as f:
+        printers_json = json.load(f)
+
+    if location in printers_json:
+        return printers_json[location]  # impresora["NOMBRE"] / impresora["ID"]
+
+
+##################################################
 
 def get_json_payload(service, method, *args):
     return json.dumps({
@@ -276,14 +358,15 @@ def get_order_id(name):
                                              "args": [db_name, user_id, password, "sale.order", "search_read",
                                                       search_domain,
                                                       ['channel_order_reference', 'name', 'yuju_seller_id',
-                                                       'yuju_carrier_tracking_ref', 'team_id', 'x_studio_paquetera_carrier']]}})
+                                                       'yuju_carrier_tracking_ref', 'team_id',
+                                                       'x_studio_paquetera_carrier']]}})
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
-            logging.info(f'RESPONSE INFOOOOO {res}')
+            # print (res)
             marketplace_order_id = res['result'][0]['channel_order_reference']
             seller_marketplace = res['result'][0]['yuju_seller_id']
             order_odoo_id = res['result'][0]['id']
-            carrier = res['result'][0]['x_studio_paquetera_carrier'] # 'x_studio_paquetera_carrier' / 'select_carrier'
+            carrier = res['result'][0]['x_studio_paquetera_carrier']  # 'x_studio_paquetera_carrier' / 'select_carrier'
             team_id = res['result'][0]['team_id'][1]  # La repuesta es [id, team]
             guide_number = res['result'][0]['yuju_carrier_tracking_ref']
 
@@ -352,11 +435,6 @@ def ubicacion_impresoras():
     # print (archivo_comfiguracion)
     with open(archivo_comfiguracion, 'r') as file:
         config = json.load(file)
-    # print (config)
-    IMPRESORA1 = config['IMPRESORA1']
-    # print ('IMPRESORA1',IMPRESORA1)
-    IMPRESORA2 = config['IMPRESORA2']
-    # print ('IMPRESORA2',IMPRESORA2)
     return config
 
 
@@ -450,7 +528,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         # headers = {'Accept': 'application/json','content-type': 'application/json'}
         url = 'https://api.mercadolibre.com/shipment_labels?shipment_ids=' + str(
             shipment_ids) + '&response_type=zpl2&access_token=' + access_token
-        print(url)
+        # print(url)
         r = requests.get(url)
         # print (r.text)
         open('Etiqueta.zip', 'wb').write(r.content)
@@ -461,7 +539,8 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
                 with zipfile.ZipFile("Etiqueta.zip", "r") as zip_ref:
                     zip_ref.extractall("Etiquetas/Etiqueta_" + so_name)
                     respuesta += 'Se proceso el archivo ZPL de la Orden: ' + so_name + ' con éxito'
-                resultado = imprime_zpl(so_name, ubicacion, order_odoo_id)
+                # resultado = imprime_zpl(so_name, ubicacion, order_odoo_id)
+                resultado = print_zpl(so_name, ubicacion, order_odoo_id)
             except Exception as e:
                 respuesta += '|Error al extraer el archivo zpl: ' + str(e)
             finally:
@@ -625,7 +704,6 @@ def procesar():
                     print_label_case = label_type_carrier_logic
                 else:
                     print_label_case = 'NO ENCONTRADO'
-
 
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
                 if label_type_carrier_logic != False or (

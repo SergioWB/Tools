@@ -7,6 +7,7 @@ import urllib.request
 import getpass
 import http
 import requests
+from requests.auth import HTTPBasicAuth
 from pprint import pprint
 import logging
 import zipfile
@@ -15,6 +16,7 @@ import os
 from datetime import datetime, timedelta
 import time
 import tokens_meli as tk_meli
+import base64
 
 __description__ = """
         Version 4.0
@@ -237,6 +239,75 @@ def get_api_key():
         data = json.load(f)
         return data.get("API_KEY")
 
+print_node_api_key =  get_api_key()
+
+def print_zpl(so_name, ubicacion, order_odoo_id):
+    try:
+        title = f"{so_name}"
+        label_path = dir_path + '/Etiquetas/Etiqueta_' + so_name + '/Etiqueta de envio.txt'
+        zpl_meli = open(label_path)
+        zpl = zpl_meli.read()
+        zpl_hack = (zpl.replace(' 54030', ' 54030 - ' + so_name))
+        printer_id = get_printer_id(ubicacion)["ID"]
+        printer_name = get_printer_id(ubicacion)["NOMBRE"]
+
+        logging.info(f'EL NOMBRE DE LA IMPRESORA  {ubicacion} ES: {printer_name}')
+
+        print_zpl_response = ''
+
+        data = bytes(zpl_hack, 'utf-8')
+
+        # Payload para el print node
+        payload = {
+            "printerId": printer_id,
+            "title": title,
+            "contentType": "raw_base64",
+            "content": data,
+            "source": "Local File Example"
+        }
+
+        # Realizar la solicitud POST para enviar el trabajo de impresión
+        url = "https://api.printnode.com/printjobs"
+        headers = {"Content-Type": "application/json"}
+
+        response = requests.post(url, json=payload, auth=HTTPBasicAuth(print_node_api_key, ''), headers=headers)
+        # Verificar si la respuesta es exitosa y procesar los datos
+        if response.status_code == 201:
+            response_data = response.json()
+            logging.info('Etiqueta para la orden ' + so_name + ' se ha impreso con exito')
+            resultado = update_imprimio_etiqueta_meli(order_odoo_id)
+            picking = get_picking_id(so_name)
+            logging.info(f'Picking es :  {picking}')
+            picking_id = picking.get('picking_id')
+            resultado_pick = update_imprimio_etiqueta_meli_picking(picking_id)
+
+            if resultado:
+                print_zpl_response += '|Etiqueta para la orden ' + so_name + ' se ha impreso con exito'
+            else:
+                print_zpl_response += '|No se marco la impresión de la Guía para ' + so_name
+
+            if resultado_pick:
+                print_zpl_response += '|Se marco impresión de Etiqueta para el Picking de la orden: ' + so_name + ' con exito'
+            else:
+                print_zpl_response += '|No Se marco impresión de Etiqueta para el Picking de la orden:: ' + so_name
+
+            return print_zpl_response
+        else:
+            print(f"Error al enviar el trabajo de impresión: {response.status_code} - {response.text}")
+
+    except Exception as e:
+        logging.error(f'Error en la conexión con la impresora ZPL: {str(e)}')
+        return "|Error en la conexión con la impresora ZPL: " + str(e)
+
+
+def get_printer_id(location):
+    with open('config_printers_ids.json', 'r') as f:
+        printers_json = json.load(f)
+
+    if location in printers_json:
+        return printers_json[location] #impresora["NOMBRE"] / impresora["ID"]
+
+
 ##################################################
 
 def get_json_payload(service, method, *args):
@@ -454,7 +525,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         # headers = {'Accept': 'application/json','content-type': 'application/json'}
         url = 'https://api.mercadolibre.com/shipment_labels?shipment_ids=' + str(
             shipment_ids) + '&response_type=zpl2&access_token=' + access_token
-        print(url)
+        #print(url)
         r = requests.get(url)
         # print (r.text)
         open('Etiqueta.zip', 'wb').write(r.content)
@@ -465,7 +536,8 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
                 with zipfile.ZipFile("Etiqueta.zip", "r") as zip_ref:
                     zip_ref.extractall("Etiquetas/Etiqueta_" + so_name)
                     respuesta += 'Se proceso el archivo ZPL de la Orden: ' + so_name + ' con éxito'
-                resultado = imprime_zpl(so_name, ubicacion, order_odoo_id)
+                #resultado = imprime_zpl(so_name, ubicacion, order_odoo_id)
+                resultado = print_zpl(so_name, ubicacion, order_odoo_id)
             except Exception as e:
                 respuesta += '|Error al extraer el archivo zpl: ' + str(e)
             finally:
