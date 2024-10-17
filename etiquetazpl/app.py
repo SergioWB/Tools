@@ -359,7 +359,7 @@ def get_order_id(name):
                                                       search_domain,
                                                       ['channel_order_reference', 'name', 'yuju_seller_id',
                                                        'yuju_carrier_tracking_ref', 'team_id',
-                                                       'x_studio_paquetera_carrier']]}})
+                                                       'select_carrier']]}}) # 'x_studio_paquetera_carrier' / 'select_carrier'
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
             # print (res)
