@@ -36,10 +36,10 @@ logging.info('\n')
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-# server_url  = 'https://wonderbrands.odoo.com'
-# db_name = 'wonderbrands-main-4539884'
-server_url = 'http://ec2-54-86-185-165.compute-1.amazonaws.com'
-db_name = 'somosreyes15'
+server_url  = 'https://wonderbrands.odoo.com'
+db_name = 'wonderbrands-main-4539884'
+# server_url = 'http://ec2-54-86-185-165.compute-1.amazonaws.com'
+# db_name = 'somosreyes15'
 
 json_endpoint = "%s/jsonrpc" % server_url
 
@@ -366,7 +366,7 @@ def get_order_id(name):
             marketplace_order_id = res['result'][0]['channel_order_reference']
             seller_marketplace = res['result'][0]['yuju_seller_id']
             order_odoo_id = res['result'][0]['id']
-            carrier = res['result'][0]['x_studio_paquetera_carrier']  # 'x_studio_paquetera_carrier' / 'select_carrier'
+            carrier = res['result'][0]['select_carrier']  # 'x_studio_paquetera_carrier' / 'select_carrier'
             team_id = res['result'][0]['team_id'][1]  # La repuesta es [id, team]
             guide_number = res['result'][0]['yuju_carrier_tracking_ref']
 
