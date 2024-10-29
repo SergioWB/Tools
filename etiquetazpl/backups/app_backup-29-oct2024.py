@@ -36,7 +36,7 @@ logging.info('\n')
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-server_url = 'https://wonderbrands.odoo.com'
+server_url  = 'https://wonderbrands.odoo.com'
 db_name = 'wonderbrands-main-4539884'
 # server_url = 'http://ec2-54-86-185-165.compute-1.amazonaws.com'
 # db_name = 'somosreyes15'
@@ -359,14 +359,14 @@ def get_order_id(name):
                                                       search_domain,
                                                       ['channel_order_reference', 'name', 'yuju_seller_id',
                                                        'yuju_carrier_tracking_ref', 'team_id',
-                                                       'x_studio_paquetera_carrier']]}})
+                                                       'select_carrier']]}}) # 'x_studio_paquetera_carrier' / 'select_carrier'
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
             # print (res)
             marketplace_order_id = res['result'][0]['channel_order_reference']
             seller_marketplace = res['result'][0]['yuju_seller_id']
             order_odoo_id = res['result'][0]['id']
-            carrier = res['result'][0]['x_studio_paquetera_carrier']  # 'x_studio_paquetera_carrier' / 'select_carrier'
+            carrier = res['result'][0]['select_carrier']  # 'x_studio_paquetera_carrier' / 'select_carrier'
             team_id = res['result'][0]['team_id'][1]  # La repuesta es [id, team]
             guide_number = res['result'][0]['yuju_carrier_tracking_ref']
 
@@ -498,12 +498,12 @@ def recupera_meli_token(user_id):
         # print 'USER ID:', user_id
         token_dir = ''
 
-        if user_id == 25523702:  # Usuario de SOMOS REYES VENTAS
-            token_dir = '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt'
-        elif user_id == 160190870:  # Usuario de SOMOS REYES OFICIALES
-            token_dir = '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli_oficiales.txt'
-        elif user_id == 1029905409:  # Usuario de SKYBRANDS
-            token_dir = '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli_skyBrands.txt'
+        if user_id == 25523702:# Usuario de SOMOS REYES VENTAS
+            token_dir='/home/server-tnp/meli/tokens_meli.txt'
+        elif user_id == 160190870:# Usuario de SOMOS REYES OFICIALES
+            token_dir='/home/server-tnp/meli/tokens_meli_oficiales.txt'
+        elif user_id == 1029905409:# Usuario de SKYBRANDS
+            token_dir='/home/server-tnp/meli/tokens_meli_skyBrands.txt'
 
         # print token_dir
 
@@ -539,8 +539,8 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
                 with zipfile.ZipFile("Etiqueta.zip", "r") as zip_ref:
                     zip_ref.extractall("Etiquetas/Etiqueta_" + so_name)
                     respuesta += 'Se proceso el archivo ZPL de la Orden: ' + so_name + ' con éxito'
-                # resultado = imprime_zpl(so_name, ubicacion, order_odoo_id)
-                resultado = print_zpl(so_name, ubicacion, order_odoo_id)
+                resultado = imprime_zpl(so_name, ubicacion, order_odoo_id)
+                # resultado = print_zpl(so_name, ubicacion, order_odoo_id)
             except Exception as e:
                 respuesta += '|Error al extraer el archivo zpl: ' + str(e)
             finally:
@@ -668,8 +668,8 @@ def procesar():
                 elif carrier == 'coppel':
                     carrier = 'colecta'
             except Exception as e:
-                carrier = "None"
-                marketplace = "None"
+                carrier = False
+                marketplace = False
 
         logging.info(
             f'ODOO: {order_id}, {name_so}, {seller_marketplace}, {guide_number}, {team_id}, {ubicacion}, {carrier}, {marketplace}')
@@ -687,6 +687,19 @@ def procesar():
             try:
 
                 if not guide_number and not carrier:
+                    """
+                    # SI sr_live_pickot falla: 
+
+                    if team_id.lower() == 'team_mercadolibre':
+                        logging.info(f"TEAMMMMM {team_id.lower()}")
+                        guide_number = "Colecta"
+                    else:
+                        order_id = ''
+                        respuesta = 'Esta orden de venta aun no tiene numero de guia'
+                        formulario = 'error.html'
+                        break
+                    """
+
                     order_id = ''
                     respuesta = 'Esta orden de venta aun no tiene numero de guia'
                     formulario = 'error.html'
@@ -698,6 +711,7 @@ def procesar():
                 label_type_carrier_logic = load_label_types('labels_typesV2.json',
                                                             carrier)  # Tipo de etiqueta con la logica de obtener el carrier del campo carrier
 
+
                 if label_case_guide_number_logic != False:
                     print_label_case = carrier
                 elif label_type_carrier_logic != False:
@@ -705,10 +719,11 @@ def procesar():
                 else:
                     print_label_case = 'NO ENCONTRADO'
 
-                # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
-                # if label_type_carrier_logic != False or ('fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13, 14,15]):  # Si el caso está en los carriers existentes en la lista
+                # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex) label_type_carrier_logic != "Colecta MELI"
                 if (label_type_carrier_logic != False and team_id.lower() != "team_mercadolibre") or (
-                            'fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]):  # Si el caso está en los carriers existentes en la lista
+                        'fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13,
+                                                                                             14,
+                                                                                             15,16,17,18]):  # Si el caso está en los carriers existentes en la lista
                     if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
                         respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
                         break
