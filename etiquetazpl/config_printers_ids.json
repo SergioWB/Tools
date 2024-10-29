@@ -1,22 +1,22 @@
 {
   "IMPRESORA1": {
-    "NOMBRE": "Termica 1 Honeywell",
+    "NOMBRE": "Termica HW1",
     "ID": 73334068
   },
   "IMPRESORA2": {
-    "NOMBRE": "Termica 2 Honeywell",
-    "ID": 73334069
+    "NOMBRE": "Termica HW2",
+    "ID": 73773432
   },
   "IMPRESORA3": {
-    "NOMBRE": "Termica 3 Honeywell",
-    "ID": 73313368
+    "NOMBRE": "Termica HW3",
+    "ID": 73773471
   },
   "IMPRESORA4": {
-    "NOMBRE": "Termica 4 Honeywell",
-    "ID": 73313369
+    "NOMBRE": "Termica HW4",
+    "ID": 73773475
   },
   "IMPRESORA5": {
-    "NOMBRE": "Termica 5 Honeywell",
-    "ID": 73312424
+    "NOMBRE": "Termica HW5",
+    "ID": 73773476
   }
 }
