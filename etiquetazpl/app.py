@@ -443,13 +443,16 @@ def get_order_id(name):
                                                       search_domain,
                                                       ['channel_order_reference', 'name', 'yuju_seller_id',
                                                        'yuju_carrier_tracking_ref', 'team_id',
-                                                       'carrier_selection_relational']]}}) # 'x_studio_paquetera_carrier' / 'select_carrier'
+                                                       'carrier_selection_relational','channel', 'order_line', 'warehouse_id']]}}) # 'x_studio_paquetera_carrier' / 'select_carrier'
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
             # print (res)
             marketplace_order_id = res['result'][0]['channel_order_reference']
             seller_marketplace = res['result'][0]['yuju_seller_id']
             order_odoo_id = res['result'][0]['id']
+            marketplace_name = res['result'][0]['channel']
+            order_lines = res['result'][0]['order_line']
+            warehouse = res['result'][0]['warehouse_id']
             # carrier = res['result'][0]['x_studio_paquetera_carrier']  # 'x_studio_paquetera_carrier' / 'select_carrier'
             try:
                 carrier = res['result'][0]['carrier_selection_relational'][1]  # 'x_studio_paquetera_carrier' / 'select_carrier'
@@ -459,7 +462,7 @@ def get_order_id(name):
             guide_number = res['result'][0]['yuju_carrier_tracking_ref']
 
             return dict(marketplace_order_id=marketplace_order_id, seller_marketplace=seller_marketplace,
-                        order_odoo_id=order_odoo_id, carrier=carrier, team_id=team_id, guide_number=guide_number)
+                        order_odoo_id=order_odoo_id, carrier=carrier, team_id=team_id, guide_number=guide_number, marketplace_name=marketplace_name, order_lines=order_lines,warehouse=warehouse)
         else:
             logging.error("Error: No se tiene un id de usuario, revisa el listado de usuarios")
             return False
@@ -737,6 +740,14 @@ def procesar():
         order_odoo_id = order_odoo.get('order_odoo_id')
         team_id = order_odoo.get('team_id')
         guide_number = order_odoo.get('guide_number')
+
+        # ***** NEW order data
+        markeplace_name = order_odoo.get('marketplace_name')
+        order_lines = order_odoo.get('order_lines')
+        warehouse = order_odoo.get('warehouse')
+
+        logging.INFO(f'NEW DATAAAAAAAAAA {markeplace_name}, {order_lines}, {warehouse}')
+
 
         carrier = order_odoo.get('carrier')
         marketplace = team_id.lower().split("_")[1]
