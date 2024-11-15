@@ -301,124 +301,87 @@ def print_zpl(so_name, ubicacion, order_odoo_id):
         return "|Error en la conexión con la impresora ZPL: " + str(e)
 
 # ******** New label function ****
-def print_zpl(so_name, ubicacion, order_odoo_id):
+def out_zpl_label(so_name, ubicacion, team, carrier, cliente, sku_list_qtys, out, almacen):
     try:
-        # Leer y preparar la primera etiqueta ZPL (Etiqueta de envío)
-        title = f"{so_name}"
-        label_path = dir_path + '/Etiquetas/Etiqueta_' + so_name + '/Etiqueta de envio.txt'
-        zpl_meli = open(label_path)
-        zpl = zpl_meli.read()
-        zpl_hack = (zpl.replace(' 54030', ' 54030 - ' + so_name))
+        logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {cliente}, {sku_list_qtys}, {out}, {almacen}")
 
-        # Obtener detalles de la impresora
+        print_log =  ubicacion, team, carrier, cliente, sku_list_qtys, out, almacen
         printer_id = get_printer_id(ubicacion)["ID"]
         printer_name = get_printer_id(ubicacion)["NOMBRE"]
-        logging.info(f'EL NOMBRE DE LA IMPRESORA {ubicacion} ES: {printer_name}')
 
-        # Codificar en base64 para el payload
-        data = base64.b64encode(bytes(zpl_hack, 'utf-8')).decode('utf-8')
+        qty_skus = len(sku_list_qtys)
+        for sku in sku_list_qtys:
+            pass
 
-        # Payload para la primera etiqueta (envío)
-        payload = {
+        so_code = so_name.replace("SO", "")
+        # Preparar la segunda etiqueta ZPL (datos de la orden en 4x6)
+        zpl_code_extra = f"""
+                    ^XA
+                    ^FO350,50^GFA,2940,2940,49,,:::::::::::gU03CV03CgO078,gT07FCU07FCgN0FF8,gS01FFCT01FFCgM03FF8,003FFE01IF003IFV01FFCT01FFCgM03FF8,I07FF803FFC00FFEW0FFCU0FFCgN0FF8,I03FFC01FFE007FEW07FCU07FCgN07F8,I03FFC00IF003FCW03FCU03FCgN07F8,I01FFE00IF003FCW03FCU03FCgN07F8,I01IF007FF801F8W03FCU03FCgN07F8,J0IF007FF801F8W03FCU03FCgN07F8,J0IF807FFC01FX07FCU03FCgN0FF8,J07FF807FFC00F00FFR07IFC001FCP03FF3FJ0607800FF8Q0JF800FF,J07FFC03FFE00E03FFCI0383F8001JFC007FF8001C1FI03JFC003E1FC07FFEI0383F8003JF807FFE,J03FFC03FFE00E0JF001F8FFC007JFC01IFC00FC7F8003JFE01FE3FE0JFI0F8FFE007JF80JF,J03FFE03IF00C1JF80FFDFFE00KFC03F07E07FCFFC003KF07FE7FE1F87F80FFDIF01KF81F83F,J01FFE03IF00C3FC3FC1LF00FF8FFC07F07F0FFCFFC003FF1FF8FFE7FE3F03F81LF01FF1FF83F01F,J01FFE03IF8187F81FE3LF01FF07FC0FE03F1KFC003FC0FFC7JFE3F03FC3LF03FE0FF83F01F,K0IF03IF818FF01FE1IF9FF83FE03FC1FE03F8IF9F8003FC07FC1FFCFC7F03FC0IF9FF87FC07F87F00F,K0IF07IFC18FF00FF07FE0FF83FC03FC1FE03F83FF0F8003FC03FC1FF8387F03FC07FE07F87FC07F87F8,K07FF87IFC30FF00FF07FC07F83FC03FC1FE03F83FFK03FC03FE0FF8003E03FC03FC07F8FF807F87FFC,K07FFDE3FFE31FF00FF03FC07F87FC03FC3FC07F83FEK03FC03FE0FFJ0803FC03FC07F8FF807F87FFC,K03IFC1IFE1FF00FF83FC07F87FC03FC3FC0FF83FEK03FC03FE0FFL0FFC03FC07F8FF807F83IFE,K03IFC1IFE1FF00FF83FC07F87F803FC3KF83FEK03FC01FE0FFK07FFC03FC07F8FF807F83IFE,K01IF80IFE1FE00FF83FC07F87F803FC3KF83FEK03FC01FE0FFJ03FBFC03FC07F8FF807F81JF,K01IF80IFC1FE00FF83FC07F87F803FC3FF8I03FEK03FC01FE0FFJ0FE3FC03FC07F8FF807F81JF,L0IF807FFC1FF00FF83FC07F87F803FC3FFJ03FEK03FC03FE0FFI01F83FC03FC07F8FF807F807IF8181C,L0IF007FF81FF00FF83FC07F87FC03FC3FEJ03FEK03FC03FE0FFI03F83FC03FC07F8FF807F801IF83FFC,L07FF003FF81FF00FF03FC07F87FC03FC3FEJ03FEK03FC03FE0FFI07F03FC03FC07F8FF807F8003FF81FFC,L07FE003FF80FF00FF03FC07F87FC03FC1FEJ03FEK03FC03FC0FFI07F03FC03FC07F8FF807F87007F81FF8,L03FE001FF00FF00FF03FC07F83FC03FC1FF00103FEK03FC03FC0FFI0FF03FC03FC07F87FC07F87803F81FF8,L03FE001FF007F01FE03FC07F83FE03FC1FF80303FEK03FC07FC0FFI0FF03FC03FC07F87FC07F87C03F81FF8,L01FCI0FE007F81FE07FC07F81FF07FC0FFE0F83FEK03FE0FF81FF800FF87FC03FC07F83FE0FF87C03F81FF8,L01FCI0FE003FC7FC07FC07F81KFE07JF03FFK07KF01FFC007FCFFC87FC07F83KFC7C03F01FF8,M0F8I07C001JF80FFC0FFC0LF03IFE07FF8J0KFC07FFE007KF87FC0FFC1KFE7E07E01FF8,M0F8I07CI0JF01IF3FFE07KF01IFC0IFEI01KFC07IF003FF9FF9IF3FFE0KFE3IFC01FFC,M078I03CI03FFC01IF1IF03FF3FF007FF00IFCJ0FF8FF807FFE001FE0FF1IF1IF03FE7FE0IF003FFC,M07J038J03CI07FE0FFE003M07T018001FF8I03801807FE0FFE007L0F,,::::::::::^FS
+
+                    ^FX Top section with logo, name and address.
+                    ^CF0,50
+                    ^FO50,140^FDOrden: {so_name}^FS
+                    ^CF0,30
+                    ^FO50,200^FDEquipo de ventas: {team}^FS
+                    ^FO50,240^FDTransportista: {carrier}^FS
+                    ^FO50,300^GB700,3,3^FS
+
+                    ^FX Second section with recipient address and permit information.
+                    ^CFA,30
+                    ^FO50,330^FD{cliente}^FS
+                    ^FO50,370^FDOut {out}^FS
+                    ^FO50,410^FD{almacen}^FS
+                    ^FO50,450^FDAG (TLP)^FS
+                    ^CFA,15
+                    ^FO600,330^GB150,150,3^FS
+                    ^FO638,370^FDINFO^FS
+                    ^FO638,420^FD123456^FS
+                    ^FO50,530^GB700,3,3^FS
+
+                    ^FX Third section with bar code.
+                    ^BY5,2,270
+                    ^FO100,580^BC^FD{so_code}^FS
+
+                    ^FX Fourth section (the two boxes on the bottom).
+                    ^FO50,930^GB700,250,3^FS
+                    ^FO400,930^GB3,250,3^FS
+                    ^CF0,40
+                    ^FO100,990^FDSKU1 : {sku_list_qtys[0]}^FS
+                    ^CF0,190
+                    ^FO470,985^FDAG^FS
+
+                    ^XZ
+                    """
+
+        data_extra = base64.b64encode(bytes(zpl_code_extra, 'utf-8')).decode('utf-8')
+
+        # Crear el payload para enviar la etiqueta adicional
+        payload_extra = {
             "printerId": printer_id,
-            "title": title,
+            "title": f"Etiqueta Extra - {so_name}",
             "contentType": "raw_base64",
-            "content": data,
-            "source": "Local File Example"
+            "content": data_extra,
+            "source": "Auto-generated Extra Label"
         }
-
-        # Realizar la solicitud POST para la primera impresión
+        # Enviar la solicitud POST a PrintNode
         url = "https://api.printnode.com/printjobs"
         headers = {"Content-Type": "application/json"}
-        response = requests.post(url, json=payload, auth=HTTPBasicAuth(print_node_api_key, ''), headers=headers)
+        response_extra = requests.post(url, json=payload_extra, auth=HTTPBasicAuth(print_node_api_key, ''),
+                                       headers=headers)
 
-        # Verificar el resultado de la primera impresión
-        if response.status_code == 201:
-            logging.info(f'Etiqueta para la orden {so_name} se ha impreso con éxito')
-            resultado = update_imprimio_etiqueta_meli(order_odoo_id)
-            picking = get_picking_id(so_name)
-            picking_id = picking.get('picking_id')
-            resultado_pick = update_imprimio_etiqueta_meli_picking(picking_id)
-
-            # Preparar la segunda etiqueta ZPL (datos de la orden en 4x6)
-            zpl_code_extra = f"""
-            ^XA
-            ^CF0,60
-            ^FO50,50^FDOrden: {so_name}^FS
-            ^FO50,120^GB700,5,5^FS
-            ^FO50,150^CF0,50^FDCliente: {ubicacion}^FS
-            ^FO50,220^CF0,50^FDPicking ID: {picking_id}^FS
-            ^FO50,300^BCN,100,Y,N,N
-            ^FD{so_name}^FS
-            ^XZ
-            """
-
-            f"""
-            ^XA
-            ^FO350,50^GFA,2940,2940,49,,:::::::::::gU03CV03CgO078,gT07FCU07FCgN0FF8,gS01FFCT01FFCgM03FF8,003FFE01IF003IFV01FFCT01FFCgM03FF8,I07FF803FFC00FFEW0FFCU0FFCgN0FF8,I03FFC01FFE007FEW07FCU07FCgN07F8,I03FFC00IF003FCW03FCU03FCgN07F8,I01FFE00IF003FCW03FCU03FCgN07F8,I01IF007FF801F8W03FCU03FCgN07F8,J0IF007FF801F8W03FCU03FCgN07F8,J0IF807FFC01FX07FCU03FCgN0FF8,J07FF807FFC00F00FFR07IFC001FCP03FF3FJ0607800FF8Q0JF800FF,J07FFC03FFE00E03FFCI0383F8001JFC007FF8001C1FI03JFC003E1FC07FFEI0383F8003JF807FFE,J03FFC03FFE00E0JF001F8FFC007JFC01IFC00FC7F8003JFE01FE3FE0JFI0F8FFE007JF80JF,J03FFE03IF00C1JF80FFDFFE00KFC03F07E07FCFFC003KF07FE7FE1F87F80FFDIF01KF81F83F,J01FFE03IF00C3FC3FC1LF00FF8FFC07F07F0FFCFFC003FF1FF8FFE7FE3F03F81LF01FF1FF83F01F,J01FFE03IF8187F81FE3LF01FF07FC0FE03F1KFC003FC0FFC7JFE3F03FC3LF03FE0FF83F01F,K0IF03IF818FF01FE1IF9FF83FE03FC1FE03F8IF9F8003FC07FC1FFCFC7F03FC0IF9FF87FC07F87F00F,K0IF07IFC18FF00FF07FE0FF83FC03FC1FE03F83FF0F8003FC03FC1FF8387F03FC07FE07F87FC07F87F8,K07FF87IFC30FF00FF07FC07F83FC03FC1FE03F83FFK03FC03FE0FF8003E03FC03FC07F8FF807F87FFC,K07FFDE3FFE31FF00FF03FC07F87FC03FC3FC07F83FEK03FC03FE0FFJ0803FC03FC07F8FF807F87FFC,K03IFC1IFE1FF00FF83FC07F87FC03FC3FC0FF83FEK03FC03FE0FFL0FFC03FC07F8FF807F83IFE,K03IFC1IFE1FF00FF83FC07F87F803FC3KF83FEK03FC01FE0FFK07FFC03FC07F8FF807F83IFE,K01IF80IFE1FE00FF83FC07F87F803FC3KF83FEK03FC01FE0FFJ03FBFC03FC07F8FF807F81JF,K01IF80IFC1FE00FF83FC07F87F803FC3FF8I03FEK03FC01FE0FFJ0FE3FC03FC07F8FF807F81JF,L0IF807FFC1FF00FF83FC07F87F803FC3FFJ03FEK03FC03FE0FFI01F83FC03FC07F8FF807F807IF8181C,L0IF007FF81FF00FF83FC07F87FC03FC3FEJ03FEK03FC03FE0FFI03F83FC03FC07F8FF807F801IF83FFC,L07FF003FF81FF00FF03FC07F87FC03FC3FEJ03FEK03FC03FE0FFI07F03FC03FC07F8FF807F8003FF81FFC,L07FE003FF80FF00FF03FC07F87FC03FC1FEJ03FEK03FC03FC0FFI07F03FC03FC07F8FF807F87007F81FF8,L03FE001FF00FF00FF03FC07F83FC03FC1FF00103FEK03FC03FC0FFI0FF03FC03FC07F87FC07F87803F81FF8,L03FE001FF007F01FE03FC07F83FE03FC1FF80303FEK03FC07FC0FFI0FF03FC03FC07F87FC07F87C03F81FF8,L01FCI0FE007F81FE07FC07F81FF07FC0FFE0F83FEK03FE0FF81FF800FF87FC03FC07F83FE0FF87C03F81FF8,L01FCI0FE003FC7FC07FC07F81KFE07JF03FFK07KF01FFC007FCFFC87FC07F83KFC7C03F01FF8,M0F8I07C001JF80FFC0FFC0LF03IFE07FF8J0KFC07FFE007KF87FC0FFC1KFE7E07E01FF8,M0F8I07CI0JF01IF3FFE07KF01IFC0IFEI01KFC07IF003FF9FF9IF3FFE0KFE3IFC01FFC,M078I03CI03FFC01IF1IF03FF3FF007FF00IFCJ0FF8FF807FFE001FE0FF1IF1IF03FE7FE0IF003FFC,M07J038J03CI07FE0FFE003M07T018001FF8I03801807FE0FFE007L0F,,::::::::::^FS
-            
-            ^FX Top section with logo, name and address.
-            ^CF0,50
-            ^FO50,140^FDOrden: SO12345678^FS
-            ^CF0,30
-            ^FO50,200^FDCliente: Walmart^FS
-            ^FO50,240^FDCarrier: FedEx^FS
-            ^FO50,300^GB700,3,3^FS
-            
-            ^FX Second section with recipient address and permit information.
-            ^CFA,30
-            ^FO50,330^FDAlex Colin^FS
-            ^FO50,370^FDOut xxx^FS
-            ^FO50,410^FDAlmacen General^FS
-            ^FO50,450^FDAG (TLP)^FS
-            ^CFA,15
-            ^FO600,330^GB150,150,3^FS
-            ^FO638,370^FDINFO^FS
-            ^FO638,420^FD123456^FS
-            ^FO50,530^GB700,3,3^FS
-            
-            ^FX Third section with bar code.
-            ^BY5,2,270
-            ^FO100,580^BC^FD12345678^FS
-            
-            ^FX Fourth section (the two boxes on the bottom).
-            ^FO50,930^GB700,250,3^FS
-            ^FO400,930^GB3,250,3^FS
-            ^CF0,40
-            ^FO100,990^FDSKU1^FS
-            ^FO100,1040^FDSKU2^FS
-            ^FO100,1090^FDSKU3^FS
-            ^CF0,190
-            ^FO470,985^FDAG^FS
-            
-            ^XZ
-            """
-            # Codificar en base64
-            data_extra = base64.b64encode(bytes(zpl_code_extra, 'utf-8')).decode('utf-8')
-
-            # Payload para la segunda impresión (etiqueta adicional)
-            payload_extra = {
-                "printerId": printer_id,
-                "title": f"Etiqueta Extra - {so_name}",
-                "contentType": "raw_base64",
-                "content": data_extra,
-                "source": "Auto-generated Extra Label"
-            }
-
-            # Enviar la segunda etiqueta
-            response_extra = requests.post(url, json=payload_extra, auth=HTTPBasicAuth(print_node_api_key, ''),
-                                           headers=headers)
-
-            if response_extra.status_code == 201:
-                logging.info(f'Etiqueta adicional para la orden {so_name} se ha impreso con éxito')
-            else:
-                logging.error(
-                    f"Error al imprimir la etiqueta adicional: {response_extra.status_code} - {response_extra.text}")
+        # Verificar el resultado de la impresión
+        if response_extra.status_code == 201:
+            logging.info(f'Etiqueta adicional para la orden {so_name} se ha impreso con éxito')
+            return f'Etiqueta adicional para la orden {so_name} se ha impreso con éxito'
         else:
-            logging.error(f"Error al enviar la primera etiqueta: {response.status_code} - {response.text}")
+            error_msg = f"Error al imprimir la etiqueta adicional: {response_extra.status_code} - {response_extra.text}"
+            logging.error(error_msg)
+            return error_msg
     except Exception as e:
-        logging.error(f'Error en la conexión con la impresora ZPL: {str(e)}')
-        return "|Error en la conexión con la impresora ZPL: " + str(e)
+        error_msg = f'Error en la conexión con la impresora ZPL (etiqueta adicional): {str(e)}'
+        logging.error(error_msg)
+        return error_msg
 
 
 # ********************************
@@ -854,6 +817,7 @@ def procesar():
                         respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se imprimió de manera correcta'
                         order_id = order_id
                         set_pick_done(name_so)
+                        out_zpl_label(name_so,ubicacion,team_id,carrier,"CLIENTE",["BALON34f", "SILLA56x"],"OUT_TEST","ALMACEN GENERAL TEST")
 
                 elif team_id.lower() == 'team_mercadolibre':  # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
                     if seller_marketplace == '160190870':
