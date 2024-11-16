@@ -446,13 +446,12 @@ def get_order_id(name):
                                                        'carrier_selection_relational','channel', 'order_line', 'warehouse_id']]}}) # 'x_studio_paquetera_carrier' / 'select_carrier'
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
-            # print (res)
             marketplace_order_id = res['result'][0]['channel_order_reference']
             seller_marketplace = res['result'][0]['yuju_seller_id']
             order_odoo_id = res['result'][0]['id']
             marketplace_name = res['result'][0]['channel']
             order_lines = res['result'][0]['order_line']
-            warehouse = res['result'][0]['warehouse_id']
+            warehouse = res['result'][0]['warehouse_id'][1]
             # carrier = res['result'][0]['x_studio_paquetera_carrier']  # 'x_studio_paquetera_carrier' / 'select_carrier'
             try:
                 carrier = res['result'][0]['carrier_selection_relational'][1]  # 'x_studio_paquetera_carrier' / 'select_carrier'
@@ -743,10 +742,11 @@ def procesar():
 
         # ***** NEW order data
         markeplace_name = order_odoo.get('marketplace_name')
-        order_lines = order_odoo.get('order_lines')
+        order_lines_list = order_odoo.get('order_lines')
         warehouse = order_odoo.get('warehouse')
 
-        logging.INFO(f'NEW DATAAAAAAAAAA {markeplace_name}, {order_lines}, {warehouse}')
+        logging.INFO(f'NEW DATAAAAAAAAAA {markeplace_name}, {order_lines_list}, {warehouse}')
+
 
 
         carrier = order_odoo.get('carrier')
