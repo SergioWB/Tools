@@ -743,11 +743,11 @@ def procesar():
         guide_number = order_odoo.get('guide_number')
 
         # ***** NEW order data
-        markeplace_name = order_odoo.get('marketplace_name')
+        marketplace_name = order_odoo.get('marketplace_name')
         order_lines_list = order_odoo.get('order_lines')
         warehouse = order_odoo.get('warehouse')
 
-        logging.INFO(f'NEW DATAAAAAAAAAA {markeplace_name}, {order_lines_list}, {warehouse}')
+        logging.INFO(f'NEW DATAAAAAAAAAA {marketplace_name}, {order_lines_list}, {warehouse}')
 
 
 
