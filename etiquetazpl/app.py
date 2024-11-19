@@ -57,7 +57,7 @@ def get_password_user(usuario):
     return None
 
 
-def search_valpick_id(so_name, type='/VALPICK/'):  # /VALPICK/  /PICK/
+def search_valpick_id(so_name, type='/VALPICK/'):  # /VALPICK/  /PICK/  /OUT/
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -300,12 +300,14 @@ def print_zpl(so_name, ubicacion, order_odoo_id):
         logging.error(f'Error en la conexión con la impresora ZPL: {str(e)}')
         return "|Error en la conexión con la impresora ZPL: " + str(e)
 
-# ******** New label function ****
-def out_zpl_label(so_name, ubicacion, team, carrier, cliente, sku_list_qtys, out, almacen):
+# ******** New label functions ****
+def out_zpl_label(so_name, ubicacion, team, carrier, cliente, sku_list_qtys, almacen):
     try:
-        logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {cliente}, {sku_list_qtys}, {out}, {almacen}")
+        out_name = search_valpick_id(so_name, type='/OUT/')
 
-        print_log =  ubicacion, team, carrier, cliente, sku_list_qtys, out, almacen
+        logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {cliente}, {sku_list_qtys}, {out_name}, {almacen}")
+
+        print_log =  ubicacion, team, carrier, cliente, sku_list_qtys, almacen
         printer_id = get_printer_id(ubicacion)["ID"]
         printer_name = get_printer_id(ubicacion)["NOMBRE"]
 
@@ -330,7 +332,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, cliente, sku_list_qtys, out
                     ^FX Second section with recipient address and permit information.
                     ^CFA,30
                     ^FO50,330^FD{cliente}^FS
-                    ^FO50,370^FDOut {out}^FS
+                    ^FO50,370^FDOut {out_name}^FS
                     ^FO50,410^FD{almacen}^FS
                     ^FO50,450^FDAG (TLP)^FS
                     ^CFA,15
@@ -341,12 +343,12 @@ def out_zpl_label(so_name, ubicacion, team, carrier, cliente, sku_list_qtys, out
 
                     ^FX Third section with bar code.
                     ^BY5,2,270
-                    ^FO100,580^BC^FD{so_code}^FS
+                    ^FO70,580^BC^FD{so_code}^FS
 
                     ^FX Fourth section (the two boxes on the bottom).
                     ^FO50,930^GB700,250,3^FS
                     ^FO400,930^GB3,250,3^FS
-                    ^CF0,40
+                    ^CF0,25
                     ^FO100,990^FDSKU1 : {sku_list_qtys[0]}^FS
                     ^CF0,190
                     ^FO470,985^FDAG^FS
@@ -828,7 +830,7 @@ def procesar():
                         respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se imprimió de manera correcta'
                         order_id = order_id
                         set_pick_done(name_so)
-                        out_zpl_label(name_so,ubicacion,team_id,carrier,"CLIENTE",["BALON34f", "SILLA56x"],"OUT_TEST","ALMACEN GENERAL TEST")
+                        out_zpl_label(name_so,ubicacion,team_id,carrier,"CLIENTE",["BALON34f", "SILLA56x"], "ALMACEN GENERAL TEST")
 
                 elif team_id.lower() == 'team_mercadolibre':  # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
                     if seller_marketplace == '160190870':
