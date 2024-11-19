@@ -742,20 +742,13 @@ def procesar():
         team_id = order_odoo.get('team_id')
         guide_number = order_odoo.get('guide_number')
 
-        print(order_odoo)
-
         # ***** NEW order data
         marketplace_name = order_odoo.get('marketplace_name')
-        print(marketplace_name)
         order_lines_list = order_odoo.get('order_lines')
-        print(order_lines_list)
         warehouse = order_odoo.get('warehouse')
-        print(warehouse)
 
-        print(order_odoo)
 
-        logging.INFO(f'NEW DATAAAAAAAAAA {marketplace_name}, {order_lines_list}, {warehouse}')
-
+        logging.info(f'NEW DATAAAAAAAAAA {marketplace_name}, {order_lines_list}, {warehouse}')
 
 
         carrier = order_odoo.get('carrier')
