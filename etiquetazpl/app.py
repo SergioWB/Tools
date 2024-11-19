@@ -736,17 +736,23 @@ def procesar():
     try:
         name_so = request.form.get("name_so")
         order_odoo = get_order_id(name_so)
-        print(order_odoo)
         order_id = order_odoo.get('marketplace_order_id')
         seller_marketplace = order_odoo.get('seller_marketplace')
         order_odoo_id = order_odoo.get('order_odoo_id')
         team_id = order_odoo.get('team_id')
         guide_number = order_odoo.get('guide_number')
 
+        print(order_odoo)
+
         # ***** NEW order data
         marketplace_name = order_odoo.get('marketplace_name')
+        print(marketplace_name)
         order_lines_list = order_odoo.get('order_lines')
+        print(order_lines_list)
         warehouse = order_odoo.get('warehouse')
+        print(warehouse)
+
+        print(order_odoo)
 
         logging.INFO(f'NEW DATAAAAAAAAAA {marketplace_name}, {order_lines_list}, {warehouse}')
 
@@ -831,7 +837,7 @@ def procesar():
                         respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se imprimió de manera correcta'
                         order_id = order_id
                         set_pick_done(name_so)
-                        out_zpl_label(name_so,ubicacion,team_id,carrier,"CLIENTE",["BALON34f", "SILLA56x"], "ALMACEN GENERAL TEST")
+                        out_zpl_label(name_so,ubicacion,team_id,carrier,"CLIENTE",["BALON34f", "SILLA56x"], warehouse)
 
                 elif team_id.lower() == 'team_mercadolibre':  # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
                     if seller_marketplace == '160190870':
