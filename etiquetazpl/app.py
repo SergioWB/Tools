@@ -303,15 +303,18 @@ def print_zpl(so_name, ubicacion, order_odoo_id):
         return "|Error en la conexión con la impresora ZPL: " + str(e)
 
 # ******** New label functions ****
-def out_zpl_label(so_name, ubicacion, team, carrier, cliente, sku_list_qtys, almacen):
+def out_zpl_label(so_name, ubicacion, team, carrier, cliente, order_lines_list, almacen):
     try:
         out_name = search_valpick_id(so_name, type='/OUT/', name=True)
 
-        logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {cliente}, {sku_list_qtys}, {out_name}, {almacen}")
+        logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {cliente}, {order_lines_list}, {out_name}, {almacen}")
 
-        print_log =  ubicacion, team, carrier, cliente, sku_list_qtys, almacen
+        print_log =  ubicacion, team, carrier, cliente, order_lines_list, almacen
         printer_id = get_printer_id(ubicacion)["ID"]
         printer_name = get_printer_id(ubicacion)["NOMBRE"]
+
+        sku_list_qtys = get_order_line_skus(order_lines_list)
+        print(sku_list_qtys)
 
         qty_skus = len(sku_list_qtys)
         for sku in sku_list_qtys:
@@ -432,6 +435,40 @@ def get_user_id():
 
 # HARDCODE
 # user_id = 162
+
+def get_order_line_skus(order_line_ids):
+    # Crear el dominio para filtrar las líneas de pedido por sus IDs
+    search_domain = [['id', 'in', order_line_ids]]
+
+    # Construir el payload para buscar las líneas de pedido
+    payload = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "call",
+        "params": {
+            "service": "object",
+            "method": "execute",
+            "args": [
+                db_name, user_id, password,
+                "sale.order.line",  # Modelo a consultar
+                "search_read",
+                search_domain,  # Filtro por IDs
+                ['product_id', 'product_id.default_code']  # Campos necesarios
+            ]
+        }
+    })
+
+    # Hacer la petición
+    response = requests.post(json_endpoint, data=payload, headers=headers).json()
+
+    # Extraer SKUs (default_code) de la respuesta
+    skus = []
+    if 'result' in response and response['result']:
+        for line in response['result']:
+            sku = line.get('product_id.default_code', None)
+            if sku:  # Solo agregar si existe un SKU
+                skus.append(sku)
+
+    return skus
 
 
 def get_order_id(name):
@@ -832,7 +869,7 @@ def procesar():
                         respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se imprimió de manera correcta'
                         order_id = order_id
                         set_pick_done(name_so)
-                        out_zpl_label(name_so,ubicacion,team_id,carrier,"CLIENTE",["BALON34f", "SILLA56x"], warehouse)
+                        out_zpl_label(name_so,ubicacion,team_id,carrier,"CLIENTE",order_lines_list, warehouse)
 
                 elif team_id.lower() == 'team_mercadolibre':  # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
                     if seller_marketplace == '160190870':
