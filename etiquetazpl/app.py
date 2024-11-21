@@ -58,7 +58,7 @@ def get_password_user(usuario):
     return None
 
 
-def search_valpick_id(so_name, type='/VALPICK/', name = False):  # /VALPICK/  /PICK/  /OUT/
+def search_valpick_id(so_name, type='/VALPICK/', name_id = False):  # /VALPICK/  /PICK/  /OUT/
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -77,7 +77,7 @@ def search_valpick_id(so_name, type='/VALPICK/', name = False):  # /VALPICK/  /P
             id_valpick = res['result'][0]['id']
             valpick_name = res['result'][0]['name']
 
-            return valpick_name if name else id_valpick
+            return valpick_name, id_valpick if name_id else id_valpick
 
         else:
             logging.error("Error: No se encontro orden de venta")
@@ -349,9 +349,9 @@ def get_order_line_skus(order_line_ids):
 
 def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
     try:
-        out_name = search_valpick_id(so_name, type='/OUT/', name=True)
+        out_name, out_id = search_valpick_id(so_name, type='/OUT/', name=True)
 
-        logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {order_lines_list}, {out_name}, {almacen}")
+        logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {order_lines_list}, {out_name}, {out_id}, {almacen}")
 
         print_log =  ubicacion, team, carrier, order_lines_list, almacen
         printer_id = get_printer_id(ubicacion)["ID"]
@@ -359,10 +359,16 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
 
         sku_list_qtys = get_order_line_skus(order_lines_list)
 
+        # Ajuste del cuadro inferior para la cantidad de SKUs
         qty_skus = len(sku_list_qtys)
-        for sku in sku_list_qtys:
-            pass
+        size_button_square = 250
+        if qty_skus > 5 :
+            extra_size = (qty_skus - 5) * 35
+            size_button_square += extra_size
 
+        web_link = f"https://wonderbrands.odoo.com/web#id={out_id}&cids=1&menu_id=262&action=383&active_id=1366982&model=stock.picking&view_type=form"
+        print(web_link)
+        
         so_code = so_name.replace("SO", "")
         # Preparar la segunda etiqueta ZPL (datos de la orden en 4x6)
         zpl_code = f"""
@@ -384,8 +390,8 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
                     ^FO50,450^FDAG (TLP)^FS
                     ^CFA,15
                     ^FO600,330^GB150,150,3^FS
-                    ^FO638,370^FDINFO^FS
-                    ^FO638,420^FD123456^FS
+                    ^FO620,350^BQN,2,10
+                    ^FDLA,www.tupaginaweb.com^FS
                     ^FO50,530^GB700,3,3^FS
 
                     ^FX Third section with bar code.
@@ -393,8 +399,8 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
                     ^FO70,580^BC^FD{so_code}^FS
 
                     ^FX Fourth section (the two boxes on the bottom).
-                    ^FO50,930^GB700,350,3^FS
-                    ^FO400,930^GB3,350,3^FS
+                    ^FO50,930^GB700,{size_button_square},3^FS
+                    ^FO400,930^GB3,{size_button_square},3^FS
                     ^CF0,25
                     
                     """
