@@ -57,7 +57,7 @@ def get_password_user(usuario):
     return None
 
 
-def search_valpick_id(so_name, type='/VALPICK/'):  # /VALPICK/  /PICK/  /OUT/
+def search_valpick_id(so_name, type='/VALPICK/', name = False):  # /VALPICK/  /PICK/  /OUT/
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -74,8 +74,10 @@ def search_valpick_id(so_name, type='/VALPICK/'):  # /VALPICK/  /PICK/  /OUT/
             # print (res)
 
             id_valpick = res['result'][0]['id']
+            valpick_name = res['result'][0]['name']
 
-            return id_valpick
+            return valpick_name if name else id_valpick
+
         else:
             logging.error("Error: No se encontro orden de venta")
             return False
@@ -157,7 +159,7 @@ def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
 
         """
         # Buscar el ID del picking (VALPICK o PICK dependiendo del tipo pasado)
-        transfer_id = search_valpick_id(so_name, type)
+        transfer_id = search_valpick_id(so_name, type=type)
 
         # Si no se encuentra el picking, retorna False
         if not transfer_id:
@@ -303,7 +305,7 @@ def print_zpl(so_name, ubicacion, order_odoo_id):
 # ******** New label functions ****
 def out_zpl_label(so_name, ubicacion, team, carrier, cliente, sku_list_qtys, almacen):
     try:
-        out_name = search_valpick_id(so_name, type='/OUT/')
+        out_name = search_valpick_id(so_name, type='/OUT/', name=True)
 
         logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {cliente}, {sku_list_qtys}, {out_name}, {almacen}")
 
