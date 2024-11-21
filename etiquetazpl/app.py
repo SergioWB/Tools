@@ -412,7 +412,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
         # Agregamos el final del ZPL
         zpl_code += f"""
                 ^CF0,190
-                ^FO470,1005^FDAG^FS
+                ^FO470,1025^FDAG^FS
                 ^XZ
                 """
         data_extra = base64.b64encode(bytes(zpl_code, 'utf-8')).decode('utf-8')
