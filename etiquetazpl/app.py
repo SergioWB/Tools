@@ -376,35 +376,35 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
 
                     ^FX Top section with logo, name and address.
                     ^CF0,50
-                    ^FO50,140^FDOrden: {so_name}^FS
+                    ^FO50,160^FDOrden: {so_name}^FS
                     ^CF0,30
-                    ^FO50,200^FDEquipo de ventas: {team}^FS
-                    ^FO50,240^FDTransportista: {carrier}^FS
-                    ^FO50,300^GB700,3,3^FS
+                    ^FO50,220^FDEquipo de ventas: {team}^FS
+                    ^FO50,260^FDTransportista: {carrier}^FS
+                    ^FO50,320^GB700,3,3^FS
 
                     ^FX Second section with recipient address and permit information.
                     ^CFA,30
-                    ^FO50,370^FDOUT: {out_name}^FS
-                    ^FO50,410^FD{almacen}^FS
-                    ^FO50,450^FDAG (TLP)^FS
+                    ^FO50,390^FDOUT: {out_name}^FS
+                    ^FO50,430^FD{almacen}^FS
+                    ^FO50,480^FDAG (TLP)^FS
                     ^CFA,15
-                    ^FO500,310^BQN,2,5
+                    ^FO500,330^BQN,2,5
                     ^FDLA,{web_link}^FS
-                    ^FO50,550^GB700,3,3^FS
+                    ^FO50,580^GB700,3,3^FS
 
                     ^FX Third section with bar code.
-                    ^BY5,2,270
-                    ^FO75,580^BC^FD{so_code}^FS
+                    ^BY5,2,300
+                    ^FO75,610^BC^FD{so_code}^FS
 
                     ^FX Fourth section (the two boxes on the bottom).
-                    ^FO50,930^GB700,{size_button_square},3^FS
-                    ^FO400,930^GB3,{size_button_square},3^FS
+                    ^FO50,960^GB700,{size_button_square},3^FS
+                    ^FO400,960^GB3,{size_button_square},3^FS
                     ^CF0,25
                     
                     """
 
         # Ahora agregamos los SKUs uno debajo de otro
-        y_position = 990  # Empezamos en la posición 990 para el primer SKU
+        y_position = 1010  # Empezamos en la posición 990 para el primer SKU
         for i, sku in enumerate(sku_list_qtys):
             zpl_code += f"^FO100,{y_position}^FDSKU {i + 1}: {sku}^FS\n"
             y_position += 35  # Incrementamos la posición vertical para el siguiente SKU
