@@ -17,6 +17,7 @@ from datetime import datetime, timedelta
 import time
 import tokens_meli as tk_meli
 import base64
+import re
 
 __description__ = """
         Version 5.0
@@ -452,7 +453,7 @@ def get_order_line_skus(order_line_ids):
                 "sale.order.line",  # Modelo a consultar
                 "search_read",
                 search_domain,  # Filtro por IDs
-                ['product_id', 'product_id.default_code']  # Campos necesarios
+                ['product_id']  # Solo necesitamos product_id
             ]
         }
     })
@@ -460,15 +461,23 @@ def get_order_line_skus(order_line_ids):
     # Hacer la petición
     response = requests.post(json_endpoint, data=payload, headers=headers).json()
 
-    # Extraer SKUs (default_code) de la respuesta
+    # Validar que la respuesta contiene resultados
+    if 'result' not in response or not response['result']:
+        return []
+
+    # Extraer los SKUs de los product_id (usando una expresión regular para obtener el SKU entre corchetes)
     skus = []
-    if 'result' in response and response['result']:
-        for line in response['result']:
-            sku = line.get('product_id.default_code', None)
-            if sku:  # Solo agregar si existe un SKU
+    for line in response['result']:
+        product_id = line.get('product_id')
+        if product_id:
+            # Usar una expresión regular para extraer el SKU de la cadena entre corchetes
+            match = re.match(r"\[(.*?)\]", product_id)
+            if match:
+                sku = match.group(1)  # Extraer el SKU (la parte dentro de los corchetes)
                 skus.append(sku)
 
     return skus
+
 
 
 def get_order_id(name):
