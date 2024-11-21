@@ -393,17 +393,17 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
                     ^FO70,580^BC^FD{so_code}^FS
 
                     ^FX Fourth section (the two boxes on the bottom).
-                    ^FO50,930^GB700,250,3^FS
-                    ^FO400,930^GB3,250,3^FS
+                    ^FO50,930^GB700,350,3^FS
+                    ^FO400,930^GB3,350,3^FS
                     ^CF0,25
                     
                     """
 
         # Ahora agregamos los SKUs uno debajo de otro
         y_position = 990  # Empezamos en la posición 990 para el primer SKU
-        for sku in sku_list_qtys:
-            zpl_code += "^FO100,{0}^FD{1}: {2}^FS\n".format(y_position, "SKU", sku)
-            y_position += 40  # Incrementamos la posición vertical para el siguiente SKU
+        for i, sku in enumerate(sku_list_qtys):
+            zpl_code += f"^FO100,{y_position}^FDSKU {i + 1}: {sku}^FS\n"
+            y_position += 35  # Incrementamos la posición vertical para el siguiente SKU
 
         # Agregamos el final del ZPL
         zpl_code += f"""
