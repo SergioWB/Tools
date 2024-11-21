@@ -360,7 +360,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
 
         # Ajuste del cuadro inferior para la cantidad de SKUs
         qty_skus = len(sku_list_qtys)
-        size_button_square = 250
+        size_button_square = 270
         if qty_skus > 5 :
             extra_size = (qty_skus - 5) * 35
             size_button_square += extra_size
