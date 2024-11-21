@@ -672,8 +672,8 @@ def procesar():
                 elif carrier == 'coppel':
                     carrier = 'colecta'
             except Exception as e:
-                carrier = "None"
-                marketplace = "None"
+                carrier = False
+                marketplace = False
 
         logging.info(
             f'ODOO: {order_id}, {name_so}, {seller_marketplace}, {guide_number}, {team_id}, {ubicacion}, {carrier}, {marketplace}')
