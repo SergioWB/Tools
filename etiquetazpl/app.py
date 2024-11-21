@@ -406,7 +406,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
         # Ahora agregamos los SKUs uno debajo de otro
         y_position = 1020  # Empezamos en la posición 990 para el primer SKU
         for i, sku in enumerate(sku_list_qtys):
-            zpl_code += f"^F90,{y_position}^FDSKU {i + 1}: {sku}^FS\n"
+            zpl_code += f"^FO90,{y_position}^FDSKU {i + 1}: {sku}^FS\n"
             y_position += 35  # Incrementamos la posición vertical para el siguiente SKU
 
         # Agregamos el final del ZPL
