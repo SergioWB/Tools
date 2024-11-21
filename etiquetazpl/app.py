@@ -353,7 +353,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
 
         logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {order_lines_list}, {out_name}, {almacen}")
 
-        print_log =  ubicacion, team, carrier, cliente, order_lines_list, almacen
+        print_log =  ubicacion, team, carrier, order_lines_list, almacen
         printer_id = get_printer_id(ubicacion)["ID"]
         printer_name = get_printer_id(ubicacion)["NOMBRE"]
 
