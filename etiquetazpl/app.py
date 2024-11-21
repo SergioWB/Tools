@@ -77,13 +77,13 @@ def search_valpick_id(so_name, type='/VALPICK/', name_id = False):  # /VALPICK/ 
             id_valpick = res['result'][0]['id']
             valpick_name = res['result'][0]['name']
 
-            return valpick_name, id_valpick if name_id else id_valpick
+            return (valpick_name, id_valpick) if name_id else id_valpick
 
         else:
             logging.error("Error: No se encontro orden de venta")
             return False
     except Exception as e:
-        logging.error('Error:' + str(e))
+        logging.error('Error en search_valpick_id:' + str(e))
         return False
 
 
@@ -350,6 +350,7 @@ def get_order_line_skus(order_line_ids):
 def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
     try:
         out_name, out_id = search_valpick_id(so_name, type='/OUT/', name_id=True)
+        print(out_name, out_id)
 
         logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {order_lines_list}, {out_name}, {out_id}, {almacen}")
 
@@ -528,7 +529,7 @@ def get_order_id(name):
             logging.error("Error: No se tiene un id de usuario, revisa el listado de usuarios")
             return False
     except Exception as e:
-        logging.error('Error:' + str(e))
+        logging.error('Error general get_order_id:' + str(e))
         return False
 
 
@@ -944,7 +945,7 @@ def procesar():
                 else:
                     respuesta = f'{print_label_case} La orden no tiene el campo  "Paquetería" en Odoo, por lo que no peude ser procesada.'
             except Exception as e:
-                logging.error(f'ERROR: {e}')
+                logging.error(f'ERROR en lógica de procesamiento: {e}')
                 respuesta = f'Error de conexión, {e}'
 
         logging.info(f'// Respuesta: {respuesta} //')
