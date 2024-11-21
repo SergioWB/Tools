@@ -394,7 +394,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
 
                     ^FX Third section with bar code.
                     ^BY5,2,300
-                    ^FO75,610^BC^FD{so_code}^FS
+                    ^FO80,610^BC^FD{so_code}^FS
 
                     ^FX Fourth section (the two boxes on the bottom).
                     ^FO50,960^GB700,{size_button_square},3^FS
