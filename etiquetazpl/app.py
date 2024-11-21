@@ -404,7 +404,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
                     """
 
         # Ahora agregamos los SKUs uno debajo de otro
-        y_position = 1010  # Empezamos en la posición 990 para el primer SKU
+        y_position = 1020  # Empezamos en la posición 990 para el primer SKU
         for i, sku in enumerate(sku_list_qtys):
             zpl_code += f"^FO100,{y_position}^FDSKU {i + 1}: {sku}^FS\n"
             y_position += 35  # Incrementamos la posición vertical para el siguiente SKU
@@ -412,7 +412,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
         # Agregamos el final del ZPL
         zpl_code += f"""
                 ^CF0,190
-                ^FO500,985^FDAG^FS
+                ^FO530,985^FDAG^FS
                 ^XZ
                 """
         data_extra = base64.b64encode(bytes(zpl_code, 'utf-8')).decode('utf-8')
