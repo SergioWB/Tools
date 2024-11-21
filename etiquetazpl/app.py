@@ -471,7 +471,7 @@ def get_order_line_skus(order_line_ids):
         product_id = line.get('product_id')
         if product_id:
             # Usar una expresión regular para extraer el SKU de la cadena entre corchetes
-            match = re.match(r"\[(.*?)\]", product_id)
+            match = re.search(r"\[(.*?)\]", product_id[1])
             if match:
                 sku = match.group(1)  # Extraer el SKU (la parte dentro de los corchetes)
                 skus.append(sku)
