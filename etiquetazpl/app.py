@@ -361,7 +361,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, cliente, sku_list_qtys, alm
         # Crear el payload para enviar la etiqueta adicional
         payload_extra = {
             "printerId": printer_id,
-            "title": f"Etiqueta Extra - {so_name}",
+            "title": f"OUT label - {so_name}",
             "contentType": "raw_base64",
             "content": data_extra,
             "source": "Auto-generated Extra Label"
