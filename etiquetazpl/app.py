@@ -349,7 +349,7 @@ def get_order_line_skus(order_line_ids):
 
 def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
     try:
-        out_name, out_id = search_valpick_id(so_name, type='/OUT/', name=True)
+        out_name, out_id = search_valpick_id(so_name, type='/OUT/', name_id=True)
 
         logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {order_lines_list}, {out_name}, {out_id}, {almacen}")
 
@@ -368,7 +368,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
 
         web_link = f"https://wonderbrands.odoo.com/web#id={out_id}&cids=1&menu_id=262&action=383&active_id=1366982&model=stock.picking&view_type=form"
         print(web_link)
-        
+
         so_code = so_name.replace("SO", "")
         # Preparar la segunda etiqueta ZPL (datos de la orden en 4x6)
         zpl_code = f"""
