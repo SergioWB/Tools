@@ -397,8 +397,8 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
                     ^FO80,610^BC^FD{so_code}^FS
 
                     ^FX Fourth section (the two boxes on the bottom).
-                    ^FO50,960^GB700,{size_button_square},3^FS
-                    ^FO400,960^GB3,{size_button_square},3^FS
+                    ^FO50,980^GB700,{size_button_square},3^FS
+                    ^FO400,980^GB3,{size_button_square},3^FS
                     ^CF0,25
                     
                     """
@@ -412,7 +412,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
         # Agregamos el final del ZPL
         zpl_code += f"""
                 ^CF0,190
-                ^FO470,985^FDAG^FS
+                ^FO500,985^FDAG^FS
                 ^XZ
                 """
         data_extra = base64.b64encode(bytes(zpl_code, 'utf-8')).decode('utf-8')
