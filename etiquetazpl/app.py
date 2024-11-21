@@ -384,13 +384,13 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
 
                     ^FX Second section with recipient address and permit information.
                     ^CFA,30
-                    ^FO50,370^FDOut {out_name}^FS
+                    ^FO50,370^FDOUT: {out_name}^FS
                     ^FO50,410^FD{almacen}^FS
                     ^FO50,450^FDAG (TLP)^FS
                     ^CFA,15
                     ^FO500,310^BQN,2,5
                     ^FDLA,{web_link}^FS
-                    ^FO50,530^GB700,3,3^FS
+                    ^FO50,550^GB700,3,3^FS
 
                     ^FX Third section with bar code.
                     ^BY5,2,270
