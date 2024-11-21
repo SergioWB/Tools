@@ -304,18 +304,60 @@ def print_zpl(so_name, ubicacion, order_odoo_id):
         return "|Error en la conexión con la impresora ZPL: " + str(e)
 
 # ******** New label functions ****
-def out_zpl_label(so_name, ubicacion, team, carrier, cliente, order_lines_list, almacen):
+
+def get_order_line_skus(order_line_ids):
+    # Crear el dominio para filtrar las líneas de pedido por sus IDs
+    search_domain = [['id', 'in', order_line_ids]]
+
+    # Construir el payload para buscar las líneas de pedido
+    payload = json.dumps({
+        "jsonrpc": "2.0",
+        "method": "call",
+        "params": {
+            "service": "object",
+            "method": "execute",
+            "args": [
+                db_name, user_id, password,
+                "sale.order.line",  # Modelo a consultar
+                "search_read",
+                search_domain,  # Filtro por IDs
+                ['product_id']  # Solo necesitamos product_id
+            ]
+        }
+    })
+
+    # Hacer la petición
+    response = requests.post(json_endpoint, data=payload, headers=headers).json()
+
+    # Validar que la respuesta contiene resultados
+    if 'result' not in response or not response['result']:
+        return []
+
+    # Extraer los SKUs de los product_id (usando una expresión regular para obtener el SKU entre corchetes)
+    skus = []
+    for line in response['result']:
+        product_id = line.get('product_id')
+        if product_id:
+            # Usar una expresión regular para extraer el SKU de la cadena entre corchetes
+            match = re.search(r"\[(.*?)\]", product_id[1])
+            if match:
+                sku = match.group(1)  # Extraer el SKU (la parte dentro de los corchetes)
+                skus.append(sku)
+
+    return skus
+
+
+def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
     try:
         out_name = search_valpick_id(so_name, type='/OUT/', name=True)
 
-        logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {cliente}, {order_lines_list}, {out_name}, {almacen}")
+        logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {order_lines_list}, {out_name}, {almacen}")
 
         print_log =  ubicacion, team, carrier, cliente, order_lines_list, almacen
         printer_id = get_printer_id(ubicacion)["ID"]
         printer_name = get_printer_id(ubicacion)["NOMBRE"]
 
         sku_list_qtys = get_order_line_skus(order_lines_list)
-        print(sku_list_qtys)
 
         qty_skus = len(sku_list_qtys)
         for sku in sku_list_qtys:
@@ -337,7 +379,6 @@ def out_zpl_label(so_name, ubicacion, team, carrier, cliente, order_lines_list, 
 
                     ^FX Second section with recipient address and permit information.
                     ^CFA,30
-                    ^FO50,330^FD{cliente}^FS
                     ^FO50,370^FDOut {out_name}^FS
                     ^FO50,410^FD{almacen}^FS
                     ^FO50,450^FDAG (TLP)^FS
@@ -355,7 +396,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, cliente, order_lines_list, 
                     ^FO50,930^GB700,250,3^FS
                     ^FO400,930^GB3,250,3^FS
                     ^CF0,25
-                    ^FO100,990^FDSKU1 : {sku_list_qtys[0]}^FS
+                    ^FO100,990^FDProductos: {"; ".join(sku_list_qtys)}^FS
                     ^CF0,190
                     ^FO470,985^FDAG^FS
 
@@ -436,49 +477,6 @@ def get_user_id():
 
 # HARDCODE
 # user_id = 162
-
-def get_order_line_skus(order_line_ids):
-    # Crear el dominio para filtrar las líneas de pedido por sus IDs
-    search_domain = [['id', 'in', order_line_ids]]
-
-    # Construir el payload para buscar las líneas de pedido
-    payload = json.dumps({
-        "jsonrpc": "2.0",
-        "method": "call",
-        "params": {
-            "service": "object",
-            "method": "execute",
-            "args": [
-                db_name, user_id, password,
-                "sale.order.line",  # Modelo a consultar
-                "search_read",
-                search_domain,  # Filtro por IDs
-                ['product_id']  # Solo necesitamos product_id
-            ]
-        }
-    })
-
-    # Hacer la petición
-    response = requests.post(json_endpoint, data=payload, headers=headers).json()
-
-    # Validar que la respuesta contiene resultados
-    if 'result' not in response or not response['result']:
-        return []
-
-    # Extraer los SKUs de los product_id (usando una expresión regular para obtener el SKU entre corchetes)
-    skus = []
-    for line in response['result']:
-        product_id = line.get('product_id')
-        if product_id:
-            # Usar una expresión regular para extraer el SKU de la cadena entre corchetes
-            match = re.search(r"\[(.*?)\]", product_id[1])
-            if match:
-                sku = match.group(1)  # Extraer el SKU (la parte dentro de los corchetes)
-                skus.append(sku)
-
-    return skus
-
-
 
 def get_order_id(name):
     try:
@@ -878,7 +876,7 @@ def procesar():
                         respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se imprimió de manera correcta'
                         order_id = order_id
                         set_pick_done(name_so)
-                        out_zpl_label(name_so,ubicacion,team_id,carrier,"CLIENTE",order_lines_list, warehouse)
+                        out_zpl_label(name_so,ubicacion,team_id,carrier,order_lines_list, warehouse)
 
                 elif team_id.lower() == 'team_mercadolibre':  # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
                     if seller_marketplace == '160190870':
