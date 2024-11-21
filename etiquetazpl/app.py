@@ -388,7 +388,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
                     ^FO50,410^FD{almacen}^FS
                     ^FO50,450^FDAG (TLP)^FS
                     ^CFA,15
-                    ^FO600,350^BQN,2,8
+                    ^FO500,310^BQN,2,5
                     ^FDLA,{web_link}^FS
                     ^FO50,530^GB700,3,3^FS
 
