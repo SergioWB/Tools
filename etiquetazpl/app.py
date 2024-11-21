@@ -353,8 +353,6 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
         print(out_name, out_id)
 
         logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {order_lines_list}, {out_name}, {out_id}, {almacen}")
-
-        print_log =  ubicacion, team, carrier, order_lines_list, almacen
         printer_id = get_printer_id(ubicacion)["ID"]
         printer_name = get_printer_id(ubicacion)["NOMBRE"]
 
@@ -390,14 +388,13 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
                     ^FO50,410^FD{almacen}^FS
                     ^FO50,450^FDAG (TLP)^FS
                     ^CFA,15
-                    ^FO600,330^GB150,150,3^FS
-                    ^FO620,350^BQN,2,10
-                    ^FDLA,www.tupaginaweb.com^FS
+                    ^FO600,350^BQN,2,8
+                    ^FDLA,{web_link}^FS
                     ^FO50,530^GB700,3,3^FS
 
                     ^FX Third section with bar code.
                     ^BY5,2,270
-                    ^FO70,580^BC^FD{so_code}^FS
+                    ^FO75,580^BC^FD{so_code}^FS
 
                     ^FX Fourth section (the two boxes on the bottom).
                     ^FO50,930^GB700,{size_button_square},3^FS
