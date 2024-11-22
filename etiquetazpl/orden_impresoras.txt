@@ -1,0 +1,9 @@
+
+
+
+MESA 1/ IMPRESORA 1 / ip: 192.168.0.26 / Termica HW-PC42ET-1 / 73877336 / handheld2.somosreyes@gmail.com
+MESA 2/ IMPRESORA 2 / ip: 192.168.0.22 / Termica HW-2 / 73773432 / empaque@somos-reyes.com
+MESA 3/ IMPRESORA 3 / ip: 192.168.0.16 / Termica HW-3 / 73773471 / devoluciones.somosreyes@gmail.com
+MESA 4/ IMPRESORA 4 / ip: 192.168.0.18 / Termica HW-5 / 73773476 / almacen2@somos-reyes.com
+MESA 5/ IMPRESORA 5 / ip: 192.168.0.17 / Termica HW-4 / 73773475 / Añadir para pruebas
+MESA MC/ IMPRESORA 6 / ip: 192.168.0.23 / Termica HW-MC / 73866980 / preguntas.somosreyes@gmail.com

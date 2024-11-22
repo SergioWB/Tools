@@ -1,7 +1,7 @@
 {
   "IMPRESORA1": {
-    "NOMBRE": "Termica HW_MC",
-    "ID": 73866980
+    "NOMBRE": "Termica_HW_PC42ET-1",
+    "ID": 73877336
   },
   "IMPRESORA2": {
     "NOMBRE": "Termica HW2",
@@ -12,15 +12,15 @@
     "ID": 73773471
   },
   "IMPRESORA4": {
-    "NOMBRE": "Termica HW4",
-    "ID": 73773475
-  },
-  "IMPRESORA5": {
     "NOMBRE": "Termica HW5",
     "ID": 73773476
   },
+  "IMPRESORA5": {
+    "NOMBRE": "Termica HW4",
+    "ID": 73773475
+  },
   "IMPRESORA6": {
-    "NOMBRE": "Termica_HW_PC42ET_1",
-    "ID": 73874642
+    "NOMBRE": "Termica HW_MC",
+    "ID": 73866980
   }
 }
