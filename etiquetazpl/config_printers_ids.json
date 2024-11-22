@@ -1,7 +1,7 @@
 {
   "IMPRESORA1": {
-    "NOMBRE": "Termica HW_MC",
-    "ID": 73866980,
+    "NOMBRE": "Termica HW-PC42ET-1",
+    "ID": 73877336,
     "USER": "handheld2.somosreyes@gmail.com"
   },
   "IMPRESORA2": {
@@ -15,18 +15,18 @@
     "USER": "devoluciones.somosreyes@gmail.com"
   },
   "IMPRESORA4": {
-    "NOMBRE": "Termica HW4",
-    "ID": 73773475,
+    "NOMBRE": "Termica HW5",
+    "ID": 73773476,
     "USER": "almacen2@somos-reyes.com"
   },
   "IMPRESORA5": {
-    "NOMBRE": "Termica HW5",
-    "ID": 73773476,
-    "USER": "preguntas.somosreyes@gmail.com"
+    "NOMBRE": "Termica HW4",
+    "ID": 73773475,
+    "USER": "data@wonderbrands.co"
   },
   "IMPRESORA6": {
-    "NOMBRE": "Termica HW-PC42ET_1",
-    "ID": 73877233,
-    "USER": "almacen2@somos-reyes.com"
+    "NOMBRE": "Termica HW_MC",
+    "ID": 73866980,
+    "USER": "preguntas.somosreyes@gmail.com"
   }
 }
