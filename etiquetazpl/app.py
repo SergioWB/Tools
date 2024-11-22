@@ -412,7 +412,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
         # Agregamos el final del ZPL
         zpl_code += f"""
                 ^CF0,190
-                ^FO470,1025^FDAG^FS
+                ^FO470,1035^FDAG^FS
                 ^XZ
                 """
         data_extra = base64.b64encode(bytes(zpl_code, 'utf-8')).decode('utf-8')
@@ -771,9 +771,10 @@ def inicio():
         session['ubicacion'] = localizacion
         ubicacion = session['ubicacion']
 
-        usuario_odoo = request.form.get("usuario_odoo")
-        session['usuario'] = usuario_odoo
-        user_name = session['usuario']
+        # usuario_odoo = request.form.get("usuario_odoo")
+        # session['usuario'] = usuario_odoo
+        # user_name = session['usuario']
+        user_name = get_printer_id(ubicacion)["USER"]
 
         user_id, user_name, password = get_password_user(user_name)
 
