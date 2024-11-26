@@ -59,6 +59,9 @@ def get_password_user(usuario):
 
 
 def search_valpick_id(so_name, type='/VALPICK/', name_id = False):  # /VALPICK/  /PICK/  /OUT/
+    user_id = session.get('user_id')
+    user_name = session['user_name']
+    password = session['password']
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -88,6 +91,9 @@ def search_valpick_id(so_name, type='/VALPICK/', name_id = False):  # /VALPICK/ 
 
 
 def ejecute_fedex_label(valpick_id):
+    user_id = session.get('user_id')
+    user_name = session['user_name']
+    password = session['password']
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -150,6 +156,9 @@ def load_label_types(filename, carrier):
 
 
 def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
+    user_id = session.get('user_id')
+    user_name = session['user_name']
+    password = session['password']
     try:
         """
         Habilitar esta linea para que los movimientos de Pick y Valpick se validen con usuario data.
@@ -306,6 +315,10 @@ def print_zpl(so_name, ubicacion, order_odoo_id):
 # ******** New label functions ****
 
 def get_order_line_skus(order_line_ids):
+    user_id = session.get('user_id')
+    user_name = session['user_name']
+    password = session['password']
+
     # Crear el dominio para filtrar las líneas de pedido por sus IDs
     search_domain = [['id', 'in', order_line_ids]]
 
@@ -471,6 +484,9 @@ def get_json_payload(service, method, *args):
 
 
 def get_user_id():
+    user_id = session.get('user_id')
+    user_name = session['user_name']
+    password = session['password']
     try:
         payload = get_json_payload("common", "login", db_name, user_name, password)
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -491,6 +507,9 @@ def get_user_id():
 # user_id = 162
 
 def get_order_id(name):
+    user_id = session.get('user_id')
+    user_name = session['user_name']
+    password = session['password']
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -531,6 +550,9 @@ def get_order_id(name):
 
 
 def update_imprimio_etiqueta_meli(order_odoo_id):
+    user_id = session.get('user_id')
+    user_name = session['user_name']
+    password = session['password']
     try:
         write_data = {'imprimio_etiqueta_meli': True}
         payload = get_json_payload("object", "execute_kw", db_name, user_id, password, 'sale.order', 'write',
@@ -543,6 +565,9 @@ def update_imprimio_etiqueta_meli(order_odoo_id):
 
 
 def get_picking_id(so_name):
+    user_id = session.get('user_id')
+    user_name = session['user_name']
+    password = session['password']
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -568,6 +593,9 @@ def get_picking_id(so_name):
 
 
 def update_imprimio_etiqueta_meli_picking(picking_id):
+    user_id = session.get('user_id')
+    user_name = session['user_name']
+    password = session['password']
     try:
         write_data = {'imprimio_etiqueta_meli': True}
         payload = get_json_payload("object", "execute_kw", db_name, user_id, password, 'stock.picking', 'write',
@@ -759,7 +787,7 @@ def index():
 
 @app.route('/inicio', methods=['POST'])
 def inicio():
-    global user_id, password, user_name
+    #global user_id, password, user_name   # NO USAR VARIABLES GLOBALES / USAR VARIABLES DE SESSION
 
     # usuario_odoo = request.form.get("usuario_odoo")
     # session['usuario'] = usuario_odoo
@@ -777,6 +805,9 @@ def inicio():
         user_name = get_printer_id(ubicacion)["USER"]
 
         user_id, user_name, password = get_password_user(user_name)
+        session['user_id'] = user_id
+        session['user_name'] = user_name
+        session['password'] = password
 
         logging.info('La ubicacion es: ' + str(ubicacion))
         logging.info('El usuario es: ' + str(user_name))
@@ -830,6 +861,7 @@ def procesar():
             except Exception as e:
                 carrier = False
                 marketplace = False
+                guide_number = False
 
         logging.info(
             f'ODOO: {order_id}, {name_so}, {seller_marketplace}, {guide_number}, {team_id}, {ubicacion}, {carrier}, {marketplace}')
