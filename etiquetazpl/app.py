@@ -889,7 +889,7 @@ def procesar():
                         respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se imprimió de manera correcta'
                         order_id = order_id
                         set_pick_done(name_so)
-                        out_zpl_label(name_so,ubicacion,team_id,carrier,order_lines_list, warehouse)
+                        #out_zpl_label(name_so,ubicacion,team_id,carrier,order_lines_list, warehouse)
 
                 elif team_id.lower() == 'team_mercadolibre':  # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
                     if seller_marketplace == '160190870':
@@ -939,6 +939,7 @@ def procesar():
                         else:
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
                             set_pick_done(name_so)
+                            #out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse)
 
                 else:
                     respuesta = f'{print_label_case} La orden no tiene el campo  "Paquetería" en Odoo, por lo que no peude ser procesada.'
