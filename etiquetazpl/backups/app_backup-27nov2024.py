@@ -17,12 +17,12 @@ from datetime import datetime, timedelta
 import time
 import tokens_meli as tk_meli
 import base64
-import re
 
 __description__ = """
-        Version 5.0
-        Extiende la version 4.0 y aniade la impresion de una etiqueta extra con la info requerid
-        EL SO o el OUT en formato codigo de barras
+        Version 4.0
+        Extiende la version 3.0 para permitir realizar la conexion con las impresoras termicas.
+        Realizamos la conexion con la API de Print node.
+        Cambia la logica para la obtencion del usuario de odoo, realizamos el match con el numero de impresora:
 
 """
 
@@ -58,10 +58,7 @@ def get_password_user(usuario):
     return None
 
 
-def search_valpick_id(so_name, type='/VALPICK/', name_id = False):  # /VALPICK/  /PICK/  /OUT/
-    user_id = session.get('user_id')
-    user_name = session['user_name']
-    password = session['password']
+def search_valpick_id(so_name, type='/VALPICK/'):  # /VALPICK/  /PICK/
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -78,22 +75,17 @@ def search_valpick_id(so_name, type='/VALPICK/', name_id = False):  # /VALPICK/ 
             # print (res)
 
             id_valpick = res['result'][0]['id']
-            valpick_name = res['result'][0]['name']
 
-            return (valpick_name, id_valpick) if name_id else id_valpick
-
+            return id_valpick
         else:
             logging.error("Error: No se encontro orden de venta")
             return False
     except Exception as e:
-        logging.error('Error en search_valpick_id:' + str(e))
+        logging.error('Error:' + str(e))
         return False
 
 
 def ejecute_fedex_label(valpick_id):
-    user_id = session.get('user_id')
-    user_name = session['user_name']
-    password = session['password']
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -156,9 +148,6 @@ def load_label_types(filename, carrier):
 
 
 def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
-    user_id = session.get('user_id')
-    user_name = session['user_name']
-    password = session['password']
     try:
         """
         Habilitar esta linea para que los movimientos de Pick y Valpick se validen con usuario data.
@@ -169,7 +158,7 @@ def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
 
         """
         # Buscar el ID del picking (VALPICK o PICK dependiendo del tipo pasado)
-        transfer_id = search_valpick_id(so_name, type=type)
+        transfer_id = search_valpick_id(so_name, type)
 
         # Si no se encuentra el picking, retorna False
         if not transfer_id:
@@ -312,153 +301,6 @@ def print_zpl(so_name, ubicacion, order_odoo_id):
         logging.error(f'Error en la conexión con la impresora ZPL: {str(e)}')
         return "|Error en la conexión con la impresora ZPL: " + str(e)
 
-# ******** New label functions ****
-
-def get_order_line_skus(order_line_ids):
-    user_id = session.get('user_id')
-    user_name = session['user_name']
-    password = session['password']
-
-    # Crear el dominio para filtrar las líneas de pedido por sus IDs
-    search_domain = [['id', 'in', order_line_ids]]
-
-    # Construir el payload para buscar las líneas de pedido
-    payload = json.dumps({
-        "jsonrpc": "2.0",
-        "method": "call",
-        "params": {
-            "service": "object",
-            "method": "execute",
-            "args": [
-                db_name, user_id, password,
-                "sale.order.line",  # Modelo a consultar
-                "search_read",
-                search_domain,  # Filtro por IDs
-                ['product_id']  # Solo necesitamos product_id
-            ]
-        }
-    })
-
-    # Hacer la petición
-    response = requests.post(json_endpoint, data=payload, headers=headers).json()
-
-    # Validar que la respuesta contiene resultados
-    if 'result' not in response or not response['result']:
-        return []
-
-    # Extraer los SKUs de los product_id (usando una expresión regular para obtener el SKU entre corchetes)
-    skus = []
-    for line in response['result']:
-        product_id = line.get('product_id')
-        if product_id:
-            # Usar una expresión regular para extraer el SKU de la cadena entre corchetes
-            match = re.search(r"\[(.*?)\]", product_id[1])
-            if match:
-                sku = match.group(1)  # Extraer el SKU (la parte dentro de los corchetes)
-                skus.append(sku)
-
-    return skus
-
-
-def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
-    try:
-        out_name, out_id = search_valpick_id(so_name, type='/OUT/', name_id=True)
-        print(out_name, out_id)
-
-        logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {order_lines_list}, {out_name}, {out_id}, {almacen}")
-        printer_id = get_printer_id(ubicacion)["ID"]
-        printer_name = get_printer_id(ubicacion)["NOMBRE"]
-
-        sku_list_qtys = get_order_line_skus(order_lines_list)
-
-        # Ajuste del cuadro inferior para la cantidad de SKUs
-        qty_skus = len(sku_list_qtys)
-        size_button_square = 270
-        if qty_skus > 5 :
-            extra_size = (qty_skus - 5) * 35
-            size_button_square += extra_size
-
-        web_link = f"https://wonderbrands.odoo.com/web#id={out_id}&cids=1&menu_id=262&action=383&active_id=1366982&model=stock.picking&view_type=form"
-        print(web_link)
-
-        so_code = so_name.replace("SO", "")
-        # Preparar la segunda etiqueta ZPL (datos de la orden en 4x6)
-        zpl_code = f"""
-                    ^XA
-                    ^FO350,50^GFA,2940,2940,49,,:::::::::::gU03CV03CgO078,gT07FCU07FCgN0FF8,gS01FFCT01FFCgM03FF8,003FFE01IF003IFV01FFCT01FFCgM03FF8,I07FF803FFC00FFEW0FFCU0FFCgN0FF8,I03FFC01FFE007FEW07FCU07FCgN07F8,I03FFC00IF003FCW03FCU03FCgN07F8,I01FFE00IF003FCW03FCU03FCgN07F8,I01IF007FF801F8W03FCU03FCgN07F8,J0IF007FF801F8W03FCU03FCgN07F8,J0IF807FFC01FX07FCU03FCgN0FF8,J07FF807FFC00F00FFR07IFC001FCP03FF3FJ0607800FF8Q0JF800FF,J07FFC03FFE00E03FFCI0383F8001JFC007FF8001C1FI03JFC003E1FC07FFEI0383F8003JF807FFE,J03FFC03FFE00E0JF001F8FFC007JFC01IFC00FC7F8003JFE01FE3FE0JFI0F8FFE007JF80JF,J03FFE03IF00C1JF80FFDFFE00KFC03F07E07FCFFC003KF07FE7FE1F87F80FFDIF01KF81F83F,J01FFE03IF00C3FC3FC1LF00FF8FFC07F07F0FFCFFC003FF1FF8FFE7FE3F03F81LF01FF1FF83F01F,J01FFE03IF8187F81FE3LF01FF07FC0FE03F1KFC003FC0FFC7JFE3F03FC3LF03FE0FF83F01F,K0IF03IF818FF01FE1IF9FF83FE03FC1FE03F8IF9F8003FC07FC1FFCFC7F03FC0IF9FF87FC07F87F00F,K0IF07IFC18FF00FF07FE0FF83FC03FC1FE03F83FF0F8003FC03FC1FF8387F03FC07FE07F87FC07F87F8,K07FF87IFC30FF00FF07FC07F83FC03FC1FE03F83FFK03FC03FE0FF8003E03FC03FC07F8FF807F87FFC,K07FFDE3FFE31FF00FF03FC07F87FC03FC3FC07F83FEK03FC03FE0FFJ0803FC03FC07F8FF807F87FFC,K03IFC1IFE1FF00FF83FC07F87FC03FC3FC0FF83FEK03FC03FE0FFL0FFC03FC07F8FF807F83IFE,K03IFC1IFE1FF00FF83FC07F87F803FC3KF83FEK03FC01FE0FFK07FFC03FC07F8FF807F83IFE,K01IF80IFE1FE00FF83FC07F87F803FC3KF83FEK03FC01FE0FFJ03FBFC03FC07F8FF807F81JF,K01IF80IFC1FE00FF83FC07F87F803FC3FF8I03FEK03FC01FE0FFJ0FE3FC03FC07F8FF807F81JF,L0IF807FFC1FF00FF83FC07F87F803FC3FFJ03FEK03FC03FE0FFI01F83FC03FC07F8FF807F807IF8181C,L0IF007FF81FF00FF83FC07F87FC03FC3FEJ03FEK03FC03FE0FFI03F83FC03FC07F8FF807F801IF83FFC,L07FF003FF81FF00FF03FC07F87FC03FC3FEJ03FEK03FC03FE0FFI07F03FC03FC07F8FF807F8003FF81FFC,L07FE003FF80FF00FF03FC07F87FC03FC1FEJ03FEK03FC03FC0FFI07F03FC03FC07F8FF807F87007F81FF8,L03FE001FF00FF00FF03FC07F83FC03FC1FF00103FEK03FC03FC0FFI0FF03FC03FC07F87FC07F87803F81FF8,L03FE001FF007F01FE03FC07F83FE03FC1FF80303FEK03FC07FC0FFI0FF03FC03FC07F87FC07F87C03F81FF8,L01FCI0FE007F81FE07FC07F81FF07FC0FFE0F83FEK03FE0FF81FF800FF87FC03FC07F83FE0FF87C03F81FF8,L01FCI0FE003FC7FC07FC07F81KFE07JF03FFK07KF01FFC007FCFFC87FC07F83KFC7C03F01FF8,M0F8I07C001JF80FFC0FFC0LF03IFE07FF8J0KFC07FFE007KF87FC0FFC1KFE7E07E01FF8,M0F8I07CI0JF01IF3FFE07KF01IFC0IFEI01KFC07IF003FF9FF9IF3FFE0KFE3IFC01FFC,M078I03CI03FFC01IF1IF03FF3FF007FF00IFCJ0FF8FF807FFE001FE0FF1IF1IF03FE7FE0IF003FFC,M07J038J03CI07FE0FFE003M07T018001FF8I03801807FE0FFE007L0F,,::::::::::^FS
-
-                    ^FX Top section with logo, name and address.
-                    ^CF0,50
-                    ^FO50,160^FDOrden: {so_name}^FS
-                    ^CF0,30
-                    ^FO50,220^FDEquipo de ventas: {team}^FS
-                    ^FO50,260^FDTransportista: {carrier}^FS
-                    ^FO50,320^GB700,3,3^FS
-
-                    ^FX Second section with recipient address and permit information.
-                    ^CFA,30
-                    ^FO50,390^FDOUT: {out_name}^FS
-                    ^FO50,430^FD{almacen}^FS
-                    ^FO50,480^FDAG (TLP)^FS
-                    ^CFA,15
-                    ^FO500,330^BQN,2,5
-                    ^FDLA,{web_link}^FS
-                    ^FO50,580^GB700,3,3^FS
-
-                    ^FX Third section with bar code.
-                    ^BY5,2,300
-                    ^FO80,610^BC^FD{so_code}^FS
-
-                    ^FX Fourth section (the two boxes on the bottom).
-                    ^FO50,980^GB700,{size_button_square},3^FS
-                    ^FO400,980^GB3,{size_button_square},3^FS
-                    ^CF0,25
-                    
-                    """
-
-        # Ahora agregamos los SKUs uno debajo de otro
-        y_position = 1020  # Empezamos en la posición 990 para el primer SKU
-        for i, sku in enumerate(sku_list_qtys):
-            zpl_code += f"^FO90,{y_position}^FDSKU {i + 1}: {sku}^FS\n"
-            y_position += 35  # Incrementamos la posición vertical para el siguiente SKU
-
-        # Agregamos el final del ZPL
-        zpl_code += f"""
-                ^CF0,190
-                ^FO470,1035^FDAG^FS
-                ^XZ
-                """
-        data_extra = base64.b64encode(bytes(zpl_code, 'utf-8')).decode('utf-8')
-
-        # Crear el payload para enviar la etiqueta adicional
-        payload_extra = {
-            "printerId": printer_id,
-            "title": f"OUT label - {so_name}",
-            "contentType": "raw_base64",
-            "content": data_extra,
-            "source": "Auto-generated Extra Label"
-        }
-        # Enviar la solicitud POST a PrintNode
-        url = "https://api.printnode.com/printjobs"
-        headers = {"Content-Type": "application/json"}
-        response_extra = requests.post(url, json=payload_extra, auth=HTTPBasicAuth(print_node_api_key, ''),
-                                       headers=headers)
-
-        # Verificar el resultado de la impresión
-        if response_extra.status_code == 201:
-            logging.info(f'Etiqueta adicional para la orden {so_name} se ha impreso con éxito')
-            return f'Etiqueta adicional para la orden {so_name} se ha impreso con éxito'
-        else:
-            error_msg = f"Error al imprimir la etiqueta adicional: {response_extra.status_code} - {response_extra.text}"
-            logging.error(error_msg)
-            return error_msg
-    except Exception as e:
-        error_msg = f'Error en la conexión con la impresora ZPL (etiqueta adicional): {str(e)}'
-        logging.error(error_msg)
-        return error_msg
-
-
-# ********************************
 
 def get_printer_id(location):
     with open('config_printers_ids.json', 'r') as f:
@@ -484,9 +326,6 @@ def get_json_payload(service, method, *args):
 
 
 def get_user_id():
-    user_id = session.get('user_id')
-    user_name = session['user_name']
-    password = session['password']
     try:
         payload = get_json_payload("common", "login", db_name, user_name, password)
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -506,10 +345,8 @@ def get_user_id():
 # HARDCODE
 # user_id = 162
 
+
 def get_order_id(name):
-    user_id = session.get('user_id')
-    user_name = session['user_name']
-    password = session['password']
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -522,15 +359,13 @@ def get_order_id(name):
                                                       search_domain,
                                                       ['channel_order_reference', 'name', 'yuju_seller_id',
                                                        'yuju_carrier_tracking_ref', 'team_id',
-                                                       'carrier_selection_relational','channel', 'order_line', 'warehouse_id']]}}) # 'x_studio_paquetera_carrier' / 'select_carrier'
+                                                       'carrier_selection_relational']]}}) # 'x_studio_paquetera_carrier' / 'select_carrier'
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
+            # print (res)
             marketplace_order_id = res['result'][0]['channel_order_reference']
             seller_marketplace = res['result'][0]['yuju_seller_id']
             order_odoo_id = res['result'][0]['id']
-            marketplace_name = res['result'][0]['channel']
-            order_lines = res['result'][0]['order_line']
-            warehouse = res['result'][0]['warehouse_id'][1]
             # carrier = res['result'][0]['x_studio_paquetera_carrier']  # 'x_studio_paquetera_carrier' / 'select_carrier'
             try:
                 carrier = res['result'][0]['carrier_selection_relational'][1]  # 'x_studio_paquetera_carrier' / 'select_carrier'
@@ -540,19 +375,16 @@ def get_order_id(name):
             guide_number = res['result'][0]['yuju_carrier_tracking_ref']
 
             return dict(marketplace_order_id=marketplace_order_id, seller_marketplace=seller_marketplace,
-                        order_odoo_id=order_odoo_id, carrier=carrier, team_id=team_id, guide_number=guide_number, marketplace_name=marketplace_name, order_lines=order_lines,warehouse=warehouse)
+                        order_odoo_id=order_odoo_id, carrier=carrier, team_id=team_id, guide_number=guide_number)
         else:
             logging.error("Error: No se tiene un id de usuario, revisa el listado de usuarios")
             return False
     except Exception as e:
-        logging.error('Error general get_order_id:' + str(e))
+        logging.error('Error:' + str(e))
         return False
 
 
 def update_imprimio_etiqueta_meli(order_odoo_id):
-    user_id = session.get('user_id')
-    user_name = session['user_name']
-    password = session['password']
     try:
         write_data = {'imprimio_etiqueta_meli': True}
         payload = get_json_payload("object", "execute_kw", db_name, user_id, password, 'sale.order', 'write',
@@ -565,9 +397,6 @@ def update_imprimio_etiqueta_meli(order_odoo_id):
 
 
 def get_picking_id(so_name):
-    user_id = session.get('user_id')
-    user_name = session['user_name']
-    password = session['password']
     try:
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
@@ -593,9 +422,6 @@ def get_picking_id(so_name):
 
 
 def update_imprimio_etiqueta_meli_picking(picking_id):
-    user_id = session.get('user_id')
-    user_name = session['user_name']
-    password = session['password']
     try:
         write_data = {'imprimio_etiqueta_meli': True}
         payload = get_json_payload("object", "execute_kw", db_name, user_id, password, 'stock.picking', 'write',
@@ -787,7 +613,7 @@ def index():
 
 @app.route('/inicio', methods=['POST'])
 def inicio():
-    #global user_id, password, user_name   # NO USAR VARIABLES GLOBALES / USAR VARIABLES DE SESSION
+    global user_id, password, user_name
 
     # usuario_odoo = request.form.get("usuario_odoo")
     # session['usuario'] = usuario_odoo
@@ -799,15 +625,11 @@ def inicio():
         session['ubicacion'] = localizacion
         ubicacion = session['ubicacion']
 
-        # usuario_odoo = request.form.get("usuario_odoo")
-        # session['usuario'] = usuario_odoo
-        # user_name = session['usuario']
-        user_name = get_printer_id(ubicacion)["USER"]
+        usuario_odoo = request.form.get("usuario_odoo")
+        session['usuario'] = usuario_odoo
+        user_name = session['usuario']
 
         user_id, user_name, password = get_password_user(user_name)
-        session['user_id'] = user_id
-        session['user_name'] = user_name
-        session['password'] = password
 
         logging.info('La ubicacion es: ' + str(ubicacion))
         logging.info('El usuario es: ' + str(user_name))
@@ -832,15 +654,6 @@ def procesar():
         team_id = order_odoo.get('team_id')
         guide_number = order_odoo.get('guide_number')
 
-        # ***** NEW order data
-        marketplace_name = order_odoo.get('marketplace_name')
-        order_lines_list = order_odoo.get('order_lines')
-        warehouse = order_odoo.get('warehouse')
-
-
-        logging.info(f'NEW DATAAAAAAAAAA {marketplace_name}, {order_lines_list}, {warehouse}')
-
-
         carrier = order_odoo.get('carrier')
         marketplace = team_id.lower().split("_")[1]
 
@@ -861,7 +674,6 @@ def procesar():
             except Exception as e:
                 carrier = False
                 marketplace = False
-                guide_number = False
 
         logging.info(
             f'ODOO: {order_id}, {name_so}, {seller_marketplace}, {guide_number}, {team_id}, {ubicacion}, {carrier}, {marketplace}')
@@ -921,7 +733,6 @@ def procesar():
                         respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se imprimió de manera correcta'
                         order_id = order_id
                         set_pick_done(name_so)
-                        #out_zpl_label(name_so,ubicacion,team_id,carrier,order_lines_list, warehouse)
 
                 elif team_id.lower() == 'team_mercadolibre':  # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
                     if seller_marketplace == '160190870':
@@ -971,12 +782,11 @@ def procesar():
                         else:
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
                             set_pick_done(name_so)
-                            #out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse)
 
                 else:
                     respuesta = f'{print_label_case} La orden no tiene el campo  "Paquetería" en Odoo, por lo que no peude ser procesada.'
             except Exception as e:
-                logging.error(f'ERROR en lógica de procesamiento: {e}')
+                logging.error(f'ERROR: {e}')
                 respuesta = f'Error de conexión, {e}'
 
         logging.info(f'// Respuesta: {respuesta} //')
