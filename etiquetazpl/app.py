@@ -971,10 +971,12 @@ def procesar():
                         else:
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
                             print(f'\n \n {respuesta} \n \n')
-                            if 'Error' in respuesta:
-                                print(f'\n \n ERROR EN LA RESPUESTA \n \n')
-                            set_pick_done(name_so)
-                            #out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse)
+                            if not 'Error al extraer el archivo zpl' in respuesta:
+                                set_pick_done(name_so)
+                                # out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse)
+                            else: # Si tiene este error en la respuesta
+                                respuesta = "Esta orden de MercadoLibre aun no debe ser procesada"
+
 
                 else:
                     respuesta = f'{print_label_case} La orden no tiene el campo  "Paquetería" en Odoo, por lo que no peude ser procesada.'
