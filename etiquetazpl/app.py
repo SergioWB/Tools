@@ -970,6 +970,9 @@ def procesar():
                             respuesta = 'La orden ' + name_so + ' ya ha sido entregada el dia: ' + date_delivered + ',  no se imprimirá la etiqueta.'
                         else:
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
+                            print(f'\n \n {respuesta} \n \n')
+                            if 'Error' in respuesta:
+                                print(f'\n \n ERROR EN LA RESPUESTA \n \n')
                             set_pick_done(name_so)
                             #out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse)
 
