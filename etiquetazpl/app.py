@@ -918,7 +918,7 @@ def procesar():
                             print_label_date)
                         order_id = order_id
                     else:
-                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se imprimió de manera correcta'
+                        respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se se ha mandado el Job manera correcta'
                         order_id = order_id
                         set_pick_done(name_so)
                         #out_zpl_label(name_so,ubicacion,team_id,carrier,order_lines_list, warehouse)
