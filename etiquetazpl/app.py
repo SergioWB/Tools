@@ -287,7 +287,7 @@ def print_zpl(so_name, ubicacion, order_odoo_id):
         # Verificar si la respuesta es exitosa y procesar los datos
         if response.status_code == 201:
             response_data = response.json()
-            logging.info('Etiqueta para la orden ' + so_name + ' se ha impreso con exito')
+            logging.info('Etiqueta para la orden ' + so_name + '. Se ha mandado el Job con éxito')
             resultado = update_imprimio_etiqueta_meli(order_odoo_id)
             picking = get_picking_id(so_name)
             logging.info(f'Picking es :  {picking}')
@@ -295,7 +295,7 @@ def print_zpl(so_name, ubicacion, order_odoo_id):
             resultado_pick = update_imprimio_etiqueta_meli_picking(picking_id)
 
             if resultado:
-                print_zpl_response += '|Etiqueta para la orden ' + so_name + ' se ha impreso con exito'
+                print_zpl_response += '|Etiqueta para la orden ' + so_name + ' Se ha mandado el Job con éxito'
             else:
                 print_zpl_response += '|No se marco la impresión de la Guía para ' + so_name
 
@@ -446,8 +446,8 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
 
         # Verificar el resultado de la impresión
         if response_extra.status_code == 201:
-            logging.info(f'Etiqueta adicional para la orden {so_name} se ha impreso con éxito')
-            return f'Etiqueta adicional para la orden {so_name} se ha impreso con éxito'
+            logging.info(f'Etiqueta adicional para la orden {so_name}. Se ha mandado el Job con éxito')
+            return f'Etiqueta adicional para la orden {so_name}. Se ha mandado el Job con éxito'
         else:
             error_msg = f"Error al imprimir la etiqueta adicional: {response_extra.status_code} - {response_extra.text}"
             logging.error(error_msg)
@@ -647,7 +647,7 @@ def imprime_zpl(so_name, ubicacion, order_odoo_id):
         mysocket.send(datos)  # using bytes
 
         mysocket.close()  # closing connection
-        logging.info('Etiqueta para la orden ' + so_name + ' se ha impreso con exito')
+        logging.info('Etiqueta para la orden ' + so_name + '. Se ha mandado el Job con éxito')
         resultado = update_imprimio_etiqueta_meli(order_odoo_id)
         picking = get_picking_id(so_name)
         logging.info(f'Picking es :  {picking}')
@@ -656,7 +656,7 @@ def imprime_zpl(so_name, ubicacion, order_odoo_id):
         resultado_pick = update_imprimio_etiqueta_meli_picking(picking_id)
 
         if resultado:
-            respuesta_imprime_zpl += '|Etiqueta para la orden ' + so_name + ' se ha impreso con exito'
+            respuesta_imprime_zpl += '|Etiqueta para la orden ' + so_name + '. Se ha mandado el Job con éxito'
         else:
             respuesta_imprime_zpl += '|No se marco la impresión de la Guía para ' + so_name
 
@@ -970,9 +970,11 @@ def procesar():
                             respuesta = 'La orden ' + name_so + ' ya ha sido entregada el dia: ' + date_delivered + ',  no se imprimirá la etiqueta.'
                         else:
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
-                            set_pick_done(name_so)
-                            #out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse)
-
+                            if not 'Error al extraer el archivo zpl' in respuesta:  # Si la respuesta es satisfactoria de haberse impreso:
+                                set_pick_done(name_so)
+                                # out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse)
+                            else:  # Si tiene el 'Error' en la respuesta:
+                                respuesta = "Esta orden de MercadoLibre aun no debe ser procesada"
                 else:
                     respuesta = f'{print_label_case} La orden no tiene el campo  "Paquetería" en Odoo, por lo que no peude ser procesada.'
             except Exception as e:
