@@ -367,7 +367,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
         gap_timedelta = timedelta(hours=gap_utc_hours)
         create_date = datetime.strptime(create_date,"%Y-%m-%d %H:%M:%S")
         create_date = create_date + gap_timedelta
-        create_date = create_date.split(" ")[0]
+        create_date = create_date.strftime("%Y/%m/%d")
 
         out_name, out_id = search_valpick_id(so_name, type='/OUT/', name_id=True)
         print(out_name, out_id)
