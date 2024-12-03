@@ -48,7 +48,7 @@ logging.warning("TEST DATABSE")
 
 headers = {"Content-Type": "application/json"}
 
-locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
+locale.setlocale(locale.LC_TIME, 'es_MX.utf8')
 
 
 ########## NEW FUNCTIONS #############
