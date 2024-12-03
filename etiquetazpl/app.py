@@ -18,6 +18,7 @@ import time
 import tokens_meli as tk_meli
 import base64
 import re
+import locale
 
 __description__ = """
         Version 5.0
@@ -46,6 +47,8 @@ json_endpoint = "%s/jsonrpc" % server_url
 logging.warning("TEST DATABSE")
 
 headers = {"Content-Type": "application/json"}
+
+locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
 
 
 ########## NEW FUNCTIONS #############
@@ -369,7 +372,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
         gap_timedelta = timedelta(hours=gap_utc_hours)
         create_date = datetime.strptime(create_date,"%Y-%m-%d %H:%M:%S")
         create_date = create_date + gap_timedelta
-        create_date = create_date.strftime("%Y/%m/%d")
+        create_date = create_date.strftime("%d/%B/%Y")
 
         out_name, out_id = search_valpick_id(so_name, type='/OUT/', name_id=True)
         print(out_name, out_id)
@@ -407,8 +410,8 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
                         ^CF0,50
                         ^FO50,225^FDFecha de orden: {create_date}^FS
                         ^CF0,30
-                        ^FO50,270^FDEquipo de ventas: {team}^FS
-                        ^FO50,310^FDTransportista: {carrier}^FS
+                        ^FO50,290^FDEquipo de ventas: {team}^FS
+                        ^FO50,330^FDTransportista: {carrier}^FS
                         ^FO50,370^GB700,3,3^FS
     
                         ^FX Second section with recipient address and permit information.
