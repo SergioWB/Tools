@@ -360,12 +360,12 @@ def get_order_line_skus(order_line_ids):
     return skus
 
 
-def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, labels_number):
+def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, labels_number, create_date):
     try:
         out_name, out_id = search_valpick_id(so_name, type='/OUT/', name_id=True)
         print(out_name, out_id)
 
-        logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {order_lines_list}, {out_name}, {out_id}, {almacen}, {labels_number}")
+        logging.info(f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {order_lines_list}, {out_name}, {out_id}, {almacen}, {labels_number}, {create_date}")
         printer_id = get_printer_id(ubicacion)["ID"]
         printer_name = get_printer_id(ubicacion)["NOMBRE"]
 
@@ -393,6 +393,8 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
                         ^FX Top section with logo, name and address.
                         ^CF0,50
                         ^FO50,160^FDOrden: {so_name}^FS
+                        ^CF0,40
+                        ^FO100,160^FDFecha de orden: {create_date}^FS
                         ^CF0,30
                         ^FO50,220^FDEquipo de ventas: {team}^FS
                         ^FO50,260^FDTransportista: {carrier}^FS
@@ -435,7 +437,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
             # Agregar el final de la etiqueta y número de página
             zpl_code += f"""
                 ^CF0,30
-                ^FO50,{y_position + 20}^FDPágina {page}/{labels_number}^FS
+                ^FO90,{y_position + 50}^FDPágina {page}/{labels_number}^FS
                 ^CF0,190
                 ^FO470,1035^FDAG^FS
                 ^XZ
@@ -537,7 +539,7 @@ def get_order_id(name):
                                                       search_domain,
                                                       ['channel_order_reference', 'name', 'yuju_seller_id',
                                                        'yuju_carrier_tracking_ref', 'team_id',
-                                                       'carrier_selection_relational','channel', 'order_line', 'warehouse_id']]}}) # 'x_studio_paquetera_carrier' / 'select_carrier'
+                                                       'carrier_selection_relational','channel', 'order_line', 'warehouse_id', 'date_order']]}}) # 'x_studio_paquetera_carrier' / 'select_carrier'
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
             marketplace_order_id = res['result'][0]['channel_order_reference']
@@ -554,8 +556,10 @@ def get_order_id(name):
             team_id = res['result'][0]['team_id'][1]  # La repuesta es [id, team]
             guide_number = res['result'][0]['yuju_carrier_tracking_ref']
 
+            create_date = res['result'][0]['date_order']
+
             return dict(marketplace_order_id=marketplace_order_id, seller_marketplace=seller_marketplace,
-                        order_odoo_id=order_odoo_id, carrier=carrier, team_id=team_id, guide_number=guide_number, marketplace_name=marketplace_name, order_lines=order_lines,warehouse=warehouse)
+                        order_odoo_id=order_odoo_id, carrier=carrier, team_id=team_id, guide_number=guide_number, marketplace_name=marketplace_name, order_lines=order_lines,warehouse=warehouse, create_date=create_date)
         else:
             logging.error("Error: No se tiene un id de usuario, revisa el listado de usuarios")
             return False
@@ -852,6 +856,8 @@ def procesar():
         order_lines_list = order_odoo.get('order_lines')
         warehouse = order_odoo.get('warehouse')
 
+        create_date = order_odoo.get('create_date')
+
 
         logging.info(f'NEW DATAAAAAAAAAA {marketplace_name}, {order_lines_list}, {warehouse}')
 
@@ -946,7 +952,7 @@ def procesar():
                         respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se imprimió de manera correcta'
                         order_id = order_id
                         set_pick_done(name_so)
-                        out_zpl_label(name_so,ubicacion,team_id,carrier,order_lines_list, warehouse, labels_number)
+                        out_zpl_label(name_so,ubicacion,team_id,carrier,order_lines_list, warehouse, labels_number, create_date)
 
                 elif team_id.lower() == 'team_mercadolibre':  # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
                     if seller_marketplace == '160190870':
