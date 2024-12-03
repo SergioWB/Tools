@@ -298,7 +298,7 @@ def print_zpl(so_name, ubicacion, order_odoo_id):
             resultado_pick = update_imprimio_etiqueta_meli_picking(picking_id)
 
             if resultado:
-                print_zpl_response += '|Etiqueta para la orden ' + so_name + ' Se ha mandado el Job con éxito'
+                print_zpl_response += '|Etiqueta para la orden ' + so_name + '. Se ha mandado el Job con éxito'
             else:
                 print_zpl_response += '|No se marco la impresión de la Guía para ' + so_name
 
