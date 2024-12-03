@@ -399,11 +399,11 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
                         ^CF0,50
                         ^FO50,160^FDOrden: {so_name}^FS
                         ^CF0,40
-                        ^FO100,220^FDFecha de orden: {create_date}^FS
+                        ^FO50,225^FDFecha de orden: {create_date}^FS
                         ^CF0,30
-                        ^FO50,260^FDEquipo de ventas: {team}^FS
-                        ^FO50,300^FDTransportista: {carrier}^FS
-                        ^FO50,360^GB700,3,3^FS
+                        ^FO50,270^FDEquipo de ventas: {team}^FS
+                        ^FO50,310^FDTransportista: {carrier}^FS
+                        ^FO50,370^GB700,3,3^FS
     
                         ^FX Second section with recipient address and permit information.
                         ^CFA,30
@@ -411,7 +411,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
                         ^FO50,480^FD{almacen}^FS
                         ^FO50,530^FDAG (TLP)^FS
                         ^CFA,15
-                        ^FO500,370^BQN,2,5
+                        ^FO500,380^BQN,2,5
                         ^FDLA,{web_link}^FS
                         ^FO50,630^GB700,3,3^FS
     
