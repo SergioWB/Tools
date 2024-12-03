@@ -351,12 +351,14 @@ def get_order_line_skus(order_line_ids):
     for line in response['result']:
         product_id = line.get('product_id')
         if product_id:
+            print(product_id[1])
             # Usar una expresión regular para extraer el SKU de la cadena entre corchetes
             match = re.search(r"\[(.*?)\]", product_id[1])
             if match:
                 sku = match.group(1)  # Extraer el SKU (la parte dentro de los corchetes)
                 skus.append(sku)
 
+    print(skus)
     return skus
 
 
@@ -420,7 +422,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
     
                         ^FX Third section with bar code.
                         ^BY5,2,300
-                        ^FO80,660^BC^FD{so_code}^FS
+                        ^FO80,660^BC^FD{so_code}-{page}/{labels_number}^FS
     
                         ^FX Fourth section (the two boxes on the bottom).
                         ^FO50,1040^GB700,{size_button_square},3^FS
