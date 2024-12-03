@@ -362,6 +362,10 @@ def get_order_line_skus(order_line_ids):
 
 def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, labels_number, create_date):
     try:
+        gap_utc_hours = -6
+        gap_timedelta = timedelta(hours=gap_utc_hours)
+        create_date = create_date + gap_timedelta
+
         out_name, out_id = search_valpick_id(so_name, type='/OUT/', name_id=True)
         print(out_name, out_id)
 
@@ -394,35 +398,35 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
                         ^CF0,50
                         ^FO50,160^FDOrden: {so_name}^FS
                         ^CF0,40
-                        ^FO100,160^FDFecha de orden: {create_date}^FS
+                        ^FO100,220^FDFecha de orden: {create_date}^FS
                         ^CF0,30
-                        ^FO50,220^FDEquipo de ventas: {team}^FS
-                        ^FO50,260^FDTransportista: {carrier}^FS
-                        ^FO50,320^GB700,3,3^FS
+                        ^FO50,260^FDEquipo de ventas: {team}^FS
+                        ^FO50,300^FDTransportista: {carrier}^FS
+                        ^FO50,360^GB700,3,3^FS
     
                         ^FX Second section with recipient address and permit information.
                         ^CFA,30
-                        ^FO50,390^FDOUT: {out_name}^FS
-                        ^FO50,430^FD{almacen}^FS
-                        ^FO50,480^FDAG (TLP)^FS
+                        ^FO50,430^FDOUT: {out_name}^FS
+                        ^FO50,480^FD{almacen}^FS
+                        ^FO50,530^FDAG (TLP)^FS
                         ^CFA,15
-                        ^FO500,330^BQN,2,5
+                        ^FO500,370^BQN,2,5
                         ^FDLA,{web_link}^FS
-                        ^FO50,580^GB700,3,3^FS
+                        ^FO50,630^GB700,3,3^FS
     
                         ^FX Third section with bar code.
                         ^BY5,2,300
-                        ^FO80,610^BC^FD{so_code}^FS
+                        ^FO80,660^BC^FD{so_code}^FS
     
                         ^FX Fourth section (the two boxes on the bottom).
-                        ^FO50,980^GB700,{size_button_square},3^FS
-                        ^FO400,980^GB3,{size_button_square},3^FS
+                        ^FO50,1040^GB700,{size_button_square},3^FS
+                        ^FO400,1040^GB3,{size_button_square},3^FS
                         ^CF0,25
                         
                         """
 
             # Ahora agregamos los SKUs uno debajo de otro
-            y_position = 1020  # Empezamos en la posición 990 para el primer SKU
+            y_position = 1080  # Empezamos en la posición 990 para el primer SKU
             for i, sku in enumerate(sku_list_qtys):
                 zpl_code += f"^FO90,{y_position}^FDSKU {i + 1}: {sku}^FS\n"
                 y_position += 35  # Incrementamos la posición vertical para el siguiente SKU
@@ -437,9 +441,9 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
             # Agregar el final de la etiqueta y número de página
             zpl_code += f"""
                 ^CF0,30
-                ^FO90,{y_position + 50}^FDPágina {page}/{labels_number}^FS
+                ^FO90,{y_position + 100}^FDPágina {page}/{labels_number}^FS
                 ^CF0,190
-                ^FO470,1035^FDAG^FS
+                ^FO470,1095^FDAG^FS
                 ^XZ
             """
 
