@@ -442,7 +442,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
             # Agregar el final de la etiqueta y número de página
             zpl_code += f"""
                 ^CF0,30
-                ^FO90,{y_position + 100}^FDPágina {page}/{labels_number}^FS
+                ^FO90,{y_position + 150}^FDPágina {page}/{labels_number}^FS
                 ^CF0,190
                 ^FO470,1095^FDAG^FS
                 ^XZ
