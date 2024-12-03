@@ -58,7 +58,7 @@ def get_password_user(usuario):
     return None
 
 
-def search_valpick_id(so_name, type='/VALPICK/', name_id = False):  # /VALPICK/  /PICK/  /OUT/
+def search_valpick_id(so_name, type='/VALPICK/', name_id=False):  # /VALPICK/  /PICK/  /OUT/
     user_id = session.get('user_id')
     user_name = session['user_name']
     password = session['password']
@@ -312,6 +312,7 @@ def print_zpl(so_name, ubicacion, order_odoo_id):
         logging.error(f'Error en la conexión con la impresora ZPL: {str(e)}')
         return "|Error en la conexión con la impresora ZPL: " + str(e)
 
+
 # ******** New label functions ****
 
 def get_order_line_skus(order_line_ids):
@@ -360,20 +361,13 @@ def get_order_line_skus(order_line_ids):
     return skus
 
 
-def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, labels_number, create_date):
+def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen):
     try:
-        # Fecha de orden
-        gap_utc_hours = -6
-        gap_timedelta = timedelta(hours=gap_utc_hours)
-        create_date = datetime.strptime(create_date, "%Y-%m-%d %H:%M:%S")
-        create_date = create_date + gap_timedelta
-        create_date = create_date.strftime("%Y/%m/%d")
-
         out_name, out_id = search_valpick_id(so_name, type='/OUT/', name_id=True)
         print(out_name, out_id)
 
         logging.info(
-            f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {order_lines_list}, {out_name}, {out_id}, {almacen}, {labels_number}, {create_date}")
+            f" out_zpl_label INFO {so_name}, {ubicacion}, {team}, {carrier}, {order_lines_list}, {out_name}, {out_id}, {almacen}")
         printer_id = get_printer_id(ubicacion)["ID"]
         printer_name = get_printer_id(ubicacion)["NOMBRE"]
 
@@ -391,66 +385,51 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
 
         so_code = so_name.replace("SO", "")
         # Preparar la segunda etiqueta ZPL (datos de la orden en 4x6)
+        zpl_code = f"""
+                    ^XA
+                    ^FO350,50^GFA,2940,2940,49,,:::::::::::gU03CV03CgO078,gT07FCU07FCgN0FF8,gS01FFCT01FFCgM03FF8,003FFE01IF003IFV01FFCT01FFCgM03FF8,I07FF803FFC00FFEW0FFCU0FFCgN0FF8,I03FFC01FFE007FEW07FCU07FCgN07F8,I03FFC00IF003FCW03FCU03FCgN07F8,I01FFE00IF003FCW03FCU03FCgN07F8,I01IF007FF801F8W03FCU03FCgN07F8,J0IF007FF801F8W03FCU03FCgN07F8,J0IF807FFC01FX07FCU03FCgN0FF8,J07FF807FFC00F00FFR07IFC001FCP03FF3FJ0607800FF8Q0JF800FF,J07FFC03FFE00E03FFCI0383F8001JFC007FF8001C1FI03JFC003E1FC07FFEI0383F8003JF807FFE,J03FFC03FFE00E0JF001F8FFC007JFC01IFC00FC7F8003JFE01FE3FE0JFI0F8FFE007JF80JF,J03FFE03IF00C1JF80FFDFFE00KFC03F07E07FCFFC003KF07FE7FE1F87F80FFDIF01KF81F83F,J01FFE03IF00C3FC3FC1LF00FF8FFC07F07F0FFCFFC003FF1FF8FFE7FE3F03F81LF01FF1FF83F01F,J01FFE03IF8187F81FE3LF01FF07FC0FE03F1KFC003FC0FFC7JFE3F03FC3LF03FE0FF83F01F,K0IF03IF818FF01FE1IF9FF83FE03FC1FE03F8IF9F8003FC07FC1FFCFC7F03FC0IF9FF87FC07F87F00F,K0IF07IFC18FF00FF07FE0FF83FC03FC1FE03F83FF0F8003FC03FC1FF8387F03FC07FE07F87FC07F87F8,K07FF87IFC30FF00FF07FC07F83FC03FC1FE03F83FFK03FC03FE0FF8003E03FC03FC07F8FF807F87FFC,K07FFDE3FFE31FF00FF03FC07F87FC03FC3FC07F83FEK03FC03FE0FFJ0803FC03FC07F8FF807F87FFC,K03IFC1IFE1FF00FF83FC07F87FC03FC3FC0FF83FEK03FC03FE0FFL0FFC03FC07F8FF807F83IFE,K03IFC1IFE1FF00FF83FC07F87F803FC3KF83FEK03FC01FE0FFK07FFC03FC07F8FF807F83IFE,K01IF80IFE1FE00FF83FC07F87F803FC3KF83FEK03FC01FE0FFJ03FBFC03FC07F8FF807F81JF,K01IF80IFC1FE00FF83FC07F87F803FC3FF8I03FEK03FC01FE0FFJ0FE3FC03FC07F8FF807F81JF,L0IF807FFC1FF00FF83FC07F87F803FC3FFJ03FEK03FC03FE0FFI01F83FC03FC07F8FF807F807IF8181C,L0IF007FF81FF00FF83FC07F87FC03FC3FEJ03FEK03FC03FE0FFI03F83FC03FC07F8FF807F801IF83FFC,L07FF003FF81FF00FF03FC07F87FC03FC3FEJ03FEK03FC03FE0FFI07F03FC03FC07F8FF807F8003FF81FFC,L07FE003FF80FF00FF03FC07F87FC03FC1FEJ03FEK03FC03FC0FFI07F03FC03FC07F8FF807F87007F81FF8,L03FE001FF00FF00FF03FC07F83FC03FC1FF00103FEK03FC03FC0FFI0FF03FC03FC07F87FC07F87803F81FF8,L03FE001FF007F01FE03FC07F83FE03FC1FF80303FEK03FC07FC0FFI0FF03FC03FC07F87FC07F87C03F81FF8,L01FCI0FE007F81FE07FC07F81FF07FC0FFE0F83FEK03FE0FF81FF800FF87FC03FC07F83FE0FF87C03F81FF8,L01FCI0FE003FC7FC07FC07F81KFE07JF03FFK07KF01FFC007FCFFC87FC07F83KFC7C03F01FF8,M0F8I07C001JF80FFC0FFC0LF03IFE07FF8J0KFC07FFE007KF87FC0FFC1KFE7E07E01FF8,M0F8I07CI0JF01IF3FFE07KF01IFC0IFEI01KFC07IF003FF9FF9IF3FFE0KFE3IFC01FFC,M078I03CI03FFC01IF1IF03FF3FF007FF00IFCJ0FF8FF807FFE001FE0FF1IF1IF03FE7FE0IF003FFC,M07J038J03CI07FE0FFE003M07T018001FF8I03801807FE0FFE007L0F,,::::::::::^FS
 
-        zpl_code = ""
-        for page in range(1, labels_number + 1):
-            zpl_code += f"""
-                        ^XA
-                        ^FO350,50^GFA,2940,2940,49,,:::::::::::gU03CV03CgO078,gT07FCU07FCgN0FF8,gS01FFCT01FFCgM03FF8,003FFE01IF003IFV01FFCT01FFCgM03FF8,I07FF803FFC00FFEW0FFCU0FFCgN0FF8,I03FFC01FFE007FEW07FCU07FCgN07F8,I03FFC00IF003FCW03FCU03FCgN07F8,I01FFE00IF003FCW03FCU03FCgN07F8,I01IF007FF801F8W03FCU03FCgN07F8,J0IF007FF801F8W03FCU03FCgN07F8,J0IF807FFC01FX07FCU03FCgN0FF8,J07FF807FFC00F00FFR07IFC001FCP03FF3FJ0607800FF8Q0JF800FF,J07FFC03FFE00E03FFCI0383F8001JFC007FF8001C1FI03JFC003E1FC07FFEI0383F8003JF807FFE,J03FFC03FFE00E0JF001F8FFC007JFC01IFC00FC7F8003JFE01FE3FE0JFI0F8FFE007JF80JF,J03FFE03IF00C1JF80FFDFFE00KFC03F07E07FCFFC003KF07FE7FE1F87F80FFDIF01KF81F83F,J01FFE03IF00C3FC3FC1LF00FF8FFC07F07F0FFCFFC003FF1FF8FFE7FE3F03F81LF01FF1FF83F01F,J01FFE03IF8187F81FE3LF01FF07FC0FE03F1KFC003FC0FFC7JFE3F03FC3LF03FE0FF83F01F,K0IF03IF818FF01FE1IF9FF83FE03FC1FE03F8IF9F8003FC07FC1FFCFC7F03FC0IF9FF87FC07F87F00F,K0IF07IFC18FF00FF07FE0FF83FC03FC1FE03F83FF0F8003FC03FC1FF8387F03FC07FE07F87FC07F87F8,K07FF87IFC30FF00FF07FC07F83FC03FC1FE03F83FFK03FC03FE0FF8003E03FC03FC07F8FF807F87FFC,K07FFDE3FFE31FF00FF03FC07F87FC03FC3FC07F83FEK03FC03FE0FFJ0803FC03FC07F8FF807F87FFC,K03IFC1IFE1FF00FF83FC07F87FC03FC3FC0FF83FEK03FC03FE0FFL0FFC03FC07F8FF807F83IFE,K03IFC1IFE1FF00FF83FC07F87F803FC3KF83FEK03FC01FE0FFK07FFC03FC07F8FF807F83IFE,K01IF80IFE1FE00FF83FC07F87F803FC3KF83FEK03FC01FE0FFJ03FBFC03FC07F8FF807F81JF,K01IF80IFC1FE00FF83FC07F87F803FC3FF8I03FEK03FC01FE0FFJ0FE3FC03FC07F8FF807F81JF,L0IF807FFC1FF00FF83FC07F87F803FC3FFJ03FEK03FC03FE0FFI01F83FC03FC07F8FF807F807IF8181C,L0IF007FF81FF00FF83FC07F87FC03FC3FEJ03FEK03FC03FE0FFI03F83FC03FC07F8FF807F801IF83FFC,L07FF003FF81FF00FF03FC07F87FC03FC3FEJ03FEK03FC03FE0FFI07F03FC03FC07F8FF807F8003FF81FFC,L07FE003FF80FF00FF03FC07F87FC03FC1FEJ03FEK03FC03FC0FFI07F03FC03FC07F8FF807F87007F81FF8,L03FE001FF00FF00FF03FC07F83FC03FC1FF00103FEK03FC03FC0FFI0FF03FC03FC07F87FC07F87803F81FF8,L03FE001FF007F01FE03FC07F83FE03FC1FF80303FEK03FC07FC0FFI0FF03FC03FC07F87FC07F87C03F81FF8,L01FCI0FE007F81FE07FC07F81FF07FC0FFE0F83FEK03FE0FF81FF800FF87FC03FC07F83FE0FF87C03F81FF8,L01FCI0FE003FC7FC07FC07F81KFE07JF03FFK07KF01FFC007FCFFC87FC07F83KFC7C03F01FF8,M0F8I07C001JF80FFC0FFC0LF03IFE07FF8J0KFC07FFE007KF87FC0FFC1KFE7E07E01FF8,M0F8I07CI0JF01IF3FFE07KF01IFC0IFEI01KFC07IF003FF9FF9IF3FFE0KFE3IFC01FFC,M078I03CI03FFC01IF1IF03FF3FF007FF00IFCJ0FF8FF807FFE001FE0FF1IF1IF03FE7FE0IF003FFC,M07J038J03CI07FE0FFE003M07T018001FF8I03801807FE0FFE007L0F,,::::::::::^FS
+                    ^FX Top section with logo, name and address.
+                    ^CF0,50
+                    ^FO50,160^FDOrden: {so_name}^FS
+                    ^CF0,30
+                    ^FO50,220^FDEquipo de ventas: {team}^FS
+                    ^FO50,260^FDTransportista: {carrier}^FS
+                    ^FO50,320^GB700,3,3^FS
 
-                        ^FX Top section with logo, name and address.
-                        ^CF0,50
-                        ^FO50,160^FDOrden: {so_name}^FS
-                        ^CF0,40
-                        ^FO50,225^FDFecha de orden: {create_date}^FS
-                        ^CF0,30
-                        ^FO50,270^FDEquipo de ventas: {team}^FS
-                        ^FO50,310^FDTransportista: {carrier}^FS
-                        ^FO50,370^GB700,3,3^FS
+                    ^FX Second section with recipient address and permit information.
+                    ^CFA,30
+                    ^FO50,390^FDOUT: {out_name}^FS
+                    ^FO50,430^FD{almacen}^FS
+                    ^FO50,480^FDAG (TLP)^FS
+                    ^CFA,15
+                    ^FO500,330^BQN,2,5
+                    ^FDLA,{web_link}^FS
+                    ^FO50,580^GB700,3,3^FS
 
-                        ^FX Second section with recipient address and permit information.
-                        ^CFA,30
-                        ^FO50,430^FDOUT: {out_name}^FS
-                        ^FO50,480^FD{almacen}^FS
-                        ^FO50,530^FDAG (TLP)^FS
-                        ^CFA,15
-                        ^FO500,380^BQN,2,5
-                        ^FDLA,{web_link}^FS
-                        ^FO50,630^GB700,3,3^FS
+                    ^FX Third section with bar code.
+                    ^BY5,2,300
+                    ^FO80,610^BC^FD{so_code}^FS
 
-                        ^FX Third section with bar code.
-                        ^BY5,2,300
-                        ^FO80,660^BC^FD{so_code}^FS
+                    ^FX Fourth section (the two boxes on the bottom).
+                    ^FO50,980^GB700,{size_button_square},3^FS
+                    ^FO400,980^GB3,{size_button_square},3^FS
+                    ^CF0,25
 
-                        ^FX Fourth section (the two boxes on the bottom).
-                        ^FO50,1040^GB700,{size_button_square},3^FS
-                        ^FO400,1040^GB3,{size_button_square},3^FS
-                        ^CF0,25
+                    """
 
-                        """
+        # Ahora agregamos los SKUs uno debajo de otro
+        y_position = 1020  # Empezamos en la posición 990 para el primer SKU
+        for i, sku in enumerate(sku_list_qtys):
+            zpl_code += f"^FO90,{y_position}^FDSKU {i + 1}: {sku}^FS\n"
+            y_position += 35  # Incrementamos la posición vertical para el siguiente SKU
 
-            # Ahora agregamos los SKUs uno debajo de otro
-            y_position = 1080  # Empezamos en la posición 990 para el primer SKU
-            for i, sku in enumerate(sku_list_qtys):
-                zpl_code += f"^FO90,{y_position}^FDSKU {i + 1}: {sku}^FS\n"
-                y_position += 35  # Incrementamos la posición vertical para el siguiente SKU
-
-            # Agregamos el final del ZPL
-            # zpl_code += f"""
-            #         ^CF0,190
-            #         ^FO470,1035^FDAG^FS
-            #         ^XZ
-            #         """
-
-            # Agregar el final de la etiqueta y número de página
-            zpl_code += f"""
-                ^CF0,30
-                ^FO90,{y_position + 150}^FDPágina {page}/{labels_number}^FS
+        # Agregamos el final del ZPL
+        zpl_code += f"""
                 ^CF0,190
-                ^FO470,1095^FDAG^FS
+                ^FO470,1035^FDAG^FS
                 ^XZ
-            """
-
+                """
         data_extra = base64.b64encode(bytes(zpl_code, 'utf-8')).decode('utf-8')
 
         # Crear el payload para enviar la etiqueta adicional
@@ -545,7 +524,8 @@ def get_order_id(name):
                                                       search_domain,
                                                       ['channel_order_reference', 'name', 'yuju_seller_id',
                                                        'yuju_carrier_tracking_ref', 'team_id',
-                                                       'carrier_selection_relational','channel', 'order_line', 'warehouse_id', 'date_order']]}}) # 'x_studio_paquetera_carrier' / 'select_carrier'
+                                                       'carrier_selection_relational', 'channel', 'order_line',
+                                                       'warehouse_id']]}})  # 'x_studio_paquetera_carrier' / 'select_carrier'
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
             marketplace_order_id = res['result'][0]['channel_order_reference']
@@ -556,15 +536,16 @@ def get_order_id(name):
             warehouse = res['result'][0]['warehouse_id'][1]
             # carrier = res['result'][0]['x_studio_paquetera_carrier']  # 'x_studio_paquetera_carrier' / 'select_carrier'
             try:
-                carrier = res['result'][0]['carrier_selection_relational'][1]  # 'x_studio_paquetera_carrier' / 'select_carrier'
+                carrier = res['result'][0]['carrier_selection_relational'][
+                    1]  # 'x_studio_paquetera_carrier' / 'select_carrier'
             except Exception as e:
                 carrier = False
             team_id = res['result'][0]['team_id'][1]  # La repuesta es [id, team]
             guide_number = res['result'][0]['yuju_carrier_tracking_ref']
-            create_date = res['result'][0]['date_order']
 
             return dict(marketplace_order_id=marketplace_order_id, seller_marketplace=seller_marketplace,
-                        order_odoo_id=order_odoo_id, carrier=carrier, team_id=team_id, guide_number=guide_number, marketplace_name=marketplace_name, order_lines=order_lines,warehouse=warehouse,create_date=create_date)
+                        order_odoo_id=order_odoo_id, carrier=carrier, team_id=team_id, guide_number=guide_number,
+                        marketplace_name=marketplace_name, order_lines=order_lines, warehouse=warehouse)
         else:
             logging.error("Error: No se tiene un id de usuario, revisa el listado de usuarios")
             return False
@@ -811,7 +792,7 @@ def index():
 
 @app.route('/inicio', methods=['POST'])
 def inicio():
-    #global user_id, password, user_name   # NO USAR VARIABLES GLOBALES / USAR VARIABLES DE SESSION
+    # global user_id, password, user_name   # NO USAR VARIABLES GLOBALES / USAR VARIABLES DE SESSION
 
     # usuario_odoo = request.form.get("usuario_odoo")
     # session['usuario'] = usuario_odoo
@@ -856,14 +837,12 @@ def procesar():
         team_id = order_odoo.get('team_id')
         guide_number = order_odoo.get('guide_number')
 
-        # *************** NEW order data *****************************
+        # ***** NEW order data
         marketplace_name = order_odoo.get('marketplace_name')
         order_lines_list = order_odoo.get('order_lines')
         warehouse = order_odoo.get('warehouse')
-        create_date = order_odoo.get('create_date')
 
-        #logging.info(f'New Order data {marketplace_name}, {order_lines_list}, {warehouse}, {create_date}')
-        # ************************************************************
+        logging.info(f'NEW DATAAAAAAAAAA {marketplace_name}, {order_lines_list}, {warehouse}')
 
         carrier = order_odoo.get('carrier')
         marketplace = team_id.lower().split("_")[1]
@@ -908,16 +887,6 @@ def procesar():
                     formulario = 'error.html'
                     break
 
-                # **** Verificacion numero de guias ****
-                try:
-                    if ',' in guide_number:
-                        labels_number = guide_number.count(',') + 1
-                    else:
-                        labels_number = 1
-                except Exception as e:
-                    labels_number = 1
-                # ****************************************
-
                 # Revisar el caso de etiqueta que es:
                 label_case_guide_number_logic = get_label_case('labels_types.json', marketplace,
                                                                carrier)  # Tipo de etiqueta con la logica de obtener el carrier del campo guide number
@@ -933,10 +902,12 @@ def procesar():
 
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
                 if (label_type_carrier_logic != False and team_id.lower() != "team_mercadolibre") or (
-                            'fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]):  # Si el caso está en los carriers existentes en la lista
-                    #if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
-                        #respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
-                        #break
+                        'fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13,
+                                                                                             14, 15, 16, 17,
+                                                                                             18]):  # Si el caso está en los carriers existentes en la lista
+                    # if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
+                    # respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
+                    # break
                     # Coidgo para imprimir etiqueta Fedex
                     order_id_valpick = search_valpick_id(name_so)
                     response_fedex = ejecute_fedex_label(order_id_valpick)
@@ -955,7 +926,7 @@ def procesar():
                         respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se se ha mandado el Job manera correcta'
                         order_id = order_id
                         set_pick_done(name_so)
-                        #out_zpl_label(name_so,ubicacion,team_id,carrier,order_lines_list, warehouse, labels_number, create_date)
+                        # out_zpl_label(name_so,ubicacion,team_id,carrier,order_lines_list, warehouse)
 
                 elif team_id.lower() == 'team_mercadolibre':  # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
                     if seller_marketplace == '160190870':
@@ -1006,7 +977,7 @@ def procesar():
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
                             if not 'Error al extraer el archivo zpl' in respuesta:  # Si la respuesta es satisfactoria de haberse impreso:
                                 set_pick_done(name_so)
-                                # out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse, labels_number, create_date)
+                                # out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse)
                             else:  # Si tiene el 'Error' en la respuesta:
                                 respuesta = "Esta orden de MercadoLibre aun no debe ser procesada"
                 else:
