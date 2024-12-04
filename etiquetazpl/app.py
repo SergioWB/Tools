@@ -859,6 +859,7 @@ def procesar():
     try:
         name_so = request.form.get("name_so")
         order_odoo = get_order_id(name_so)
+        print(order_odoo)
         order_id = order_odoo.get('marketplace_order_id')
         seller_marketplace = order_odoo.get('seller_marketplace')
         order_odoo_id = order_odoo.get('order_odoo_id')
@@ -1009,6 +1010,7 @@ def procesar():
                         respuesta = 'La orden ' + name_so + ' ya ha sido entregada, no se imprimirá la etiqueta.'
                     else:
                         respuesta_ship = get_shipment_meli(shipment_ids, access_token)
+                        print(f'RESPUESTA SHIP: {respuesta_ship}')
                         status_shipping = respuesta_ship.get('status')
                         date_delivered = respuesta_ship.get('date_delivered')
                         if status_shipping == 'delivered':
@@ -1027,7 +1029,7 @@ def procesar():
                     respuesta = f'{print_label_case} La orden no tiene el campo  "Paquetería" en Odoo, por lo que no peude ser procesada.'
             except Exception as e:
                 logging.error(f'ERROR en lógica de procesamiento: {e}')
-                respuesta = f'Error de conexión, {e}'
+                respuesta = f'ERROR en lógica de procesamiento, {e}'
 
         logging.info(f'// Respuesta: {respuesta} //')
         formulario = 'mostrar.html'
