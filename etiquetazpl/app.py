@@ -944,7 +944,8 @@ def procesar():
                     print_label_case = 'NO ENCONTRADO'
 
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
-                if (label_type_carrier_logic != False and team_id.lower() != "team_mercadolibre") or (
+                # 05-dic-2024 Se aniade el caso para ordenes de MercadoLibre que se les adjunta guía en
+                if (label_type_carrier_logic != False and team_id.lower() != "team_mercadolibre") or (team_id.lower() == 'team_mercadolibre' and guide_number.lower() not in ['colecta','flex','drop off'] and label_type_carrier_logic != 'PaquetExpress') or (
                             'fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]):  # Si el caso está en los carriers existentes en la lista
                     #if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
                         #respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
@@ -990,7 +991,7 @@ def procesar():
                     access_token = recupera_meli_token(user_id_)
 
                     order_meli = get_order_meli(order_id, access_token)
-                    logging.info(f' \n Orden {order_id}, Usuario id {user_id_}, Orden MELI {order_meli} \n')
+                    logging.info(f'Orden {order_id}, Usuario id {user_id_}, Orden MELI {order_meli}')
 
                     if order_meli == False:
                         # respuesta = 'Esta orden de venta aun no se le adjunta etiqueta de envio en Mercado Libre (o tokens incorrectos) \n ESPERAR MAXIMO 30 MINUTOS'
