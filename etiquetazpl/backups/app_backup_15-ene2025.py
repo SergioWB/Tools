@@ -74,7 +74,7 @@ def search_valpick_id(so_name, type='/VALPICK/', name_id = False):  # /VALPICK/ 
             payload = json.dumps({"jsonrpc": "2.0", "method": "call",
                                   "params": {"service": "object", "method": "execute",
                                              "args": [db_name, user_id, password, "stock.picking", "search_read",
-                                                      search_domain, ['id', 'name', 'message_attachment_count']]}})
+                                                      search_domain, ['id', 'name']]}})
 
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
@@ -82,10 +82,6 @@ def search_valpick_id(so_name, type='/VALPICK/', name_id = False):  # /VALPICK/ 
 
             id_valpick = res['result'][0]['id']
             valpick_name = res['result'][0]['name']
-            attatchments_number = res['result'][0]['message_attachment_count']
-
-            if attatchments_number == 0:
-                return 'NO ATTACHMENTS'
 
             return (valpick_name, id_valpick) if name_id else id_valpick
 
@@ -945,18 +941,8 @@ def procesar():
                     #if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
                         #respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
                         #break
-                    # Codigo para imprimir etiqueta Fedex
+                    # Coidgo para imprimir etiqueta Fedex
                     order_id_valpick = search_valpick_id(name_so)
-
-                    # //////////////////////////////////////////////////////////////////////////////
-                    # Hablitamos filtro si no hay adjuntos en el VALPICK
-                    if order_id_valpick == 'NO ATTACHMENTS':
-                        logging.info(f"No se encontró un archivo adjunto para la orden {name_so}")
-                        respuesta = (f"No se encontró un archivo adjunto para la orden {name_so}")
-                        break
-
-                    # //////////////////////////////////////////////////////////////////////////////
-
                     response_fedex = ejecute_fedex_label(order_id_valpick)
                     # logging.info(response_fedex)
                     if response_fedex.get('state') == True:
