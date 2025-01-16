@@ -940,15 +940,15 @@ def procesar():
                     print_label_case = 'NO ENCONTRADO'
 
 
-                    # //////////////////////////////////////////////////////////////////////////////
-                    order_id_valpick = search_valpick_id(name_so)
-                    logging.info(f'ADJUNTOSSSSSSSSSS{order_id_valpick}')
-                    # Hablitamos filtro si no hay adjuntos en el VALPICK
-                    if order_id_valpick == 'NO ATTACHMENTS':
-                        logging.info(f"No se encontró un archivo adjunto para la orden {name_so}")
-                        respuesta = (f"No se encontró un archivo adjunto para la orden {name_so}")
-                        break
-                    # //////////////////////////////////////////////////////////////////////////////
+                # //////////////////////////////////////////////////////////////////////////////
+                order_id_valpick = search_valpick_id(name_so)
+                logging.info(f'ADJUNTOSSSSSSSSSS{order_id_valpick}')
+                # Hablitamos filtro si no hay adjuntos en el VALPICK
+                if order_id_valpick == 'NO ATTACHMENTS':
+                    logging.info(f"No se encontró un archivo adjunto para la orden {name_so}")
+                    respuesta = (f"No se encontró un archivo adjunto para la orden {name_so}")
+                    break
+                # //////////////////////////////////////////////////////////////////////////////
 
 
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
