@@ -940,14 +940,7 @@ def procesar():
                     print_label_case = 'NO ENCONTRADO'
 
 
-                # //////////////////////////////////////////////////////////////////////////////
-                order_id_valpick = search_valpick_id(name_so)
-                # Hablitamos filtro si no hay adjuntos en el VALPICK
-                if order_id_valpick == 'NO ATTACHMENTS':
-                    logging.info(f"No se encontró un archivo adjunto para la orden {name_so}")
-                    respuesta = (f"No se encontró un archivo adjunto para la orden {name_so}")
-                    break
-                # //////////////////////////////////////////////////////////////////////////////
+
 
 
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
@@ -956,6 +949,14 @@ def procesar():
                     #if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
                         #respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
                         #break
+                    # //////////////////////////////////////////////////////////////////////////////
+                    order_id_valpick = search_valpick_id(name_so)
+                    # Hablitamos filtro si no hay adjuntos en el VALPICK
+                    if order_id_valpick == 'NO ATTACHMENTS':
+                        logging.info(f"No se encontró un archivo adjunto para la orden {name_so}")
+                        respuesta = (f"No se encontró un archivo adjunto para la orden {name_so}")
+                        break
+                    # //////////////////////////////////////////////////////////////////////////////
 
                     response_fedex = ejecute_fedex_label(order_id_valpick)
                     # logging.info(response_fedex)
