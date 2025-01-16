@@ -939,23 +939,23 @@ def procesar():
                 else:
                     print_label_case = 'NO ENCONTRADO'
 
+
+                    # //////////////////////////////////////////////////////////////////////////////
+                    order_id_valpick = search_valpick_id(name_so)
+                    # Hablitamos filtro si no hay adjuntos en el VALPICK
+                    if order_id_valpick == 'NO ATTACHMENTS':
+                        logging.info(f"No se encontró un archivo adjunto para la orden {name_so}")
+                        respuesta = (f"No se encontró un archivo adjunto para la orden {name_so}")
+                        break
+                    # //////////////////////////////////////////////////////////////////////////////
+
+
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
                 if (label_type_carrier_logic != False and team_id.lower() != "team_mercadolibre") or (team_id.lower() == 'team_mercadolibre' and guide_number.lower() not in ['colecta','flex','drop off'] and label_type_carrier_logic != 'PaquetExpress') or (
                             'fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]):  # Si el caso está en los carriers existentes en la lista
                     #if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
                         #respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
                         #break
-                    # Codigo para imprimir etiqueta Fedex
-                    order_id_valpick = search_valpick_id(name_so)
-
-                    # //////////////////////////////////////////////////////////////////////////////
-                    # Hablitamos filtro si no hay adjuntos en el VALPICK
-                    if order_id_valpick == 'NO ATTACHMENTS':
-                        logging.info(f"No se encontró un archivo adjunto para la orden {name_so}")
-                        respuesta = (f"No se encontró un archivo adjunto para la orden {name_so}")
-                        break
-
-                    # //////////////////////////////////////////////////////////////////////////////
 
                     response_fedex = ejecute_fedex_label(order_id_valpick)
                     # logging.info(response_fedex)
