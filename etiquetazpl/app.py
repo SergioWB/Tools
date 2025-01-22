@@ -911,10 +911,11 @@ def procesar():
             try:
 
                 if not guide_number and not carrier:
-                    order_id = ''
-                    respuesta = 'Esta orden de venta aun no tiene numero de guia'
-                    formulario = 'error.html'
-                    break
+                    pass # Temporal hasta que los scripts de ML inserten correctamente la info
+                    # order_id = ''
+                    # respuesta = 'Esta orden de venta aun no tiene numero de guia'
+                    # formulario = 'error.html'
+                    # break
 
                 # **** Verificacion numero de guias ****
                 try:
