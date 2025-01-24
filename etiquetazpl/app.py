@@ -61,7 +61,7 @@ def get_password_user(usuario):
     return None
 
 
-def search_valpick_id(so_name, type='/VALPICK/', name_id = False):  # /VALPICK/  /PICK/  /OUT/
+def search_valpick_id(so_name, type='/VALPICK/', name_id = False, count_attachments = False):  # /VALPICK/  /PICK/  /OUT/
     user_id = session.get('user_id')
     user_name = session['user_name']
     password = session['password']
@@ -84,8 +84,11 @@ def search_valpick_id(so_name, type='/VALPICK/', name_id = False):  # /VALPICK/ 
             valpick_name = res['result'][0]['name']
             attatchments_number = res['result'][0]['message_attachment_count']
 
-            if attatchments_number == 0:
-                return 'NO ATTACHMENTS'
+            if count_attachments:
+                if attatchments_number == 0:
+                    return (id_valpick, 'NO ATTACHMENTS')
+                else:
+                    return (id_valpick, 'THERE ARE ATTACHMENTS')
 
             return (valpick_name, id_valpick) if name_id else id_valpick
 
@@ -954,9 +957,9 @@ def procesar():
                         #respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
                         #break
                     # //////////////////////////////////////////////////////////////////////////////
-                    order_id_valpick = search_valpick_id(name_so)
+                    order_id_valpick, attachments_num = search_valpick_id(name_so, count_attachments=True)
                     # Hablitamos filtro si no hay adjuntos en el VALPICK
-                    if order_id_valpick == 'NO ATTACHMENTS':
+                    if attachments_num == 'NO ATTACHMENTS':
                         logging.info(f"No se encontró un archivo adjunto para la orden {name_so}")
                         respuesta = (f"No se encontró un archivo adjunto para la orden {name_so}")
                         break
