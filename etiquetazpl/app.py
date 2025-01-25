@@ -922,6 +922,11 @@ def procesar():
                     # Temporal hasta que los scripts de ML inserten correctamente la info
                     if team_id.lower() == "team_mercadolibre":
                         guide_number = 'colecta'
+                    else:
+                        respuesta = 'Esta orden de venta aun no tiene numero de guia'
+                        formulario = 'error.html'
+                        break
+
 
                 # **** Verificacion numero de guias ****
                 try:
