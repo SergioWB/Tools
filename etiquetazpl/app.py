@@ -1182,8 +1182,9 @@ def procesar():
                                 # out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse, labels_number, create_date)
 
                             else:  # Si tiene el 'Error' en la respuesta:
+                                logging.error(f"Esta orden de MercadoLibre no debe ser procesada: {respuesta}")
                                 respuesta = "Esta orden de MercadoLibre no debe ser procesada"
-                                logging.info(f"Esta orden de MercadoLibre no debe ser procesada: {respuesta}")
+
                 else:
                     respuesta = f'{print_label_case} La orden no tiene el campo  "Paquetería" en Odoo, por lo que no peude ser procesada.'
             except Exception as e:
