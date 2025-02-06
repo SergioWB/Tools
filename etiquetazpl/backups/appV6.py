@@ -231,7 +231,8 @@ def set_pick_done_with_valpick(so_name, type="/VALPICK/", tried_pick=False):
             response_validate = requests.post(json_endpoint, data=payload_validate, headers=headers).json()
             if response_validate.get('result'):
                 logging.info(f"{type}: {transfer_id} ha sido validado y ahora está en estado 'done'.")
-                return search_pick_id(so_name, type="/PICK/") # Se devuelve siempre el id del PICK
+                return True
+                #return search_pick_id(so_name, type="/PICK/") # Se devuelve siempre el id del PICK
             else:
                 logging.info(f"{type}: {transfer_id}: aun no está validado")
                 # Si no se ha intentado aún con "/PICK/", se hace ahora
@@ -249,6 +250,7 @@ def set_pick_done_with_valpick(so_name, type="/VALPICK/", tried_pick=False):
         else:
             logging.info(f"{type}: {transfer_id} ya está hecho")
             return False
+            # return search_pick_id(so_name, type="/PICK/") # Se devuelve siempre el id del PICK
 
     except Exception as e:
         logging.info(f"Error al cambiar el estado a done: {str(e)}")
@@ -877,11 +879,11 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
             return "Error: La respuesta no es un JSON válido"
 
 
-        # Validar si el estado es "picked_up"
-        if "failed_shipments" in response_json:
-            for shipment in response_json["failed_shipments"]:
-                if "message" in shipment and "status is picked_up" in shipment["message"]:
-                    return f"Error: El paquete {shipment['shipment_id']} de MercadoLibre ya fue recogido y no se puede reimprimir la etiqueta."
+        # # Validar si el estado es "picked_up"
+        # if "failed_shipments" in response_json:
+        #     for shipment in response_json["failed_shipments"]:
+        #         if "message" in shipment and "status is picked_up" in shipment["message"]:
+        #             return f"Error: El paquete {shipment['shipment_id']} de MercadoLibre ya fue recogido y no se puede reimprimir la etiqueta."
 
 
         open('Etiqueta.zip', 'wb').write(r.content)
@@ -889,10 +891,10 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         resultado = ''
         if shipment_ids:
             try:
-                with zipfile.ZipFile("Etiqueta.zip", "r") as zip_ref:
-                    zip_ref.extractall("Etiquetas/Etiqueta_" + so_name)
-                    respuesta += 'Se proceso el archivo ZPL de la Orden: ' + so_name + ' con éxito'
-                # resultado = imprime_zpl(so_name, ubicacion, order_odoo_id)
+                # with zipfile.ZipFile("Etiqueta.zip", "r") as zip_ref:
+                #     zip_ref.extractall("Etiquetas/Etiqueta_" + so_name)
+                #     respuesta += 'Se proceso el archivo ZPL de la Orden: ' + so_name + ' con éxito'
+                # # resultado = imprime_zpl(so_name, ubicacion, order_odoo_id)
                 resultado = print_zpl(so_name, ubicacion, order_odoo_id)
             except Exception as e:
                 respuesta += '|Error al extraer el archivo zpl: ' + str(e)
@@ -1185,13 +1187,13 @@ def procesar():
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
                             if not 'Error' in respuesta:  # Si la respuesta es satisfactoria de haberse impreso:
                                 #  CAMBIAR LA FUNCION A set_pick_done AL REALIZAR EL CAMBIO DE ELIMINACION DE VALPICKS
-                                pick_id = set_pick_done_with_valpick(name_so) # Ponemos en DONE el valpick / pick y obtenemos el id del PICK (siemrpe el pick)
-
-                                if pick_id != False:
+                                is_done = set_pick_done_with_valpick(name_so) # Ponemos en DONE el valpick / pick y obtenemos el id del PICK (siemrpe el pick)
+                                if is_done:
+                                    pick_id = search_pick_id(name_so, type="/PICK/")
                                     upload_attachment(name_so, pick_id)
                                     logging.info(f"Se ha cargado el adjunto de ML para el PICK: {pick_id}")
                                 else:
-                                    logging.info(f"No ha sigo posible cargar el adjunto al PICK: {pick_id}")
+                                    logging.info(f"No ha sido posible cargar el adjunto al PICK: {pick_id}")
 
                                 # \\\\\ IMPRIME ETIQUETAS DE OUTS  /////
                                 # out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse, labels_number, create_date)
