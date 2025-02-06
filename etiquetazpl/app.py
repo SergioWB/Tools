@@ -20,6 +20,7 @@ import base64
 import re
 import locale
 
+
 locale.setlocale(locale.LC_TIME, 'es_MX.utf8')
 
 __description__ = """
@@ -62,7 +63,7 @@ def get_password_user(usuario):
     return None
 
 
-def search_pick_id(so_name, type='/PICK/', name_id=False, count_attachments=False):  # /VALPICK/  /PICK/  /OUT/
+def search_pick_id(so_name, type='/PICK/', name_id = False, count_attachments = False):  # /VALPICK/  /PICK/  /OUT/
     user_id = session.get('user_id')
     user_name = session['user_name']
     password = session['password']
@@ -230,7 +231,7 @@ def set_pick_done_with_valpick(so_name, type="/VALPICK/", tried_pick=False):
             response_validate = requests.post(json_endpoint, data=payload_validate, headers=headers).json()
             if response_validate.get('result'):
                 logging.info(f"{type}: {transfer_id} ha sido validado y ahora está en estado 'done'.")
-                return search_pick_id(so_name, type="/PICK/")  # Se devuelve siempre el id del PICK
+                return search_pick_id(so_name, type="/PICK/") # Se devuelve siempre el id del PICK
             else:
                 logging.info(f"{type}: {transfer_id}: aun no está validado")
                 # Si no se ha intentado aún con "/PICK/", se hace ahora
@@ -241,8 +242,7 @@ def set_pick_done_with_valpick(so_name, type="/VALPICK/", tried_pick=False):
                     # Si el PICK se valida correctamente, intentamos nuevamente validar el VALPICK
                     if pick_validated:
                         logging.info("PICK validado correctamente. Reintentando validar el VALPICK.")
-                        return set_pick_done_with_valpick(so_name, "/VALPICK/",
-                                                          tried_pick=True)  # Intentar nuevamente con VALPICK
+                        return set_pick_done_with_valpick(so_name, "/VALPICK/", tried_pick=True)  # Intentar nuevamente con VALPICK
                 else:
                     logging.info("Ya se intentó con /PICK/, deteniendo recursión.")
                     return False
@@ -403,7 +403,6 @@ def print_zpl(so_name, ubicacion, order_odoo_id):
         logging.error(f'Error en la conexión con la impresora ZPL: {str(e)}')
         return "|Error en la conexión con la impresora ZPL: " + str(e)
 
-
 # ******** New label functions ****
 
 def get_order_line_skus(order_line_ids):
@@ -450,7 +449,6 @@ def get_order_line_skus(order_line_ids):
                 skus.append(sku)
 
     return skus
-
 
 def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, labels_number, create_date):
     try:
@@ -573,7 +571,6 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
         logging.error(error_msg)
         return error_msg
 
-
 # ********************************
 
 def get_printer_id(location):
@@ -684,9 +681,7 @@ def get_order_id(name):
                                                       search_domain,
                                                       ['channel_order_reference', 'name', 'yuju_seller_id',
                                                        'yuju_carrier_tracking_ref', 'team_id',
-                                                       'carrier_selection_relational', 'channel', 'order_line',
-                                                       'warehouse_id',
-                                                       'date_order']]}})  # 'x_studio_paquetera_carrier' / 'select_carrier'
+                                                       'carrier_selection_relational','channel', 'order_line', 'warehouse_id', 'date_order']]}}) # 'x_studio_paquetera_carrier' / 'select_carrier'
             res = requests.post(json_endpoint, data=payload, headers=headers).json()
             # logging.info(default_code+str(res))
             marketplace_order_id = res['result'][0]['channel_order_reference']
@@ -697,8 +692,7 @@ def get_order_id(name):
             warehouse = res['result'][0]['warehouse_id'][1]
             # carrier = res['result'][0]['x_studio_paquetera_carrier']  # 'x_studio_paquetera_carrier' / 'select_carrier'
             try:
-                carrier = res['result'][0]['carrier_selection_relational'][
-                    1]  # 'x_studio_paquetera_carrier' / 'select_carrier'
+                carrier = res['result'][0]['carrier_selection_relational'][1]  # 'x_studio_paquetera_carrier' / 'select_carrier'
             except Exception as e:
                 carrier = False
             team_id = res['result'][0]['team_id'][1]  # La repuesta es [id, team]
@@ -706,9 +700,7 @@ def get_order_id(name):
             create_date = res['result'][0]['date_order']
 
             return dict(marketplace_order_id=marketplace_order_id, seller_marketplace=seller_marketplace,
-                        order_odoo_id=order_odoo_id, carrier=carrier, team_id=team_id, guide_number=guide_number,
-                        marketplace_name=marketplace_name, order_lines=order_lines, warehouse=warehouse,
-                        create_date=create_date)
+                        order_odoo_id=order_odoo_id, carrier=carrier, team_id=team_id, guide_number=guide_number, marketplace_name=marketplace_name, order_lines=order_lines,warehouse=warehouse,create_date=create_date)
         else:
             logging.error("Error: No se tiene un id de usuario, revisa el listado de usuarios")
             return False
@@ -888,7 +880,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         if "failed_shipments" in response_json:
             for shipment in response_json["failed_shipments"]:
                 if "message" in shipment and "status is picked_up" in shipment["message"]:
-                    return f"Error: El paquete {shipment['shipment_id']} ya fue recogido y no se puede ya imprimir la etiqueta."
+                    return f"Error: El paquete {shipment['shipment_id']} ya fue recogido y no se puede reimprimir la etiqueta."
 
         open('Etiqueta.zip', 'wb').write(r.content)
         respuesta = ''
@@ -968,7 +960,7 @@ def index():
 
 @app.route('/inicio', methods=['POST'])
 def inicio():
-    # global user_id, password, user_name   # NO USAR VARIABLES GLOBALES / USAR VARIABLES DE SESSION
+    #global user_id, password, user_name   # NO USAR VARIABLES GLOBALES / USAR VARIABLES DE SESSION
 
     # usuario_odoo = request.form.get("usuario_odoo")
     # session['usuario'] = usuario_odoo
@@ -1019,7 +1011,7 @@ def procesar():
         warehouse = order_odoo.get('warehouse')
         create_date = order_odoo.get('create_date')
 
-        # logging.info(f'New Order data {marketplace_name}, {order_lines_list}, {warehouse}, {create_date}')
+        #logging.info(f'New Order data {marketplace_name}, {order_lines_list}, {warehouse}, {create_date}')
         # ************************************************************
 
         carrier = order_odoo.get('carrier')
@@ -1073,6 +1065,7 @@ def procesar():
                         formulario = 'error.html'
                         break
 
+
                 # **** Verificacion numero de guias ****
                 try:
                     if ',' in guide_number:
@@ -1099,15 +1092,12 @@ def procesar():
                 # #######################################################################################
                 # #######################################################################################
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
-                if (label_type_carrier_logic != False and team_id.lower() != "team_mercadolibre") or (
-                        team_id.lower() == 'team_mercadolibre' and guide_number.lower() not in ['colecta', 'flex',
-                                                                                                'drop off'] and label_type_carrier_logic != 'PaquetExpress') or (
-                        'fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13,
-                                                                                             14, 15, 16, 17,
-                                                                                             18]):  # Si el caso está en los carriers existentes en la lista
-                    # if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
-                    # respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
-                    # break
+                if (label_type_carrier_logic != False and team_id.lower() != "team_mercadolibre") or (team_id.lower() == 'team_mercadolibre' and guide_number.lower() not in ['colecta','flex','drop off'] and label_type_carrier_logic != 'PaquetExpress') or (
+                            'fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]):  # Si el caso está en los carriers existentes en la lista
+                    #if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
+                        #respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
+                        #break
+
 
                     # //////////////////////////////////////////////////////////////////////////////
                     # //////////////// FILTRO PARA SABER SI HAY ADJUNTOS ///////////////////////////
@@ -1139,7 +1129,7 @@ def procesar():
                         set_pick_done_with_valpick(name_so)
 
                         # \\\\\ IMPRIME ETIQUETAS DE OUTS  /////
-                        # out_zpl_label(name_so,ubicacion,team_id,carrier,order_lines_list, warehouse, labels_number, create_date)
+                        #out_zpl_label(name_so,ubicacion,team_id,carrier,order_lines_list, warehouse, labels_number, create_date)
 
                 # #######################################################################################
                 # ############################## MERCADO LIBRE ##########################################
@@ -1193,7 +1183,7 @@ def procesar():
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
                             if not 'Error' in respuesta:  # Si la respuesta es satisfactoria de haberse impreso:
                                 #  CAMBIAR LA FUNCION A set_pick_done AL REALIZAR EL CAMBIO DE ELIMINACION DE VALPICKS
-                                pick_id = set_pick_done_with_valpick(name_so)  # Ponemos en DONE el valpick / pick y obtenemos el id del PICK (siemrpe el pick)
+                                pick_id = set_pick_done_with_valpick(name_so) # Ponemos en DONE el valpick / pick y obtenemos el id del PICK (siemrpe el pick)
 
                                 if pick_id != False:
                                     upload_attachment(name_so, pick_id)
@@ -1206,7 +1196,7 @@ def procesar():
 
                             else:  # Si tiene el 'Error' en la respuesta:
                                 logging.error(f"{respuesta}")
-                                respuesta = respuesta  # Lo pongo redundante para indicar que se mantiene la respuesta de Error
+                                respuesta = respuesta # Lo pongo redundante para indicar que se mantiene la respuesta de Error
 
                 else:
                     respuesta = f'{print_label_case} La orden no tiene el campo  "Paquetería" en Odoo, por lo que no peude ser procesada.'
