@@ -249,7 +249,7 @@ def set_pick_done_with_valpick(so_name, type="/VALPICK/", tried_pick=False):
                     return False
         else:
             logging.info(f"{type}: {transfer_id} ya está hecho")
-            return False
+            return True
             # return search_pick_id(so_name, type="/PICK/") # Se devuelve siempre el id del PICK
 
     except Exception as e:
@@ -320,13 +320,13 @@ def set_pick_done(so_name):
         # Si el picking ya está validado, termina
         if picking_state == 'done':
             logging.info(f"PICK: {transfer_id} ya está hecho, no encesita validar")
-            return False
+            return True
 
         # Intentar validar el PICK
         response_validate = requests.post(json_endpoint, data=payload_validate, headers=headers).json()
         if response_validate.get('result'):
             logging.info(f"PICK: {transfer_id} ha sido validado y ahora está en estado 'done'.")
-            return transfer_id
+            return True
         else:
             logging.info(f"PICK: {transfer_id}:no se pudo validar")
             return False
@@ -1187,14 +1187,13 @@ def procesar():
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
                             if not 'Error' in respuesta:  # Si la respuesta es satisfactoria de haberse impreso:
                                 #  CAMBIAR LA FUNCION A set_pick_done AL REALIZAR EL CAMBIO DE ELIMINACION DE VALPICKS
-                                is_done = set_pick_done_with_valpick(name_so) # Ponemos en DONE el valpick / pick y obtenemos el id del PICK (siemrpe el pick)
-                                logging.info(f"\n is_done: {is_done}\n")
+                                is_done = set_pick_done_with_valpick(name_so) # Ponemos en DONE el valpick / pick   y obtenemos el id del PICK (siemrpe el pick)
                                 if is_done:
                                     pick_id = search_pick_id(name_so, type="/PICK/")
-                                    logging.info(f"\n pick_id: {pick_id}\n")
                                     upload_attachment(name_so, pick_id)
                                     logging.info(f"Se ha cargado el adjunto de ML para el PICK: {pick_id}")
                                 else:
+                                    pick_id = search_pick_id(name_so, type="/PICK/")
                                     logging.info(f"No ha sido posible cargar el adjunto al PICK: {pick_id}")
 
                                 # \\\\\ IMPRIME ETIQUETAS DE OUTS  /////
