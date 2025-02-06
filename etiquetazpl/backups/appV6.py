@@ -19,7 +19,6 @@ import tokens_meli as tk_meli
 import base64
 import re
 import locale
-import unicodedata
 
 
 locale.setlocale(locale.LC_TIME, 'es_MX.utf8')
