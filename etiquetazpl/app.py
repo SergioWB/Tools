@@ -866,9 +866,9 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         # headers = {'Accept': 'application/json','content-type': 'application/json'}
         url = 'https://api.mercadolibre.com/shipment_labels?shipment_ids=' + str(
             shipment_ids) + '&response_type=zpl2&access_token=' + access_token
-        logging.warning(f"URL: {url}")
+        # logging.warning(f"URL: {url}")
         r = requests.get(url)
-        logging.warning(f"RESPONSE: {r.text}")
+        # logging.warning(f"RESPONSE: {r.text}")
 
         # Es JSON válido?
         try:
@@ -876,11 +876,13 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         except json.JSONDecodeError:
             return "Error: La respuesta no es un JSON válido"
 
+
         # Validar si el estado es "picked_up"
         if "failed_shipments" in response_json:
             for shipment in response_json["failed_shipments"]:
                 if "message" in shipment and "status is picked_up" in shipment["message"]:
-                    return f"Error: El paquete {shipment['shipment_id']} ya fue recogido y no se puede reimprimir la etiqueta."
+                    return f"Error: El paquete {shipment['shipment_id']} de MercadoLibre ya fue recogido y no se puede reimprimir la etiqueta."
+
 
         open('Etiqueta.zip', 'wb').write(r.content)
         respuesta = ''

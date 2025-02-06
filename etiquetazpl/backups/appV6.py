@@ -866,9 +866,9 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         # headers = {'Accept': 'application/json','content-type': 'application/json'}
         url = 'https://api.mercadolibre.com/shipment_labels?shipment_ids=' + str(
             shipment_ids) + '&response_type=zpl2&access_token=' + access_token
-        logging.warning(f"URL: {url}")
+        # logging.warning(f"URL: {url}")
         r = requests.get(url)
-        logging.warning(f"RESPONSE: {r.text}")
+        # logging.warning(f"RESPONSE: {r.text}")
 
         # Es JSON válido?
         try:
