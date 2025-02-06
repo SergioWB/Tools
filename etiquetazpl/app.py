@@ -1183,7 +1183,7 @@ def procesar():
 
                             else:  # Si tiene el 'Error' en la respuesta:
                                 logging.error(f"Esta orden de MercadoLibre no debe ser procesada: {respuesta}")
-                                respuesta = "Esta orden de MercadoLibre no debe ser procesada"
+                                respuesta = "Esta orden de MercadoLibre ya fue procesada o aun NO debe ser procesada"
 
                 else:
                     respuesta = f'{print_label_case} La orden no tiene el campo  "Paquetería" en Odoo, por lo que no peude ser procesada.'
