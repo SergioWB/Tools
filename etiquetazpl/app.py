@@ -889,10 +889,10 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         resultado = ''
         if shipment_ids:
             try:
-                with zipfile.ZipFile("Etiqueta.zip", "r") as zip_ref:
-                    zip_ref.extractall("Etiquetas/Etiqueta_" + so_name)
-                    respuesta += 'Se proceso el archivo ZPL de la Orden: ' + so_name + ' con éxito'
-                # resultado = imprime_zpl(so_name, ubicacion, order_odoo_id)
+                # with zipfile.ZipFile("Etiqueta.zip", "r") as zip_ref:
+                #     zip_ref.extractall("Etiquetas/Etiqueta_" + so_name)
+                #     respuesta += 'Se proceso el archivo ZPL de la Orden: ' + so_name + ' con éxito'
+                # # resultado = imprime_zpl(so_name, ubicacion, order_odoo_id)
                 resultado = print_zpl(so_name, ubicacion, order_odoo_id)
             except Exception as e:
                 respuesta += '|Error al extraer el archivo zpl: ' + str(e)
