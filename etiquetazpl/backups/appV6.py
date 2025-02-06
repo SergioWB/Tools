@@ -1192,9 +1192,11 @@ def procesar():
                                     pick_id = search_pick_id(name_so, type="/PICK/")
                                     upload_attachment(name_so, pick_id)
                                     logging.info(f"Se ha cargado el adjunto de ML para el PICK: {pick_id}")
+                                    respuesta += f" | Se ha cargado el adjunto de ML para el PICK: {pick_id}"
                                 else:
                                     pick_id = search_pick_id(name_so, type="/PICK/")
                                     logging.info(f"No ha sido posible cargar el adjunto al PICK: {pick_id}")
+                                    respuesta += f" | NO ha sido posible cargar el adjunto al PICK: {pick_id}"
 
                                 # \\\\\ IMPRIME ETIQUETAS DE OUTS  /////
                                 # out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse, labels_number, create_date)
