@@ -869,6 +869,21 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         logging.warning(f"URL: {url}")
         r = requests.get(url)
         logging.warning(f"RESPONSE: {r.text}")
+
+        # Es JSON válido?
+        try:
+            response_json = r.json()
+        except json.JSONDecodeError:
+            return "Error: La respuesta no es un JSON válido"
+
+
+        # Validar si el estado es "picked_up"
+        if "failed_shipments" in response_json:
+            for shipment in response_json["failed_shipments"]:
+                if "message" in shipment and "status is picked_up" in shipment["message"]:
+                    return f"Error: El paquete {shipment['shipment_id']} ya fue recogido y no se puede ya imprimir la etiqueta."
+
+
         open('Etiqueta.zip', 'wb').write(r.content)
         respuesta = ''
         resultado = ''
@@ -1168,7 +1183,7 @@ def procesar():
                             respuesta = 'La orden ' + name_so + ' ya ha sido entregada el dia: ' + date_delivered + ',  no se imprimirá la etiqueta.'
                         else:
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
-                            if not 'Error al extraer el archivo zpl' in respuesta:  # Si la respuesta es satisfactoria de haberse impreso:
+                            if not 'Error' in respuesta:  # Si la respuesta es satisfactoria de haberse impreso:
                                 #  CAMBIAR LA FUNCION A set_pick_done AL REALIZAR EL CAMBIO DE ELIMINACION DE VALPICKS
                                 pick_id = set_pick_done_with_valpick(name_so) # Ponemos en DONE el valpick / pick y obtenemos el id del PICK (siemrpe el pick)
 
@@ -1182,8 +1197,8 @@ def procesar():
                                 # out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse, labels_number, create_date)
 
                             else:  # Si tiene el 'Error' en la respuesta:
-                                logging.error(f"Esta orden de MercadoLibre no debe ser procesada: {respuesta}")
-                                respuesta = "Esta orden de MercadoLibre ya fue procesada o aun NO debe ser procesada"
+                                logging.error(f"{respuesta}")
+                                respuesta = respuesta # Lo pongo redundante para indicar que se mantiene la respuesta de Error
 
                 else:
                     respuesta = f'{print_label_case} La orden no tiene el campo  "Paquetería" en Odoo, por lo que no peude ser procesada.'
