@@ -876,7 +876,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         try:
             response_json = r.json()
         except json.JSONDecodeError:
-            return "Error: La respuesta no es un JSON válido"
+            logging.info("La respuesta no es un JSON - ES UN TXT")
 
 
         # Validar si el estado es "picked_up"
