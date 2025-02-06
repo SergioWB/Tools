@@ -20,12 +20,14 @@ import base64
 import re
 import locale
 
+
 locale.setlocale(locale.LC_TIME, 'es_MX.utf8')
 
 __description__ = """
-        Version 5.0
-        Extiende la version 4.0 y aniade la impresion de una etiqueta extra con la info requerid
-        EL SO o el OUT en formato codigo de barras
+        Version 6.0
+        - Se realiza el cambio para modificar el flujo al eliminar el VALPICK de los movimientos.
+        - Ahora se imprimen las guias desde el PICK.
+        - Para MerdacoLibre se insertará la guía en el PICK.
 
 """
 
@@ -61,7 +63,7 @@ def get_password_user(usuario):
     return None
 
 
-def search_valpick_id(so_name, type='/VALPICK/', name_id = False, count_attachments = False):  # /VALPICK/  /PICK/  /OUT/
+def search_pick_id(so_name, type='/PICK/', name_id = False, count_attachments = False):  # /VALPICK/  /PICK/  /OUT/
     user_id = session.get('user_id')
     user_name = session['user_name']
     password = session['password']
@@ -80,27 +82,27 @@ def search_valpick_id(so_name, type='/VALPICK/', name_id = False, count_attachme
             # logging.info(default_code+str(res))
             # print (res)
 
-            id_valpick = res['result'][0]['id']
-            valpick_name = res['result'][0]['name']
+            pick_id = res['result'][0]['id']
+            pick_name = res['result'][0]['name']
             attatchments_number = res['result'][0]['message_attachment_count']
 
             if count_attachments:
                 if attatchments_number == 0:
-                    return (id_valpick, 'NO ATTACHMENTS')
+                    return (pick_id, 'NO ATTACHMENTS')
                 else:
-                    return (id_valpick, 'THERE ARE ATTACHMENTS')
+                    return (pick_id, 'THERE ARE ATTACHMENTS')
 
-            return (valpick_name, id_valpick) if name_id else id_valpick
+            return (pick_name, pick_id) if name_id else pick_id
 
         else:
             logging.error("Error: No se encontro orden de venta")
             return False
     except Exception as e:
-        logging.error('Error en search_valpick_id:' + str(e))
+        logging.error('Error en search_pick_id:' + str(e))
         return False
 
 
-def ejecute_fedex_label(valpick_id):
+def execute_print_last_shipping_label(pick_id):
     user_id = session.get('user_id')
     user_name = session['user_name']
     password = session['password']
@@ -108,9 +110,9 @@ def ejecute_fedex_label(valpick_id):
         payload = get_json_payload("common", "version")
         response = requests.post(json_endpoint, data=payload, headers=headers)
 
-        if valpick_id:
+        if pick_id:
 
-            search_domain = [['id', '=', valpick_id]]
+            search_domain = [['id', '=', pick_id]]
             shipping_label_status = json.dumps({"jsonrpc": "2.0", "method": "call",
                                                 "params": {"service": "object", "method": "execute",
                                                            "args": [db_name, user_id, password, "stock.picking",
@@ -127,7 +129,7 @@ def ejecute_fedex_label(valpick_id):
                 print_shipping_label = json.dumps({"jsonrpc": "2.0", "method": "call",
                                                    "params": {"service": "object", "method": "execute",
                                                               "args": [db_name, user_id, password, "stock.picking",
-                                                                       'print_last_shipping_label', [valpick_id]]}})
+                                                                       'print_last_shipping_label', [pick_id]]}})
 
                 res = requests.post(json_endpoint, data=print_shipping_label, headers=headers).json()
                 return res
@@ -165,7 +167,7 @@ def load_label_types(filename, carrier):
         return False
 
 
-def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
+def set_pick_done_with_valpick(so_name, type="/VALPICK/", tried_pick=False):
     user_id = session.get('user_id')
     user_name = session['user_name']
     password = session['password']
@@ -179,7 +181,7 @@ def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
 
         """
         # Buscar el ID del picking (VALPICK o PICK dependiendo del tipo pasado)
-        transfer_id = search_valpick_id(so_name, type=type)
+        transfer_id = search_pick_id(so_name, type=type)
 
         # Si no se encuentra el picking, retorna False
         if not transfer_id:
@@ -229,23 +231,102 @@ def set_pick_done(so_name, type="/VALPICK/", tried_pick=False):
             response_validate = requests.post(json_endpoint, data=payload_validate, headers=headers).json()
             if response_validate.get('result'):
                 logging.info(f"{type}: {transfer_id} ha sido validado y ahora está en estado 'done'.")
-                return True
+                return search_pick_id(so_name, type="/PICK/") # Se devuelve siempre el id del PICK
             else:
                 logging.info(f"{type}: {transfer_id}: aun no está validado")
                 # Si no se ha intentado aún con "/PICK/", se hace ahora
                 if not tried_pick:
                     logging.info("Intentando validar el PICK en lugar del VALPICK.")
-                    pick_validated = set_pick_done(so_name, "/PICK/", tried_pick=True)
+                    pick_validated = set_pick_done_with_valpick(so_name, "/PICK/", tried_pick=True)
 
                     # Si el PICK se valida correctamente, intentamos nuevamente validar el VALPICK
                     if pick_validated:
                         logging.info("PICK validado correctamente. Reintentando validar el VALPICK.")
-                        return set_pick_done(so_name, "/VALPICK/", tried_pick=True)  # Intentar nuevamente con VALPICK
+                        return set_pick_done_with_valpick(so_name, "/VALPICK/", tried_pick=True)  # Intentar nuevamente con VALPICK
                 else:
                     logging.info("Ya se intentó con /PICK/, deteniendo recursión.")
                     return False
         else:
             logging.info(f"{type}: {transfer_id} ya está hecho")
+            return False
+
+    except Exception as e:
+        logging.info(f"Error al cambiar el estado a done: {str(e)}")
+        return False
+
+
+def set_pick_done(so_name):
+    """
+        Habilitar esta linea para que los movimientos de Pick y Valpick se validen con usuario data.
+        La desventaja es que la contraseña de data se expone en un json.
+        Si no se habilita, los movimientos se validan con el usuario que se conecta la sesion.
+
+        # user_id, user_name, password = get_password_user('data@wonderbrands.co')
+    """
+    user_id = session.get('user_id')
+    user_name = session['user_name']
+    password = session['password']
+    try:
+        # Buscar el ID del picking (PICK)
+        transfer_id = search_pick_id(so_name, type="/PICK/")
+
+        # Si no se encuentra el picking, retorna False
+        if not transfer_id:
+            logging.info("No se encontró un traslado para PICK")
+            return False
+
+        # Consultar el estado del picking
+        payload_check_state = json.dumps({
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+                "service": "object",
+                "method": "execute",
+                "args": [db_name, user_id, password, "stock.picking", "read", [transfer_id], ["id", "state"]]
+            }
+        })
+        response_check_state = requests.post(json_endpoint, data=payload_check_state, headers=headers).json()
+        picking_state = response_check_state.get('result', [{}])[0].get('state', '')
+
+        # logging.info(f"Estado actual del PICK {transfer_id}: {picking_state}")
+
+        # Definir los payloads para las acciones
+        payload_set_quantities = json.dumps({
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+                "service": "object",
+                "method": "execute",
+                "args": [db_name, user_id, password, "stock.picking", "action_set_quantities_to_reservation",
+                         [transfer_id]]
+            }
+        })
+
+        payload_validate = json.dumps({
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+                "service": "object",
+                "method": "execute",
+                "args": [db_name, user_id, password, "stock.picking", "button_validate", [transfer_id]]
+            }
+        })
+
+        # Primero se setean las cantidades si es que aún no se ha hecho.
+        requests.post(json_endpoint, data=payload_set_quantities, headers=headers).json()
+
+        # Si el picking ya está validado, termina
+        if picking_state == 'done':
+            logging.info(f"PICK: {transfer_id} ya está hecho, no encesita validar")
+            return False
+
+        # Intentar validar el PICK
+        response_validate = requests.post(json_endpoint, data=payload_validate, headers=headers).json()
+        if response_validate.get('result'):
+            logging.info(f"PICK: {transfer_id} ha sido validado y ahora está en estado 'done'.")
+            return transfer_id
+        else:
+            logging.info(f"PICK: {transfer_id}:no se pudo validar")
             return False
 
     except Exception as e:
@@ -369,7 +450,6 @@ def get_order_line_skus(order_line_ids):
 
     return skus
 
-
 def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, labels_number, create_date):
     try:
         # Fecha de orden
@@ -379,7 +459,7 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
         create_date = create_date + gap_timedelta
         create_date = create_date.strftime("%d/%b/%Y")
 
-        out_name, out_id = search_valpick_id(so_name, type='/OUT/', name_id=True)
+        out_name, out_id = search_pick_id(so_name, type='/OUT/', name_id=True)
         print(out_name, out_id)
 
         logging.info(
@@ -491,7 +571,6 @@ def out_zpl_label(so_name, ubicacion, team, carrier, order_lines_list, almacen, 
         logging.error(error_msg)
         return error_msg
 
-
 # ********************************
 
 def get_printer_id(location):
@@ -503,7 +582,53 @@ def get_printer_id(location):
 
 
 ##################################################
+##### FUNCTIONS add ML attachment in PICK ########
 
+def upload_attachment(so_name, pick_id):
+    user_id = session.get('user_id')
+    password = session['password']
+    path_attachment = dir_path + '/Etiquetas/Etiqueta_' + so_name + '/Etiqueta de envio.txt'
+    try:
+        if os.path.exists(path_attachment):
+            with open(path_attachment, 'rb') as file:
+                file_content = file.read()
+            txt_base64 = base64.b64encode(file_content).decode('utf-8')
+        else:
+            logging.error("El archivo no existe: " + path_attachment)
+            return False
+
+        attachment_data = {
+            'name': f"{so_name}.txt",
+            'res_model': 'stock.picking',
+            'res_id': pick_id,
+            'type': 'binary',
+            'datas': txt_base64
+        }
+
+        payload = json.dumps({
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+                "service": "object",
+                "method": "execute",
+                "args": [db_name, user_id, password, "ir.attachment", "create", [attachment_data]]
+            }
+        })
+
+        response = requests.post(json_endpoint, data=payload, headers=headers).json()
+
+        if response.get('result'):
+            logging.info(f"Se adjuntó el archivo {so_name}.txt correctamente al picking {pick_id}")
+            return True
+        else:
+            logging.error("Error al adjuntar el archivo en Odoo: " + str(response))
+            return False
+    except Exception as e:
+        logging.error(f"Error en upload_attachment: {str(e)}")
+        return False
+
+
+#################################################
 def get_json_payload(service, method, *args):
     return json.dumps({
         "jsonrpc": "2.0",
@@ -951,26 +1076,28 @@ def procesar():
                 else:
                     print_label_case = 'NO ENCONTRADO'
 
-
-
-
-
+                # #######################################################################################
+                # #######################################################################################
                 # SE INCLUYEN LOS CASOS DE MARKETPLACES CON ETIQUETAS VALIDAS (a parte de Fedex)
                 if (label_type_carrier_logic != False and team_id.lower() != "team_mercadolibre") or (team_id.lower() == 'team_mercadolibre' and guide_number.lower() not in ['colecta','flex','drop off'] and label_type_carrier_logic != 'PaquetExpress') or (
                             'fedex' in guide_number.lower() or label_case_guide_number_logic in [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]):  # Si el caso está en los carriers existentes en la lista
                     #if team_id.lower() == 'team_elektra' or team_id.lower() == 'team_mercadolibre':  # team_id.lower() == 'team_liverpool' or
                         #respuesta = f'¡ESTA  ORDEN  ES  DE  "{team_id.upper()}"  CON  GUIA  DE  FeDex,  FAVOR  DE  IMPRIMIR  EN  ODOO!'
                         #break
+
+
                     # //////////////////////////////////////////////////////////////////////////////
-                    order_id_valpick, attachments_num = search_valpick_id(name_so, count_attachments=True)
-                    # Hablitamos filtro si no hay adjuntos en el VALPICK
+                    # //////////////// FILTRO PARA SABER SI HAY ADJUNTOS ///////////////////////////
+                    #  CAMBIAR EL TYPE A /PICK/ AL REALIZAR EL CAMBIO DE ELIMINACION DE VALPICKS
+                    pick_order_id, attachments_num = search_pick_id(name_so, type="/VALPICK/", count_attachments=True)
+                    # Hablitamos filtro si no hay adjuntos en el PICK
                     if attachments_num == 'NO ATTACHMENTS':
                         logging.info(f"No se encontró un archivo adjunto para la orden {name_so}")
                         respuesta = (f"No se encontró un archivo adjunto para la orden {name_so}")
                         break
                     # //////////////////////////////////////////////////////////////////////////////
 
-                    response_fedex = ejecute_fedex_label(order_id_valpick)
+                    response_fedex = execute_print_last_shipping_label(pick_order_id)
                     # logging.info(response_fedex)
                     if response_fedex.get('state') == True:
                         # Get fecha actual CDMX
@@ -985,8 +1112,14 @@ def procesar():
                     else:
                         respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se se ha mandado el Job manera correcta'
                         order_id = order_id
-                        set_pick_done(name_so)
+                        #  CAMBIAR LA FUNCION A set_pick_done AL REALIZAR EL CAMBIO DE ELIMINACION DE VALPICKS
+                        set_pick_done_with_valpick(name_so)
+
+                        # \\\\\ IMPRIME ETIQUETAS DE OUTS  /////
                         #out_zpl_label(name_so,ubicacion,team_id,carrier,order_lines_list, warehouse, labels_number, create_date)
+
+                # #######################################################################################
+                # ############################## MERCADO LIBRE ##########################################
 
                 elif team_id.lower() == 'team_mercadolibre':  # Si no existe al carrier en la lista pero el equipo de ventas es mercado libre:
                     if seller_marketplace == '160190870':
@@ -1036,10 +1169,21 @@ def procesar():
                         else:
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
                             if not 'Error al extraer el archivo zpl' in respuesta:  # Si la respuesta es satisfactoria de haberse impreso:
-                                set_pick_done(name_so)
+                                #  CAMBIAR LA FUNCION A set_pick_done AL REALIZAR EL CAMBIO DE ELIMINACION DE VALPICKS
+                                pick_id = set_pick_done_with_valpick(name_so) # Ponemos en DONE el valpick / pick y obtenemos el id del PICK (siemrpe el pick)
+
+                                if pick_id != False:
+                                    upload_attachment(name_so, pick_id)
+                                    logging.info(f"Se ha cargado el adjunto de ML para el PICK: {pick_id}")
+                                else:
+                                    logging.info(f"No ha sigo posible cargar el adjunto al PICK: {pick_id}")
+
+                                # \\\\\ IMPRIME ETIQUETAS DE OUTS  /////
                                 # out_zpl_label(name_so, ubicacion, team_id, carrier, order_lines_list, warehouse, labels_number, create_date)
+
                             else:  # Si tiene el 'Error' en la respuesta:
-                                respuesta = "Esta orden de MercadoLibre aun no debe ser procesada"
+                                respuesta = "Esta orden de MercadoLibre no debe ser procesada"
+                                logging.info(f"Esta orden de MercadoLibre no debe ser procesada: {respuesta}")
                 else:
                     respuesta = f'{print_label_case} La orden no tiene el campo  "Paquetería" en Odoo, por lo que no peude ser procesada.'
             except Exception as e:
