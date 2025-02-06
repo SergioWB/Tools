@@ -879,11 +879,11 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
             return "Error: La respuesta no es un JSON válido"
 
 
-        # # Validar si el estado es "picked_up"
-        # if "failed_shipments" in response_json:
-        #     for shipment in response_json["failed_shipments"]:
-        #         if "message" in shipment and "status is picked_up" in shipment["message"]:
-        #             return f"Error: El paquete {shipment['shipment_id']} de MercadoLibre ya fue recogido y no se puede reimprimir la etiqueta."
+        # Validar si el estado es "picked_up"
+        if "failed_shipments" in response_json:
+            for shipment in response_json["failed_shipments"]:
+                if "message" in shipment and "status is picked_up" in shipment["message"]:
+                    return f"Error: El paquete {shipment['shipment_id']} de MercadoLibre ya fue recogido y no se puede reimprimir la etiqueta."
 
 
         open('Etiqueta.zip', 'wb').write(r.content)
@@ -891,10 +891,10 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         resultado = ''
         if shipment_ids:
             try:
-                # with zipfile.ZipFile("Etiqueta.zip", "r") as zip_ref:
-                #     zip_ref.extractall("Etiquetas/Etiqueta_" + so_name)
-                #     respuesta += 'Se proceso el archivo ZPL de la Orden: ' + so_name + ' con éxito'
-                # # resultado = imprime_zpl(so_name, ubicacion, order_odoo_id)
+                with zipfile.ZipFile("Etiqueta.zip", "r") as zip_ref:
+                    zip_ref.extractall("Etiquetas/Etiqueta_" + so_name)
+                    respuesta += 'Se proceso el archivo ZPL de la Orden: ' + so_name + ' con éxito'
+                # resultado = imprime_zpl(so_name, ubicacion, order_odoo_id)
                 resultado = print_zpl(so_name, ubicacion, order_odoo_id)
             except Exception as e:
                 respuesta += '|Error al extraer el archivo zpl: ' + str(e)
