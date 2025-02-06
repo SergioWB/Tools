@@ -1188,8 +1188,10 @@ def procesar():
                             if not 'Error' in respuesta:  # Si la respuesta es satisfactoria de haberse impreso:
                                 #  CAMBIAR LA FUNCION A set_pick_done AL REALIZAR EL CAMBIO DE ELIMINACION DE VALPICKS
                                 is_done = set_pick_done_with_valpick(name_so) # Ponemos en DONE el valpick / pick y obtenemos el id del PICK (siemrpe el pick)
+                                logging.info(f"\n is_done: {is_done}\n")
                                 if is_done:
                                     pick_id = search_pick_id(name_so, type="/PICK/")
+                                    logging.info(f"\n pick_id: {pick_id}\n")
                                     upload_attachment(name_so, pick_id)
                                     logging.info(f"Se ha cargado el adjunto de ML para el PICK: {pick_id}")
                                 else:
