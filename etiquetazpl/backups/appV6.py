@@ -881,7 +881,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token, ubicacion, order_odoo_id):
         if "failed_shipments" in response_json:
             for shipment in response_json["failed_shipments"]:
                 if "message" in shipment and "status is picked_up" in shipment["message"]:
-                    return f"Error: El paquete {shipment['shipment_id']} ya fue recogido y no se puede reimprimir la etiqueta."
+                    return f"Error: El paquete {shipment['shipment_id']} de MercadoLibre ya fue recogido y no se puede reimprimir la etiqueta."
 
 
         open('Etiqueta.zip', 'wb').write(r.content)
