@@ -1002,30 +1002,23 @@ def procesar():
     try:
         name_so = request.form.get("name_so")
         order_odoo = get_order_id(name_so)
-        order_id = order_odoo.get('marketplace_order_id')           # Marketplace Reference
-        seller_marketplace = order_odoo.get('seller_marketplace')   # Yuju Seller Id
-        order_odoo_id = order_odoo.get('order_odoo_id')             # id
-        team_id = order_odoo.get('team_id')                         # Equipo de ventas
-        guide_number = order_odoo.get('guide_number')               # Numero de Guia
+        order_id = order_odoo.get('marketplace_order_id')
+        seller_marketplace = order_odoo.get('seller_marketplace')
+        order_odoo_id = order_odoo.get('order_odoo_id')
+        team_id = order_odoo.get('team_id')
+        guide_number = order_odoo.get('guide_number')
 
         # *************** NEW order data *****************************
-        marketplace_name = order_odoo.get('marketplace_name')       # Marketplace
-        order_lines_list = order_odoo.get('order_lines')            # Lineas de orden
-        warehouse = order_odoo.get('warehouse')                     # Almacén
-        create_date = order_odoo.get('create_date')                 # Fecha de cotizacion
+        marketplace_name = order_odoo.get('marketplace_name')
+        order_lines_list = order_odoo.get('order_lines')
+        warehouse = order_odoo.get('warehouse')
+        create_date = order_odoo.get('create_date')
 
         #logging.info(f'New Order data {marketplace_name}, {order_lines_list}, {warehouse}, {create_date}')
         # ************************************************************
 
-        carrier = order_odoo.get('carrier')                         # Paquetería o Carrier
-
-        # //////////////////////////////////////////////////////////////////////////////////////////////////////
-        # Se aniade este try para los equipos de ventas que no tienen el "_" en su nombre. (Ex. Ventas de piso)
-        try:
-            marketplace = team_id.lower().split("_")[1]
-        except Exception as e:
-            marketplace = team_id.lower() # Marketplace funge como el equipo de ventas aqui.
-        # //////////////////////////////////////////////////////////////////////////////////////////////////////
+        carrier = order_odoo.get('carrier')
+        marketplace = team_id.lower().split("_")[1]
 
         # ******* Fusion de logica con guide_number y carrier *******
         if carrier == False:
