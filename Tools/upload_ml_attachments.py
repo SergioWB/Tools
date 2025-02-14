@@ -13,7 +13,7 @@ import gspread
 
 # Ajustar la hora manualmente restando 6 horas (UTC → CDMX)
 def get_cdmx_time():
-    return (datetime.utcnow() - timedelta(hours=6)).strftime('%Y-%d-%m %I:%M:%S %p')
+    return (datetime.now() - timedelta(hours=6)).strftime('%Y-%d-%m %I:%M:%S %p')
 
 class CustomFormatter(logging.Formatter):
     """ Formatea el log con la hora de CDMX manualmente """
