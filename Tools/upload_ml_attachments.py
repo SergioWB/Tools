@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import tokens_meli as tk_meli
 import time as tm
+import gspread
 
 log_filename = datetime.now().strftime("log_%Y-%m-%d_%H-%M-%S.log")
 logging.basicConfig(
@@ -122,7 +123,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
         return f'Error get_zpl_meli: {str(e)}'
 
 
-def search_pick_id(so_name, type='/PICK/'):
+def search_pick_id(so_name, type='/PICK/', count_attachments = False):
     """ Busca el ID del picking en Odoo relacionado con la orden. """
     try:
         search_domain = [['origin', '=', so_name], ['name', 'like', type]]
@@ -130,8 +131,19 @@ def search_pick_id(so_name, type='/PICK/'):
                                      'stock.picking', 'search_read',
                                      [search_domain],
                                      {'fields': ['id', 'name', 'message_attachment_count']})
+
+        attatchments_number = pickings['result'][0]['message_attachment_count']
+        pick_id = pickings[0]['id']
+
         if pickings:
-            return pickings[0]['id']
+            if count_attachments:
+                if attatchments_number == 0:
+                    return (pick_id, 'NO ATTACHMENTS')
+                else:
+                    return (pick_id, 'THERE ARE ATTACHMENTS')
+            else:
+                return pick_id
+
         else:
             logging.error("No se encontró el picking para la orden: " + so_name)
             return False
@@ -182,7 +194,7 @@ def process_orders(hours=12, local=True):
     tk_meli.get_all_tokens()
 
     for order in orders:
-        order_id = 2000010754620984 #order['channel_order_reference']
+        order_id = order['channel_order_reference']
         seller_marketplace = order['yuju_seller_id']
         so_name = order['name']
         logging.info(f'Orden {so_name}')
@@ -206,10 +218,50 @@ def process_orders(hours=12, local=True):
 
         zpl_response = get_zpl_meli(shipment_ids, so_name, access_token)
         if 'Error' not in zpl_response:
-            pick_id = search_pick_id(so_name, type="/PICK/")
-            upload_attachment(so_name, pick_id)
-            logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}')
+            pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
+            if are_there_attachments == 'NO ATTACHMENTS':
+                upload_attachment(so_name, pick_id)
+                logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}.')
+            else:
+                logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se agrega.')
 
+def insert_log_in_sheets(log_file, file_id, credentials_json):
+    """
+    Sube un archivo de log a una hoja de Google Sheets.
+    """
+    print("Subiendo log a Google Sheets...")
+    gc = gspread.service_account(filename=credentials_json)
+    sh = gc.open_by_key(file_id)
+    try:
+        worksheet = sh.worksheet("log")  # Intenta abrir la hoja "log"
+    except gspread.exceptions.WorksheetNotFound:
+        print("La hoja 'log' no existe. Creando una nueva hoja...")
+        worksheet = sh.add_worksheet(title="log", rows="1000", cols="1")  # Crear la hoja si no existe
+
+    # Lee el archivo de logs .log
+    with open(log_file, 'r') as file:
+        lines = file.readlines()
+        lines.reverse()  # Invierte el orden de las líneas para que las más recientes aparezcan al principio
+
+    # Obtén los datos actuales de la hoja de Google Sheets
+    current_data = worksheet.get_all_values()
+    # Prepara los nuevos datos para actualizar la hoja
+    updated_data = [[line.strip()] for line in lines] + current_data
+    # Borra el contenido actual de la hoja de Google Sheets
+    worksheet.clear()
+    # Actualiza la hoja de Google Sheets con los nuevos datos
+    worksheet.update(range_name='A1', values=updated_data)
+    print("Log actualizado en Google Sheets.")
+
+def delete_log_file(file_path):
+    """
+    Elimina el archivo de log local.
+    """
+    try:
+        os.remove(file_path)
+        print(f"Archivo de log eliminado: {file_path}")
+    except FileNotFoundError:
+        print(f"Archivo no encontrado: {file_path}")
 
 if __name__ == "__main__":
     # Cargar variables de entorno
@@ -235,3 +287,11 @@ if __name__ == "__main__":
 
     process_orders(1, local=False)  # Ordenes creadas en las ultimas N horas, Entorno local o Instancia
 
+
+    file_id = "1foh4wRPgGGT46BBYPjl9lJ2bQFjY7fHVfzptNAVoQZ8"
+    credentials_json = "/home/ubuntu/Documents/server-Tln/Tools/Tools/google_cred.json"
+    try:
+        insert_log_in_sheets(log_filename, file_id, credentials_json)
+    finally:
+        logging.shutdown()
+        delete_log_file(log_filename)

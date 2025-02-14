@@ -20,3 +20,4 @@ Tools/.env
 Tools/tokens_meli.txt
 Tools/tokens_meli_oficiales.txt
 Tools/tokens_meli_skyBrands.txt
+Tools/google_cred.json
