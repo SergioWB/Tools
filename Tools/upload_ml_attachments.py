@@ -50,9 +50,12 @@ def get_orders_from_odoo(hours):
                                'sale.order', 'search_read',
                                [search_domain],
                                {'fields': ['channel_order_reference', 'name', 'yuju_seller_id','create_date', 'date_order']})
-    for order in orders:
-        print(order)
-    return orders
+
+    logging.info(f"Intentando obtener guia de {len(orders)} órdenes")
+
+    # for order in orders:
+    #     print(order)
+    # return orders
 
 def recupera_meli_token(user_id, local):
     """ Recupera el token de Mercado Libre según el usuario. """
@@ -290,6 +293,7 @@ if __name__ == "__main__":
 
     file_id = "1foh4wRPgGGT46BBYPjl9lJ2bQFjY7fHVfzptNAVoQZ8"
     credentials_json = "/home/ubuntu/Documents/server-Tln/Tools/Tools/google_cred.json"
+    #credentials_json = r"C:\Users\Sergio Gil Guerrero\Documents\WonderBrands\Repos\Tools\Tools\google_cred.json"
     try:
         insert_log_in_sheets(log_filename, file_id, credentials_json)
     finally:
