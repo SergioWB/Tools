@@ -55,7 +55,7 @@ def get_orders_from_odoo(hours):
 
     # for order in orders:
     #     print(order)
-    # return orders
+    return orders
 
 def recupera_meli_token(user_id, local):
     """ Recupera el token de Mercado Libre según el usuario. """
