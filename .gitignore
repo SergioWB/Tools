@@ -15,3 +15,8 @@ etiquetazpl/Etiquetas/
 
 etiquetazpl/credentials.json
 etiquetazpl/credentials_backup.json
+
+Tools/.env
+Tools/tokens_meli.txt
+Tools/tokens_meli_oficiales.txt
+Tools/tokens_meli_skyBrands.txt

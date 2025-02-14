@@ -1,1 +1,0 @@
-{"access_token":"APP_USR-8920137353952549-021414-7b983185ab1947dfcdcf5785d3e28330-1029905409","token_type":"Bearer","expires_in":21600,"scope":"offline_access read","user_id":1029905409}
