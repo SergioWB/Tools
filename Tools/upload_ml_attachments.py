@@ -229,5 +229,5 @@ if __name__ == "__main__":
     uid = common.authenticate(ODOO_DB_NAME, ODOO_USER_ID, ODOO_PASSWORD, {})
     models = xmlrpc.client.ServerProxy(f'{ODOO_URL}/xmlrpc/2/object')
 
-    process_orders(1, local=True)  # Ordenes creadas en las ultimas N horas, Entorno local o Instancia
+    process_orders(1, local=False)  # Ordenes creadas en las ultimas N horas, Entorno local o Instancia
 
