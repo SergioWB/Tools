@@ -55,7 +55,8 @@ def get_orders_from_odoo(hours):
 
     search_domain = [('team_id', '=', 'Team_MercadoLibre'),
                      ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop off']),
-                     ('date_order', '>=', filter_date)]
+                     ('date_order', '>=', filter_date),
+                     ('state', '=', 'done')]
 
     orders = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                                'sale.order', 'search_read',
