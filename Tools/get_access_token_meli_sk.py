@@ -4,8 +4,8 @@ import requests
 import pytz
 import datetime
 
-# token_dir='/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli_skyBrands.txt'
-token_dir = r'C:\Users\Sergio Gil Guerrero\Documents\WonderBrands\Repos\Tools\Tools\tokens_meli_skyBrands.txt'
+token_dir='/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli_skyBrands.txt'
+# token_dir = r'C:\Users\Sergio Gil Guerrero\Documents\WonderBrands\Repos\Tools\Tools\tokens_meli_skyBrands.txt'
 
 
 def obtener_token_meli_sk(client_id, client_secret):

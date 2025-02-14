@@ -45,14 +45,14 @@ def get_orders_from_odoo(hours):
                                'sale.order', 'search_read',
                                [search_domain],
                                {'fields': ['channel_order_reference', 'name', 'yuju_seller_id','create_date', 'date_order']})
-    print(orders)
-    tm.sleep(2)
+    for order in orders:
+        print(order)
     return orders
 
-def recupera_meli_token(user_id, credentials):
+def recupera_meli_token(user_id, local):
     """ Recupera el token de Mercado Libre según el usuario. """
     try:
-        if credentials == 'test':
+        if local:
             token_files = {
                 25523702: r'C:\Users\Sergio Gil Guerrero\Documents\WonderBrands\Repos\Tools\Tools\tokens_meli.txt',
                 160190870: r'C:\Users\Sergio Gil Guerrero\Documents\WonderBrands\Repos\Tools\Tools\tokens_meli_oficiales.txt',
@@ -83,6 +83,7 @@ def get_order_meli(order_id, access_token):
         url = f'https://api.mercadolibre.com/orders/{order_id}?access_token={access_token}'
         r = requests.get(url)
         data = r.json()
+        # print(json.dumps(data, indent=4, ensure_ascii=False))
         return {
             'shipping_id': data['shipping']['id'],
             'seller_id': data['seller']['id'],
@@ -103,7 +104,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
             if "failed_shipments" in response_json and response_json["failed_shipments"]:
                 for failed in response_json["failed_shipments"]:
                     message = failed.get("message", "Motivo desconocido")  # Extrae el motivo o usa un valor por defecto
-                    logging.info(f"No se pudo extraer guía: {message}")
+                    logging.info(f"No se pudo extraer guía para {so_name}: {message}")
                 return f'Error. No se pudo extraer guía: {message}"'
         except Exception as e:
             pass
@@ -170,14 +171,14 @@ def get_seller_user_id(seller_marketplace):
     }
     return seller_map.get(seller_marketplace)
 
-def process_orders(hours=12, credentials='test'):
+def process_orders(hours=12, local=True):
     """ Procesa las órdenes de Odoo y descarga las etiquetas de Mercado Libre. """
     orders = get_orders_from_odoo(hours)
 
     tk_meli.get_all_tokens()
 
     for order in orders:
-        order_id = 2000010740138884 #order['channel_order_reference']
+        order_id = 2000010754620984 #order['channel_order_reference']
         seller_marketplace = order['yuju_seller_id']
         so_name = order['name']
         logging.info(f'Orden {so_name}')
@@ -187,9 +188,8 @@ def process_orders(hours=12, credentials='test'):
             logging.info(f'Orden {so_name} no procesable, id del Marketplace desconocido.')
             continue
 
-        access_token = recupera_meli_token(user_id_, credentials)
+        access_token = recupera_meli_token(user_id_, local)
         order_meli = get_order_meli(order_id, access_token)
-        print(order_meli)
         if not order_meli:
             logging.info(f'La orden {so_name} no se encuentra en MercadoLibre')
             continue
@@ -229,5 +229,5 @@ if __name__ == "__main__":
     uid = common.authenticate(ODOO_DB_NAME, ODOO_USER_ID, ODOO_PASSWORD, {})
     models = xmlrpc.client.ServerProxy(f'{ODOO_URL}/xmlrpc/2/object')
 
-    process_orders(1, credentials)  # Ordenes creadas en las ultimas N horas, credenciales de test/producction
+    process_orders(1, local=True)  # Ordenes creadas en las ultimas N horas, Entorno local o Instancia
 

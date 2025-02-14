@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
 import sys
-#sys.path.append('/home/ubuntu/Documents/server-Tln/Tools') #sys.path.append('/home/server-tnp')
-sys.path.append(r'C:\Users\Sergio Gil Guerrero\Documents\WonderBrands\Repos\Tools')
+sys.path.append('/home/ubuntu/Documents/server-Tln/Tools') #sys.path.append('/home/server-tnp')
+#sys.path.append(r'C:\Users\Sergio Gil Guerrero\Documents\WonderBrands\Repos\Tools')
 
 import get_access_token_meli
 import get_access_token_meli_oficiales
