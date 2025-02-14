@@ -51,7 +51,7 @@ def get_orders_from_odoo(hours):
                                [search_domain],
                                {'fields': ['channel_order_reference', 'name', 'yuju_seller_id','create_date', 'date_order']})
 
-    logging.info(f"Intentando obtener guia de {len(orders)} órdenes")
+    logging.info(f" Intentando obtener guia de {len(orders)} órdenes")
 
     # for order in orders:
     #     print(order)
@@ -267,6 +267,8 @@ def delete_log_file(file_path):
         print(f"Archivo no encontrado: {file_path}")
 
 if __name__ == "__main__":
+    logging.info("///////////////////////////////////////////////////////////////////////////////")
+
     # Cargar variables de entorno
     load_dotenv()
 
@@ -299,3 +301,5 @@ if __name__ == "__main__":
     finally:
         logging.shutdown()
         delete_log_file(log_filename)
+
+    logging.info("///////////////////////////////////////////////////////////////////////////////")
