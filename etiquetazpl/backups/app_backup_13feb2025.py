@@ -1112,8 +1112,7 @@ def procesar():
                     # //////////////////////////////////////////////////////////////////////////////
                     # //////////////// FILTRO PARA SABER SI HAY ADJUNTOS ///////////////////////////
                     #  CAMBIAR EL TYPE A /PICK/ AL REALIZAR EL CAMBIO DE ELIMINACION DE VALPICKS
-                    #pick_order_id, attachments_num = search_pick_id(name_so, type="/VALPICK/", count_attachments=True)
-                    pick_order_id, attachments_num = search_pick_id(name_so, type="/PICK/", count_attachments=True)
+                    pick_order_id, attachments_num = search_pick_id(name_so, type="/VALPICK/", count_attachments=True)
                     # Hablitamos filtro si no hay adjuntos en el PICK
                     if attachments_num == 'NO ATTACHMENTS':
                         logging.info(f"No se encontró un archivo adjunto para la orden {name_so}")
@@ -1137,7 +1136,7 @@ def procesar():
                         respuesta = 'La orden ' + name_so + f' es de {marketplace.upper()} con el carrier {print_label_case.upper()} y se se ha mandado el Job manera correcta'
                         order_id = order_id
                         #  CAMBIAR LA FUNCION A set_pick_done AL REALIZAR EL CAMBIO DE ELIMINACION DE VALPICKS
-                        #set_pick_done_with_valpick(name_so)
+                        set_pick_done_with_valpick(name_so)
 
                         # \\\\\ IMPRIME ETIQUETAS DE OUTS  /////
                         #out_zpl_label(name_so,ubicacion,team_id,carrier,order_lines_list, warehouse, labels_number, create_date)
@@ -1194,8 +1193,7 @@ def procesar():
                             respuesta = get_zpl_meli(shipment_ids, name_so, access_token, ubicacion, order_odoo_id)
                             if not 'Error' in respuesta:  # Si la respuesta es satisfactoria de haberse impreso:
                                 #  CAMBIAR LA FUNCION A set_pick_done AL REALIZAR EL CAMBIO DE ELIMINACION DE VALPICKS
-                                #is_done = set_pick_done_with_valpick(name_so) # Ponemos en DONE el valpick / pick   y obtenemos el id del PICK (siemrpe el pick)
-                                is_done = True # Lo harcodeo True ya que no validamos los PICKs
+                                is_done = set_pick_done_with_valpick(name_so) # Ponemos en DONE el valpick / pick   y obtenemos el id del PICK (siemrpe el pick)
                                 if is_done:
                                     pick_id = search_pick_id(name_so, type="/PICK/")
                                     upload_attachment(name_so, pick_id)
