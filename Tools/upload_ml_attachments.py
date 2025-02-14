@@ -39,14 +39,12 @@ def get_odoo_credentials(environment="test"):
             "user": os.getenv("odoo_user_test"),
             "password": os.getenv("odoo_password_test"),
             "url": os.getenv("odoo_url_test"),
-            "labels_path": "C:/Users/Sergio Gil Guerrero/Documents/WonderBrands/Repos/Tools/etiquetazpl/Etiquetas"
         }
     return {
         "db": os.getenv("odoo_db"),
         "user": os.getenv("odoo_user"),
         "password": os.getenv("odoo_password"),
         "url": os.getenv("odoo_url"),
-        "labels_path": "/home/ubuntu/Documents/server-Tln/Tools/etiquetazpl/Etiquetas"
     }
 
 def get_orders_from_odoo(hours):
@@ -285,6 +283,11 @@ def delete_log_file(file_path):
     except PermissionError:
         print(f"No se pudo eliminar el archivo, puede estar en uso: {file_path}")
 
+
+
+
+
+
 if __name__ == "__main__":
     logging.info("///////////////////////////////////////////////////////////////////////////////")
 
@@ -292,7 +295,7 @@ if __name__ == "__main__":
     load_dotenv()
 
     # ////////////////////////////////////////////////
-    credentials = 'test' # production
+    credentials = 'production' # production / test
     # ////////////////////////////////////////////////
 
 
@@ -302,7 +305,8 @@ if __name__ == "__main__":
     ODOO_USER_ID = odoo_env["user"]
     ODOO_PASSWORD = odoo_env["password"]
     ODOO_URL = odoo_env["url"]
-    labels_path = odoo_env["labels_path"]
+    labels_path = "/home/ubuntu/Documents/server-Tln/Tools/etiquetazpl/Etiquetas"
+    #labels_path = "C:/Users/Sergio Gil Guerrero/Documents/WonderBrands/Repos/Tools/etiquetazpl/Etiquetas"
 
     # Configuración del cliente XML-RPC
     common = xmlrpc.client.ServerProxy(f'{ODOO_URL}/xmlrpc/2/common')
