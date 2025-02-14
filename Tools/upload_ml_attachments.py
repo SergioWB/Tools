@@ -307,5 +307,3 @@ if __name__ == "__main__":
     finally:
         logging.shutdown()
         delete_log_file(log_filename)
-
-    logging.info("///////////////////////////////////////////////////////////////////////////////")
