@@ -10,9 +10,13 @@ from dotenv import load_dotenv
 import tokens_meli as tk_meli
 import time as tm
 
-logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s', datefmt='%Y-%d-%m %I:%M:%S %p',
-                    level=logging.INFO)
-
+log_filename = datetime.now().strftime("log_%Y-%m-%d_%H-%M-%S.log")
+logging.basicConfig(
+    filename=log_filename,
+    format='%(asctime)s|%(name)s|%(levelname)s|%(message)s',
+    datefmt='%Y-%d-%m %I:%M:%S %p',
+    level=logging.INFO
+)
 def get_odoo_credentials(environment="test"):
     """ Obtiene las credenciales de Odoo según el entorno. """
     if environment == "test":
