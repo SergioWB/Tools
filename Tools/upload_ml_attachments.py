@@ -261,10 +261,16 @@ def delete_log_file(file_path):
     Elimina el archivo de log local.
     """
     try:
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
+            handler.close()
+
         os.remove(file_path)
         print(f"Archivo de log eliminado: {file_path}")
     except FileNotFoundError:
         print(f"Archivo no encontrado: {file_path}")
+    except PermissionError:
+        print(f"No se pudo eliminar el archivo, puede estar en uso: {file_path}")
 
 if __name__ == "__main__":
     logging.info("///////////////////////////////////////////////////////////////////////////////")
