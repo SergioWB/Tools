@@ -11,13 +11,26 @@ import tokens_meli as tk_meli
 import time as tm
 import gspread
 
-log_filename = datetime.now().strftime("log_%Y-%m-%d_%H-%M-%S.log")
-logging.basicConfig(
-    filename=log_filename,
-    format='%(asctime)s|%(name)s|%(levelname)s|%(message)s',
-    datefmt='%Y-%d-%m %I:%M:%S %p',
-    level=logging.INFO
-)
+# Ajustar la hora manualmente restando 6 horas (UTC → CDMX)
+def get_cdmx_time():
+    return (datetime.utcnow() - timedelta(hours=6)).strftime('%Y-%d-%m %I:%M:%S %p')
+
+class CustomFormatter(logging.Formatter):
+    """ Formatea el log con la hora de CDMX manualmente """
+    def formatTime(self, record, datefmt=None):
+        return get_cdmx_time()
+
+# Nombre del log con la hora UTC-6
+log_filename = (datetime.utcnow() - timedelta(hours=6)).strftime("log_%Y-%m-%d_%H-%M-%S.log")
+
+# Configurar logging
+formatter = CustomFormatter('%(asctime)s|%(name)s|%(levelname)s|%(message)s')
+handler = logging.FileHandler(log_filename)
+handler.setFormatter(formatter)
+
+logging.basicConfig(level=logging.INFO, handlers=[handler])
+
+
 def get_odoo_credentials(environment="test"):
     """ Obtiene las credenciales de Odoo según el entorno. """
     if environment == "test":
