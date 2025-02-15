@@ -150,6 +150,7 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
                                      [search_domain],
                                      {'fields': ['id', 'name', 'message_attachment_count']})
 
+        print(pickings)
         attatchments_number = pickings['result'][0]['message_attachment_count']
         pick_id = pickings[0]['id']
 
