@@ -152,7 +152,7 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
 
         attatchments_number = pickings['result'][0]['message_attachment_count']
         pick_id = pickings[0]['id']
-        
+
         print(pick_id)
 
         if pickings:
@@ -169,6 +169,7 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
             return False
     except Exception as e:
         logging.error(f'Error en search_pick_id: {str(e)}')
+        print(f'Error en search_pick_id: {str(e)}')
         return False
 
 def upload_attachment(so_name, pick_id):
