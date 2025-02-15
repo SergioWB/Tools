@@ -213,14 +213,17 @@ def process_orders(hours=12, local=True):
         seller_marketplace = order['yuju_seller_id']
         so_name = order['name']
         logging.info(f'Orden {so_name}')
+        #print(f'Orden {so_name}')
 
         user_id_ = get_seller_user_id(seller_marketplace)
+        #print(user_id_)
         if not user_id_:
             logging.info(f'Orden {so_name} no procesable, id del Marketplace desconocido.')
             continue
 
         access_token = recupera_meli_token(user_id_, local)
         order_meli = get_order_meli(order_id, access_token)
+        #print(access_token, order_meli)
         if not order_meli:
             logging.info(f'La orden {so_name} no se encuentra en MercadoLibre')
             continue
@@ -228,7 +231,7 @@ def process_orders(hours=12, local=True):
         shipment_ids = order_meli['shipping_id']
         status = order_meli['status']
         if status in ['cancelled', 'delivered']:
-            logging.info(f'La orden {so_name} esta en estato {status}, no se procesa')
+            logging.info(f'La orden {so_name} esta en estado {status}, no se procesa')
             continue
 
         zpl_response = get_zpl_meli(shipment_ids, so_name, access_token)
@@ -239,6 +242,8 @@ def process_orders(hours=12, local=True):
                 logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}.')
             else:
                 logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se agrega.')
+        else:
+            logging.info(f'Error al obtener ZPL: {zpl_response} para la orden {so_name}')
 
 def insert_log_in_sheets(log_file, file_id, credentials_json):
     """
