@@ -51,7 +51,7 @@ def get_orders_from_odoo(hours):
     """ Obtiene las órdenes de Odoo en las últimas 'hours' horas. """
 
     filter_date = (datetime.now() - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
-    print(filter_date)
+    print(f'Filter date: {filter_date}')
 
     search_domain = [('team_id', '=', 'Team_MercadoLibre'),
                      ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop off']),
@@ -150,11 +150,9 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
                                      [search_domain],
                                      {'fields': ['id', 'name', 'message_attachment_count']})
 
-        print(pickings)
         attatchments_number = pickings[0]['message_attachment_count']
         pick_id = pickings[0]['id']
 
-        print(pick_id)
 
         if pickings:
             if count_attachments:
@@ -170,7 +168,6 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
             return (False, False)
     except Exception as e:
         logging.error(f'Error en search_pick_id: {str(e)}')
-        print(f'Error en search_pick_id: {str(e)}')
         return (False, False)
 
 def upload_attachment(so_name, pick_id):
