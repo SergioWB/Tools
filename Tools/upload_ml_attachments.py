@@ -118,9 +118,12 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
     try:
         url = f'https://api.mercadolibre.com/shipment_labels?shipment_ids={shipment_ids}&response_type=zpl2&access_token={access_token}'
         r = requests.get(url)
-        response_json = r.json()
+
+        if so_name == 'SO3566499':
+            print(r.content)
 
         try:
+            response_json = r.json()
             if "failed_shipments" in response_json and response_json["failed_shipments"]:
                 for failed in response_json["failed_shipments"]:
                     message = failed.get("message", "Motivo desconocido")  # Extrae el motivo o usa un valor por defecto
