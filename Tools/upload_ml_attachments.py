@@ -152,8 +152,8 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
 
         attatchments_number = pickings['result'][0]['message_attachment_count']
         pick_id = pickings[0]['id']
-        if so_name == 'SO3566499':
-            print(pick_id)
+        
+        print(pick_id)
 
         if pickings:
             if count_attachments:
