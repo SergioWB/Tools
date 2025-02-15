@@ -119,8 +119,8 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
         url = f'https://api.mercadolibre.com/shipment_labels?shipment_ids={shipment_ids}&response_type=zpl2&access_token={access_token}'
         r = requests.get(url)
 
-        if so_name == 'SO3566499':
-            print(r.content)
+        #if so_name == 'SO3566499':
+        #    print(r.content)
 
         try:
             response_json = r.json()
@@ -152,6 +152,8 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
 
         attatchments_number = pickings['result'][0]['message_attachment_count']
         pick_id = pickings[0]['id']
+        if so_name == 'SO3566499':
+            print(pick_id)
 
         if pickings:
             if count_attachments:
