@@ -151,7 +151,7 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
                                      {'fields': ['id', 'name', 'message_attachment_count']})
 
         print(pickings)
-        attatchments_number = pickings['result'][0]['message_attachment_count']
+        attatchments_number = pickings[0]['message_attachment_count']
         pick_id = pickings[0]['id']
 
         print(pick_id)
@@ -167,11 +167,11 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
 
         else:
             logging.error("No se encontró el picking para la orden: " + so_name)
-            return False
+            return (False, False)
     except Exception as e:
         logging.error(f'Error en search_pick_id: {str(e)}')
         print(f'Error en search_pick_id: {str(e)}')
-        return False
+        return (False, False)
 
 def upload_attachment(so_name, pick_id):
     """ Adjunta la etiqueta de envío en Odoo. """
