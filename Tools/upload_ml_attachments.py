@@ -257,7 +257,7 @@ def process_orders(hours=12, local=True):
             else:
                 logging.info(f'Error al obtener ZPL: {zpl_response} para la orden {so_name}')
         else:
-            logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se agrega.')
+            logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se consulta ML ni se agrega guia.')
 
 def insert_log_in_sheets(log_file, file_id, credentials_json):
     """
