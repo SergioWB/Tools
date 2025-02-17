@@ -59,7 +59,7 @@ def get_orders_from_odoo(hours):
         ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop off']),
         ('date_order', '>=', filter_date),
         ('state', '=', 'done'),
-        ('yuju_carrier_tracking_ref', 'not ilike', '/')
+        ('yuju_carrier_tracking_ref', 'not ilike', ' / ')
     ]
 
     orders = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
