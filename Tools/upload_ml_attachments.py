@@ -253,7 +253,11 @@ def process_orders(hours=12, local=True):
             if 'Error' not in zpl_response:
                 upload_attachment(so_name, pick_id)
                 carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
-                logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
+                if "Flex" in carrier_tracking_ref:
+                    carrier_option_response = insert_LOIN_carrier_odoo(order_id, so_name)
+                    logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
+                else:
+                    logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
             else:
                 logging.info(f'Error al obtener ZPL: {zpl_response} para la orden {so_name}')
         else:
@@ -315,6 +319,26 @@ def insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref):
 
     except Exception as e:
         return 'No se ha podido actualizar el número de guía'
+
+def insert_LOIN_carrier_odoo(order_id, so_name):
+    try:
+        carriers = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
+                                        'carriers.list', 'search',
+                                        [[['name', '=', 'Logística interna']]])
+
+        if carriers:
+            carrier_id = carriers[0]
+
+            models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
+                              'sale.order', 'write',
+                              [[order_id], {'carrier_selection_relational': carrier_id}])
+
+            return f"Carrier asignado correctamente a la orden {so_name}"
+        else:
+            return f"No se ecncontró el carrier"
+
+    except Exception as e:
+        return f"No se pudo modificar el carrier para la orden {so_name}"
 
 
 
