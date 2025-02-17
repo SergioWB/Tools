@@ -53,10 +53,13 @@ def get_orders_from_odoo(hours):
     filter_date = (datetime.now() - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
     print(f'Filter date: {filter_date}')
 
-    search_domain = [('team_id', '=', 'Team_MercadoLibre'),
-                     ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop off']),
-                     ('date_order', '>=', filter_date),
-                     ('state', '=', 'done')]
+    search_domain = [
+        ('team_id', '=', 'Team_MercadoLibre'),
+        ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop off']),
+        ('date_order', '>=', filter_date),
+        ('state', '=', 'done'),
+        ('yuju_carrier_tracking_ref', 'not ilike', '/')
+    ]
 
     orders = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                                'sale.order', 'search_read',
