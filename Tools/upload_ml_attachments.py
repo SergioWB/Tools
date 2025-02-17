@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 import tokens_meli as tk_meli
 import time as tm
 import gspread
+import time as tm
 
 # Ajustar la hora manualmente restando 6 horas (UTC → CDMX)
 def get_cdmx_time():
@@ -321,6 +322,8 @@ def insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref):
 if __name__ == "__main__":
     logging.info("\n////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
 
+
+    start = tm.time()
     # Cargar variables de entorno
     load_dotenv()
 
@@ -345,6 +348,9 @@ if __name__ == "__main__":
 
     process_orders(12, local=False)  # Ordenes creadas en las ultimas N horas, Entorno local o Instancia
 
+    end = tm.time()
+
+    logging.info(f"///////////////// Terminando la ejecución. Tiempo: {end-start} [s] /////////////////")
 
     file_id = "1foh4wRPgGGT46BBYPjl9lJ2bQFjY7fHVfzptNAVoQZ8"
     credentials_json = "/home/ubuntu/Documents/server-Tln/Tools/Tools/google_cred.json"
