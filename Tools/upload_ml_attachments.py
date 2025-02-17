@@ -350,7 +350,7 @@ if __name__ == "__main__":
 
     end = tm.time()
 
-    logging.info(f"///////////////// Terminando la ejecución. Tiempo: {end-start} [s] /////////////////")
+    logging.info(f"///////////////// Terminando la ejecución. Tiempo: {round(end - start, 2)} [s] /////////////////")
 
     file_id = "1foh4wRPgGGT46BBYPjl9lJ2bQFjY7fHVfzptNAVoQZ8"
     credentials_json = "/home/ubuntu/Documents/server-Tln/Tools/Tools/google_cred.json"
