@@ -194,7 +194,7 @@ def upload_attachment(so_name, pick_id):
             'datas': file_content
         }
         models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD, 'ir.attachment', 'create', [attachment_data])
-        logging.info(f'Se ha cargado la guía al pick: {pick_id} de la orden: {so_name} con éxito.')
+        #logging.info(f'Se ha cargado la guía al pick: {pick_id} de la orden: {so_name} con éxito.')
         return True
     except Exception as e:
         logging.error(f"Error en upload_attachment: {str(e)}")
