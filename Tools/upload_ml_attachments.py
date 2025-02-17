@@ -61,7 +61,7 @@ def get_orders_from_odoo(hours):
     orders = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                                'sale.order', 'search_read',
                                [search_domain],
-                               {'fields': ['channel_order_reference', 'name', 'yuju_seller_id','create_date', 'date_order']})
+                               {'fields': ['channel_order_reference', 'id', 'name', 'yuju_seller_id','create_date', 'date_order', 'yuju_carrier_tracking_ref']})
 
     logging.info(f" Intentando obtener guia de {len(orders)} órdenes")
 
@@ -127,7 +127,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
             if "failed_shipments" in response_json and response_json["failed_shipments"]:
                 for failed in response_json["failed_shipments"]:
                     message = failed.get("message", "Motivo desconocido")  # Extrae el motivo o usa un valor por defecto
-                    logging.info(f"No se pudo extraer guía para {so_name}: {message}")
+                    #logging.info(f"No se pudo extraer guía para {so_name}: {message}")
                 return f'Error. No se pudo extraer guía: {message}"'
         except Exception as e:
             pass
@@ -213,10 +213,14 @@ def process_orders(hours=12, local=True):
     tk_meli.get_all_tokens()
 
     for order in orders:
-        order_id = order['channel_order_reference']
+        marketplace_reference = order['channel_order_reference']
         seller_marketplace = order['yuju_seller_id']
         so_name = order['name']
-        logging.info(f'Orden {so_name}')
+
+        order_id = order['id']
+        carrier_tracking_ref = order['yuju_carrier_tracking_ref']
+
+        #logging.info(f'Orden {so_name}')
         #print(f'Orden {so_name}')
 
         user_id_ = get_seller_user_id(seller_marketplace)
@@ -226,7 +230,7 @@ def process_orders(hours=12, local=True):
             continue
 
         access_token = recupera_meli_token(user_id_, local)
-        order_meli = get_order_meli(order_id, access_token)
+        order_meli = get_order_meli(marketplace_reference, access_token)
         #print(access_token, order_meli)
         if not order_meli:
             logging.info(f'La orden {so_name} no se encuentra en MercadoLibre')
@@ -238,16 +242,18 @@ def process_orders(hours=12, local=True):
             logging.info(f'La orden {so_name} esta en estado {status}, no se procesa')
             continue
 
-        zpl_response = get_zpl_meli(shipment_ids, so_name, access_token)
-        if 'Error' not in zpl_response:
-            pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
-            if are_there_attachments == 'NO ATTACHMENTS':
+
+        pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
+        if are_there_attachments == 'NO ATTACHMENTS':
+            zpl_response = get_zpl_meli(shipment_ids, so_name, access_token)
+            if 'Error' not in zpl_response:
                 upload_attachment(so_name, pick_id)
-                logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}.')
+                carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
+                logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
             else:
-                logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se agrega.')
+                logging.info(f'Error al obtener ZPL: {zpl_response} para la orden {so_name}')
         else:
-            logging.info(f'Error al obtener ZPL: {zpl_response} para la orden {so_name}')
+            logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se agrega.')
 
 def insert_log_in_sheets(log_file, file_id, credentials_json):
     """
@@ -293,13 +299,24 @@ def delete_log_file(file_path):
     except PermissionError:
         print(f"No se pudo eliminar el archivo, puede estar en uso: {file_path}")
 
+def insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref):
+    try:
+        new_carrier_tracking_ref = carrier_tracking_ref + ' / ' + so_name
 
+        models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
+                          'sale.order', 'write',
+                          [[order_id], {'yuju_carrier_tracking_ref': new_carrier_tracking_ref}])
+
+        return 'Número de guia actualizado'
+
+    except Exception as e:
+        return 'No se ha podido actualizar el número de guía'
 
 
 
 
 if __name__ == "__main__":
-    logging.info("///////////////////////////////////////////////////////////////////////////////")
+    logging.info("\n////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
 
     # Cargar variables de entorno
     load_dotenv()
