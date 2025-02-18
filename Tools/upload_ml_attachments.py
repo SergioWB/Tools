@@ -132,7 +132,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
                 for failed in response_json["failed_shipments"]:
                     message = failed.get("message", "Motivo desconocido")  # Extrae el motivo o usa un valor por defecto
                     #logging.info(f"No se pudo extraer guía para {so_name}: {message}")
-                return f'Error. No se pudo extraer guía: {message}"'
+                return f'Advertencia. No se pudo extraer guía: {message}"'
         except Exception as e:
             pass
 
@@ -250,7 +250,7 @@ def process_orders(hours=12, local=True):
         pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
         if are_there_attachments == 'NO ATTACHMENTS':
             zpl_response = get_zpl_meli(shipment_ids, so_name, access_token)
-            if 'Error' not in zpl_response:
+            if ('Error' not in zpl_response) and ('Advertencia' not in zpl_response):
                 upload_attachment(so_name, pick_id)
                 carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
                 if "Flex" in carrier_tracking_ref:
@@ -259,7 +259,7 @@ def process_orders(hours=12, local=True):
                 else:
                     logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
             else:
-                logging.info(f'Error al obtener ZPL: {zpl_response} para la orden {so_name}')
+                logging.info(f'No se pudo obtener ZPL / {zpl_response} para la orden {so_name}')
         else:
             logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se consulta ML ni se agrega guia.')
 
