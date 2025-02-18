@@ -148,7 +148,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
 def search_pick_id(so_name, type='/PICK/', count_attachments = False):
     """ Busca el ID del picking en Odoo relacionado con la orden. """
     try:
-        search_domain = [['origin', '=', so_name], ['name', 'like', type]]
+        search_domain = [['origin', '=', so_name], ['name', 'like', type], ['state', '=', 'assigned']]  #Cambio para tomar en cuenta el PICK que si está activo y no cancelado
         pickings = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                                      'stock.picking', 'search_read',
                                      [search_domain],
