@@ -324,7 +324,7 @@ def insert_LOIN_carrier_odoo(order_id, so_name):
     try:
         carriers = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                                         'carriers.list', 'search',
-                                        [[['name', '=', 'Logística interna']]])
+                                        [[['name', '=', 'Logistica interna']]])
 
         if carriers:
             carrier_id = carriers[0]
