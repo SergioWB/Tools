@@ -51,8 +51,10 @@ def get_odoo_credentials(environment="test"):
 def get_orders_from_odoo(hours):
     """ Obtiene las órdenes de Odoo en las últimas 'hours' horas. """
 
-    filter_date = (datetime.now() - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
-    print(f'Filter date: {filter_date}')
+    now_date = datetime.now()
+    today_date = now_date.strftime('%Y-%m-%d %H:%M:%S')
+    filter_date = (now_date - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
+    print(f'Filter date: {filter_date} \n Now: {today_date}')
 
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
@@ -384,7 +386,7 @@ if __name__ == "__main__":
 
     end = tm.time()
 
-    logging.info(f"  ///////////////// Terminando la ejecución. Tiempo: {round(end - start, 2)} [s] ///////////////// \n")
+    logging.info(f"  ////////////////////////////////// Terminando la ejecución. Tiempo: {round(end - start, 2)} [s] ////////////////////////////////// \n")
 
     file_id = "1foh4wRPgGGT46BBYPjl9lJ2bQFjY7fHVfzptNAVoQZ8"
     credentials_json = "/home/ubuntu/Documents/server-Tln/Tools/Tools/google_cred.json"
