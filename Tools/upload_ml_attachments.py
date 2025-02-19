@@ -152,7 +152,7 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
         pickings = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                                      'stock.picking', 'search_read',
                                      [search_domain],
-                                     {'fields': ['id', 'name', 'message_attachment_count']})
+                                     {'fields': ['id', 'name', 'message_attachment_count', 'state']})
 
         if pickings:
             attatchments_number = pickings[0]['message_attachment_count']
@@ -369,7 +369,7 @@ if __name__ == "__main__":
     uid = common.authenticate(ODOO_DB_NAME, ODOO_USER_ID, ODOO_PASSWORD, {})
     models = xmlrpc.client.ServerProxy(f'{ODOO_URL}/xmlrpc/2/object')
 
-    process_orders(12, local=False)  # Ordenes creadas en las ultimas N horas, Entorno local o Instancia
+    process_orders(456, local=False)  # Ordenes creadas en las ultimas N horas, Entorno local o Instancia
 
     end = tm.time()
 
