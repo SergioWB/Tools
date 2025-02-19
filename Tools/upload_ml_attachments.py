@@ -56,7 +56,7 @@ def get_orders_from_odoo(hours):
 
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
-        ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop off']),
+        ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop Off']),
         ('date_order', '>=', filter_date),
         ('state', '=', 'done'),
         ('yuju_carrier_tracking_ref', 'not ilike', ' / ')
@@ -148,17 +148,16 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
 def search_pick_id(so_name, type='/PICK/', count_attachments = False):
     """ Busca el ID del picking en Odoo relacionado con la orden. """
     try:
-        search_domain = [['origin', '=', so_name], ['name', 'like', type], ['state', '=', 'assigned']]  #Cambio para tomar en cuenta el PICK que si está activo y no cancelado
+        search_domain = [['origin', '=', so_name], ['name', 'like', type], ['state', 'in', ['assigned']]] #, 'confirmed']]]  #Cambio para tomar en cuenta el PICK que si está activo y no cancelado
         pickings = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                                      'stock.picking', 'search_read',
                                      [search_domain],
                                      {'fields': ['id', 'name', 'message_attachment_count']})
 
-        attatchments_number = pickings[0]['message_attachment_count']
-        pick_id = pickings[0]['id']
-
-
         if pickings:
+            attatchments_number = pickings[0]['message_attachment_count']
+            pick_id = pickings[0]['id']
+            state = pickings[0]['state']
             if count_attachments:
                 if attatchments_number == 0:
                     return (pick_id, 'NO ATTACHMENTS')
@@ -168,7 +167,7 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
                 return pick_id
 
         else:
-            logging.error("No se encontró el picking para la orden: " + so_name)
+            logging.error(f"No se encontró el picking para la orden: {so_name}.")
             return (False, False)
     except Exception as e:
         logging.error(f'Error en search_pick_id: {str(e)}')
