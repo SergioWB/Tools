@@ -252,6 +252,7 @@ def process_orders(hours=12, local=True):
             if ('Error' not in zpl_response) and ('Advertencia' not in zpl_response):
                 upload_attachment(so_name, pick_id)
                 carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
+                insert_log_message_pick(pick_id, so_name)
                 if "Flex" in carrier_tracking_ref:
                     carrier_option_response = insert_LOIN_carrier_odoo(order_id, so_name)
                     logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
@@ -260,6 +261,7 @@ def process_orders(hours=12, local=True):
             else:
                 logging.info(f'No se pudo obtener ZPL / {zpl_response} para la orden {so_name}')
         else:
+            insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
             logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se consulta ML ni se agrega guia.')
 
 def insert_log_in_sheets(log_file, file_id, credentials_json):
@@ -339,7 +341,16 @@ def insert_LOIN_carrier_odoo(order_id, so_name):
     except Exception as e:
         return f"No se pudo modificar el carrier para la orden {so_name}"
 
-
+def insert_log_message_pick(pick_id, so_name):
+    current_utc_time = datetime.now()
+    cdmx_time = current_utc_time - timedelta(hours=6)
+    current_datetime = cdmx_time.strftime('%Y-%m-%d %H:%M:%S')
+    models.execute_kw(
+        ODOO_DB_NAME, uid, ODOO_PASSWORD,
+        'stock.picking', 'message_post',
+        [[pick_id]],
+        {'body': f'{current_datetime}. Se insertó la guía de MercadoLibre para la orden {so_name}..'}
+    )
 
 
 if __name__ == "__main__":
