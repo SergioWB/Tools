@@ -351,7 +351,7 @@ def insert_log_message_pick(pick_id, so_name):
         ODOO_DB_NAME, uid, ODOO_PASSWORD,
         'stock.picking', 'message_post',
         [[pick_id]],
-        {'body': f'{current_datetime}. Se insertó la guía de MercadoLibre para la orden {so_name}..'}
+        {'body': f'{current_datetime}. Se insertó la guía de MercadoLibre para la orden {so_name}.'}
     )
 
 
