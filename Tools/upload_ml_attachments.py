@@ -150,7 +150,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
 def search_pick_id(so_name, type='/PICK/', count_attachments = False):
     """ Busca el ID del picking en Odoo relacionado con la orden. """
     try:
-        search_domain = [['origin', '=', so_name], ['name', 'like', type], ['state', 'in', ['assigned']]] #, 'confirmed']]]  #Cambio para tomar en cuenta el PICK que si está activo y no cancelado
+        search_domain = [['origin', '=', so_name], ['name', 'like', type], ['state', 'in', ['assigned', 'confirmed', 'done']]]  #Cambio para tomar en cuenta el PICK que si está activo y no cancelado
         pickings = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                                      'stock.picking', 'search_read',
                                      [search_domain],
@@ -160,16 +160,23 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
             attatchments_number = pickings[0]['message_attachment_count']
             pick_id = pickings[0]['id']
             state = pickings[0]['state']
+
+            if state == 'confirmed':
+                logging.info(f'El PICK {pick_id} de la orden {so_name} está en espera para procesarse.')
+                return pick_id, 'PICK en espera'
+            elif state == 'done':
+                return pick_id, 'PICK ya hecho'
+
             if count_attachments:
                 if attatchments_number == 0:
                     return (pick_id, 'NO ATTACHMENTS')
                 else:
                     return (pick_id, 'THERE ARE ATTACHMENTS')
             else:
-                return pick_id
+                return pick_id, 'ERROR count_attachments'
 
         else:
-            logging.error(f"No se encontró el picking para la orden: {so_name}.")
+            logging.error(f"No se encontró el PICK para la orden: {so_name}.")
             return (False, False)
     except Exception as e:
         logging.error(f'Error en search_pick_id: {str(e)}')
@@ -262,9 +269,12 @@ def process_orders(hours=12, local=True):
                     logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
             else:
                 logging.info(f'No se pudo obtener ZPL / {zpl_response} para la orden {so_name}')
-        else:
+        elif are_there_attachments == 'THERE ARE ATTACHMENTS':
             insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
             logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se consulta ML ni se agrega guia.')
+        else:
+            #Los logs del resto de casos están en la funcion search_pick_id
+            pass
 
 def insert_log_in_sheets(log_file, file_id, credentials_json):
     """
