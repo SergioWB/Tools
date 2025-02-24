@@ -54,13 +54,13 @@ def get_orders_from_odoo(hours):
     now_date = datetime.now()
     today_date = now_date.strftime('%Y-%m-%d %H:%M:%S')
     filter_date = (now_date - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
-    print(f'Filter date:    {filter_date} \nNow:        {today_date}')
+    print(f'Filter date:    {filter_date} \nNow:            {today_date}')
 
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
         ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop Off']),
-        ('date_order', '>=', '2025-02-04'),
-        ('date_order', '<', '2025-02-08'),
+        ('date_order', '>=', '2025-02-09'),
+        ('date_order', '<', '2025-02-12'),
         ('state', '=', 'done'),
         ('yuju_carrier_tracking_ref', 'not ilike', ' / ')
     ]
