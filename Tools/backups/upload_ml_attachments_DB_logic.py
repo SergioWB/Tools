@@ -31,6 +31,9 @@ handler.setFormatter(formatter)
 
 logging.basicConfig(level=logging.INFO, handlers=[handler])
 
+# /////// Fecha mas actualizada pra ejecucion //////////
+lastest_date_path = "latest_date.json"
+
 
 def get_odoo_credentials(environment="test"):
     """ Obtiene las credenciales de Odoo según el entorno. """
@@ -59,8 +62,8 @@ def get_orders_from_odoo(hours):
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
         ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop Off']),
-        ('date_order', '>=', '2025-02-13'),
-        ('date_order', '<', '2025-02-17'),
+        #('date_order', '>=', filter_date),
+        ('__last_update', '>=', filter_date),
         ('state', '=', 'done'),
         ('yuju_carrier_tracking_ref', 'not ilike', ' / ')
     ]
@@ -68,7 +71,7 @@ def get_orders_from_odoo(hours):
     orders = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                                'sale.order', 'search_read',
                                [search_domain],
-                               {'fields': ['channel_order_reference', 'id', 'name', 'yuju_seller_id','create_date', 'date_order', 'yuju_carrier_tracking_ref']})
+                               {'fields': ['channel_order_reference', 'id', 'name', 'yuju_seller_id','create_date', 'date_order', 'yuju_carrier_tracking_ref', '__last_update']})
 
     logging.info(f" Intentando obtener guia de {len(orders)} órdenes")
 
@@ -366,6 +369,34 @@ def insert_log_message_pick(pick_id, so_name):
     )
 
 
+def update_latest_date(new_date_str):
+    """
+    Recibe una fecha en formato 'YYYY-MM-DD HH:MM:SS', la compara con la almacenada
+    en latest_date.json y guarda la más reciente.
+    """
+    new_date = datetime.strptime(new_date_str, "%Y-%m-%d %H:%M:%S")
+
+    # Primero se verifica si el archivo extite
+    if os.path.exists(lastest_date_path):
+        with open(lastest_date_path, "r") as file:
+            try:
+                data = json.load(file)
+                stored_date_str = data.get("latest_date")
+                if stored_date_str:
+                    stored_date = datetime.strptime(stored_date_str, "%Y-%m-%d %H:%M:%S")
+                    if new_date <= stored_date:
+                        return stored_date_str  # No se actualiza, se retorna la última guardada
+            except (json.JSONDecodeError, ValueError):
+                pass  # Si hay un error en el JSON, lo sobreescribimos
+
+    # Guardamos la nueva fecha si es más reciente
+    with open(lastest_date_path, "w") as file:
+        json.dump({"latest_date": new_date_str}, file)
+
+    return new_date_str  # Retornamos la nueva fecha guardada
+
+
+
 if __name__ == "__main__":
     logging.info("////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
 
@@ -393,7 +424,7 @@ if __name__ == "__main__":
     uid = common.authenticate(ODOO_DB_NAME, ODOO_USER_ID, ODOO_PASSWORD, {})
     models = xmlrpc.client.ServerProxy(f'{ODOO_URL}/xmlrpc/2/object')
 
-    process_orders(576, local=False)  # Ordenes creadas en las ultimas N horas, Entorno local o Instancia
+    process_orders(48, local=False)  # Ordenes creadas en las ultimas N horas, Entorno local o Instancia
 
     end = tm.time()
 
@@ -407,3 +438,4 @@ if __name__ == "__main__":
     finally:
         logging.shutdown()
         delete_log_file(log_filename)
+
