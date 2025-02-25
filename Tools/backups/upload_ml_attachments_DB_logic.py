@@ -58,8 +58,10 @@ def get_orders_from_odoo(hours):
     today_date = now_date.strftime('%Y-%m-%d %H:%M:%S')
     #filter_date = (now_date - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
 
-    # El filtro ahora es con la fecha de la ultima orden
-    filter_date = _get_lastest_data(lastest_date_path)
+    # El filtro ahora es con la fecha de la ultima orden desde la DB
+    # filter_date = lastest_date_path_json(lastest_date_path)   # Con en json
+    filter_date = get_latest_date_from_db()
+
     print(f'Filter date:    {filter_date} \nNow:            {today_date}')
 
     search_domain = [
@@ -240,7 +242,8 @@ def process_orders(hours=12, local=True):
         carrier_tracking_ref = order['yuju_carrier_tracking_ref']
 
         last_update = order['__last_update']
-        update_latest_date(last_update)
+        date_order = order['date_order']
+        lastest_date_value = update_latest_date_json(last_update)
 
         #logging.info(f'Orden {so_name}')
         #print(f'Orden {so_name}')
@@ -272,6 +275,17 @@ def process_orders(hours=12, local=True):
                 upload_attachment(so_name, pick_id)
                 carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
                 insert_log_message_pick(pick_id, so_name)
+                save_log_db(
+                    so_name=so_name,
+                    marketplace_reference=marketplace_reference,
+                    date_order=date_order,
+                    last_update=last_update,
+                    processed_successfully=1,
+                    pick_id=pick_id,
+                    zpl=zpl_response,
+                    status=status,
+                    already_printed=0
+                )
                 if "Flex" in carrier_tracking_ref:
                     carrier_option_response = insert_LOIN_carrier_odoo(order_id, so_name)
                     logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
@@ -279,12 +293,38 @@ def process_orders(hours=12, local=True):
                     logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
             else:
                 logging.info(f'No se pudo obtener ZPL / {zpl_response} para la orden {so_name}')
+                if any(state in zpl_response for state in ['status is picked_up', 'status is shipped', 'status is delivered']):
+                    save_log_db(
+                        so_name=so_name,
+                        marketplace_reference=marketplace_reference,
+                        date_order=date_order,
+                        last_update=last_update,
+                        processed_successfully=0,
+                        reason=f"Failed to obtain ZPL: {zpl_response}",
+                        status=status,
+                        already_printed=1
+                    )
+                else:
+                    save_log_db(
+                        so_name=so_name,
+                        marketplace_reference=marketplace_reference,
+                        date_order=date_order,
+                        last_update=last_update,
+                        processed_successfully=0,
+                        reason=f"Failed to obtain ZPL: {zpl_response}",
+                        status=status,
+                        already_printed=0
+                    )
         elif are_there_attachments == 'THERE ARE ATTACHMENTS':
             insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
             logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se consulta ML ni se agrega guia.')
         else:
             #Los logs del resto de casos están en la funcion search_pick_id
             pass
+
+    if lastest_date_value:
+        update_latest_date_in_db(lastest_date_value)
+        logging.info(f'---------------- Actualizando la fecha de búsqueda en DB: {lastest_date_value} ----------------')
 
 def insert_log_in_sheets(log_file, file_id, credentials_json):
     """
@@ -374,7 +414,7 @@ def insert_log_message_pick(pick_id, so_name):
         {'body': f'{current_datetime}. Se insertó la guía de MercadoLibre para la orden {so_name}.'}
     )
 
-def _get_lastest_data(path):
+def lastest_date_path_json(path):
     if os.path.exists(path):
         with open(path, "r") as file:
             try:
@@ -386,14 +426,14 @@ def _get_lastest_data(path):
                 pass
 
 
-def update_latest_date(new_date_str):
+def update_latest_date_json(new_date_str):
     """
     Recibe una fecha en formato 'YYYY-MM-DD HH:MM:SS', la compara con la almacenada
     en latest_date.json y guarda la más reciente.
     """
     new_date = datetime.strptime(new_date_str, "%Y-%m-%d %H:%M:%S")
 
-    stored_date_str = _get_lastest_data(lastest_date_path)
+    stored_date_str = lastest_date_path_json(lastest_date_path)
     if stored_date_str:
         stored_date = datetime.strptime(stored_date_str, "%Y-%m-%d %H:%M:%S")
         if new_date <= stored_date:
@@ -415,6 +455,41 @@ def get_db_connection():
         password=os.getenv("DB_PASSWORD"),
         database=os.getenv("DB_NAME")
     )
+
+def save_log_db(so_name, marketplace_reference, date_order, last_update, processed_successfully, pick_id=None, zpl=None, reason=None, status=None, already_printed=None):
+    """Guarda la información de una orden procesada o no procesada en ml_guide_insertion."""
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    cursor.execute('''
+        INSERT INTO ml_guide_insertion (
+            so_name, marketplace_reference, date_order, last_update, processed_successfully, pick_id, zpl, reason, status, already_printed
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    ''', (so_name, marketplace_reference, date_order, last_update, processed_successfully, pick_id, zpl, reason, status, already_printed))
+
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+
+def get_latest_date_from_db():
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT latest_date FROM ml_latest_date_orders LIMIT 1")
+    result = cursor.fetchone()
+    connection.close()
+    return result[0] if result else None
+
+def update_latest_date_in_db(new_date_str):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("""
+        INSERT INTO ml_latest_date_orders (latest_date)
+        VALUES (%s)
+        ON DUPLICATE KEY UPDATE latest_date = %s
+    """, (new_date_str, new_date_str))
+    connection.commit()
+    connection.close()
 
 
 if __name__ == "__main__":
