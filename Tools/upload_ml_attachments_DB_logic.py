@@ -475,10 +475,12 @@ def save_log_db(so_name, marketplace_reference, date_order, last_update, process
 def get_latest_date_from_db():
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT latest_date FROM ml_latest_date_orders LIMIT 1")
+
+    # Fecha más reciente
+    cursor.execute("SELECT MAX(latest_date) FROM ml_latest_date_orders")
     result = cursor.fetchone()
     connection.close()
-    return result[0] if result else None
+    return result[0] if result and result[0] else None
 
 def update_latest_date_in_db(new_date_str):
     connection = get_db_connection()
