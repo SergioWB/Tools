@@ -8,9 +8,9 @@ import xmlrpc.client
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import tokens_meli as tk_meli
-import time as tm
 import gspread
 import time as tm
+import mysql.connector
 
 # Ajustar la hora manualmente restando 6 horas (UTC → CDMX)
 def get_cdmx_time():
@@ -56,7 +56,10 @@ def get_orders_from_odoo(hours):
 
     now_date = datetime.now()
     today_date = now_date.strftime('%Y-%m-%d %H:%M:%S')
-    filter_date = (now_date - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
+    #filter_date = (now_date - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
+
+    # El filtro ahora es con la fecha de la ultima orden
+    filter_date = _get_lastest_data(lastest_date_path)
     print(f'Filter date:    {filter_date} \nNow:            {today_date}')
 
     search_domain = [
@@ -390,18 +393,11 @@ def update_latest_date(new_date_str):
     """
     new_date = datetime.strptime(new_date_str, "%Y-%m-%d %H:%M:%S")
 
-    # Primero se verifica si el archivo extite
-    if os.path.exists(lastest_date_path):
-        with open(lastest_date_path, "r") as file:
-            try:
-                data = json.load(file)
-                stored_date_str = data.get("latest_date")
-                if stored_date_str:
-                    stored_date = datetime.strptime(stored_date_str, "%Y-%m-%d %H:%M:%S")
-                    if new_date <= stored_date:
-                        return stored_date_str  # No se actualiza, se retorna la última guardada
-            except (json.JSONDecodeError, ValueError):
-                pass  # Si hay un error en el JSON, lo sobreescribimos
+    stored_date_str = _get_lastest_data(lastest_date_path)
+    if stored_date_str:
+        stored_date = datetime.strptime(stored_date_str, "%Y-%m-%d %H:%M:%S")
+        if new_date <= stored_date:
+            return stored_date_str  # No se actualiza, se retorna la última guardada
 
     # Guardamos la nueva fecha si es más reciente
     with open(lastest_date_path, "w") as file:
@@ -409,6 +405,16 @@ def update_latest_date(new_date_str):
 
     return new_date_str  # Retornamos la nueva fecha guardada
 
+
+#///////////////////////////// Conexion a base de datos /////////////////////////
+def get_db_connection():
+    """Establece y devuelve una conexión a la base de datos."""
+    return mysql.connector.connect(
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
+    )
 
 
 if __name__ == "__main__":
