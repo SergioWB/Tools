@@ -236,6 +236,9 @@ def process_orders(hours=12, local=True):
         order_id = order['id']
         carrier_tracking_ref = order['yuju_carrier_tracking_ref']
 
+        last_update = order['__last_update']
+        update_latest_date(last_update)
+
         #logging.info(f'Orden {so_name}')
         #print(f'Orden {so_name}')
 
@@ -367,6 +370,17 @@ def insert_log_message_pick(pick_id, so_name):
         [[pick_id]],
         {'body': f'{current_datetime}. Se insertó la guía de MercadoLibre para la orden {so_name}.'}
     )
+
+def _get_lastest_data(path):
+    if os.path.exists(path):
+        with open(path, "r") as file:
+            try:
+                data = json.load(file)
+                stored_date_str = data.get("latest_date")
+                if stored_date_str:
+                    return stored_date_str
+            except (json.JSONDecodeError, ValueError):
+                pass
 
 
 def update_latest_date(new_date_str):

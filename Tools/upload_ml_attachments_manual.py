@@ -59,8 +59,8 @@ def get_orders_from_odoo(hours):
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
         ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop Off']),
-        ('date_order', '>=', '2025-02-13'),
-        ('date_order', '<', '2025-02-17'),
+        ('date_order', '>=', '2025-02-18'),
+        ('date_order', '<', '2025-02-22'),
         ('state', '=', 'done'),
         ('yuju_carrier_tracking_ref', 'not ilike', ' / ')
     ]
