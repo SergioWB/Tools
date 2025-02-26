@@ -663,7 +663,11 @@ def get_orders_info_DB():
     query = """
         SELECT id, order_id, so_name, marketplace_reference, seller_marketplace, carrier_tracking_ref, pick_id
         FROM ml_guide_insertion
-        WHERE status = 'pending' AND processed_successfully = 0;
+        WHERE status = 'pending' 
+            AND processed_successfully = 0
+            AND marketplace_reference IS NOT NULL AND marketplace_reference != ''
+            AND seller_marketplace IS NOT NULL AND seller_marketplace != ''
+            AND carrier_tracking_ref IS NOT NULL AND carrier_tracking_ref != '';
         """
 
     cursor.execute(query)
