@@ -79,6 +79,7 @@ def get_orders_from_odoo(hours):
                                {'fields': ['channel_order_reference', 'id', 'name', 'yuju_seller_id','create_date', 'date_order', 'yuju_carrier_tracking_ref', '__last_update']})
 
     logging.info(f" Intentando obtener guia de {len(orders)} órdenes")
+    print(f" Intentando obtener guia de {len(orders)} órdenes")
 
     # for order in orders:
     #     print(order)
@@ -142,8 +143,8 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
             if "failed_shipments" in response_json and response_json["failed_shipments"]:
                 for failed in response_json["failed_shipments"]:
                     message = failed.get("message", "Motivo desconocido")  # Extrae el motivo o usa un valor por defecto
-                    #logging.info(f"No se pudo extraer guía para {so_name}: {message}")
-                return f'Advertencia. No se pudo extraer guía: {message}"'
+                    #logging.info(f"No se pudo extraer guía para {so_name}: {message}
+                return {'ml_api_message':f'Advertencia. No se pudo extraer guía: {message}"', 'zpl_response':None}
         except Exception as e:
             pass
 
@@ -151,9 +152,20 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
         open('Etiqueta.zip', 'wb').write(r.content)
         with zipfile.ZipFile("Etiqueta.zip", "r") as zip_ref:
             zip_ref.extractall(f"{labels_path}/Etiqueta_{so_name}")
-        return f'Se procesó el archivo ZPL de la Orden: {so_name} con éxito'
+
+        #///////////////// Obtener zpl /////////////////
+        path_attachment = f'{labels_path}/Etiqueta_{so_name}/Etiqueta de envio.txt'
+        if os.path.exists(path_attachment):
+            with open(path_attachment, 'rb') as file:
+                file_content = base64.b64encode(file.read()).decode('utf-8')
+        else:
+            logging.error("El archivo no existe: " + path_attachment)
+            file_content = None
+        # //////////////////////////////////////////////
+
+        return {'ml_api_message': f'Se procesó el archivo ZPL de la Orden: {so_name} con éxito', 'zpl_response': file_content}
     except Exception as e:
-        return f'Error get_zpl_meli: {str(e)}'
+        return {'ml_api_message': f'Error get_zpl_meli: {str(e)}', 'zpl_response': None}
 
 
 def search_pick_id(so_name, type='/PICK/', count_attachments = False):
@@ -233,7 +245,11 @@ def process_orders(hours=12, local=True):
 
     tk_meli.get_all_tokens()
 
+    count = 0
+    total_ = len(orders)
     for order in orders:
+        count += 1
+        print(f'Orden {count} de {total_}')
         marketplace_reference = order['channel_order_reference']
         seller_marketplace = order['yuju_seller_id']
         so_name = order['name']
@@ -262,16 +278,28 @@ def process_orders(hours=12, local=True):
             continue
 
         shipment_ids = order_meli['shipping_id']
-        status = order_meli['status']
-        if status in ['cancelled', 'delivered']:
-            logging.info(f'La orden {so_name} esta en estado {status}, no se procesa')
+        ml_order_status = order_meli['status']
+        if ml_order_status in ['cancelled', 'delivered']:
+            logging.info(f'La orden {so_name} esta en estado {ml_order_status}, no se procesa')
             continue
 
 
         pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
         if are_there_attachments == 'NO ATTACHMENTS':
-            zpl_response = get_zpl_meli(shipment_ids, so_name, access_token)
-            if ('Error' not in zpl_response) and ('Advertencia' not in zpl_response):
+            zpl_meli_response = get_zpl_meli(shipment_ids, so_name, access_token)
+            message_response = zpl_meli_response['ml_api_message']
+            zpl_data = zpl_meli_response['zpl_response']
+
+
+            status_map = {
+                "status is picked_up": "picked_up",
+                "status is shipped": "shipped",
+                "status is delivered": "delivered",
+                "éxito": "guide_obtained"
+            }
+            status = next((value for key, value in status_map.items() if key in message_response), None)
+
+            if ('Error' not in message_response) and ('Advertencia' not in message_response):
                 upload_attachment(so_name, pick_id)
                 carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
                 insert_log_message_pick(pick_id, so_name)
@@ -282,7 +310,7 @@ def process_orders(hours=12, local=True):
                     last_update=last_update,
                     processed_successfully=1,
                     pick_id=pick_id,
-                    zpl=zpl_response,
+                    zpl=zpl_data,
                     status=status,
                     already_printed=0
                 )
@@ -292,15 +320,15 @@ def process_orders(hours=12, local=True):
                 else:
                     logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
             else:
-                logging.info(f'No se pudo obtener ZPL / {zpl_response} para la orden {so_name}')
-                if any(state in zpl_response for state in ['status is picked_up', 'status is shipped', 'status is delivered']):
+                logging.info(f'No se pudo obtener ZPL / {message_response} para la orden {so_name}')
+                if status == 'picked_up' or status == 'shipped' or status == 'delivered':
                     save_log_db(
                         so_name=so_name,
                         marketplace_reference=marketplace_reference,
                         date_order=date_order,
                         last_update=last_update,
                         processed_successfully=0,
-                        reason=f"Failed to obtain ZPL: {zpl_response}",
+                        reason=f"Failed to obtain ZPL: {message_response}",
                         status=status,
                         already_printed=1
                     )
@@ -311,7 +339,7 @@ def process_orders(hours=12, local=True):
                         date_order=date_order,
                         last_update=last_update,
                         processed_successfully=0,
-                        reason=f"Failed to obtain ZPL: {zpl_response}",
+                        reason=f"Failed to obtain ZPL: {message_response}",
                         status=status,
                         already_printed=0
                     )
