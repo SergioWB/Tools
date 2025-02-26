@@ -157,7 +157,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
         path_attachment = f'{labels_path}/Etiqueta_{so_name}/Etiqueta de envio.txt'
         if os.path.exists(path_attachment):
             with open(path_attachment, 'rb') as file:
-                file_content = base64.b64encode(file.read())
+                file_content = base64.b64encode(file.read()).decode('utf-8')
         else:
             logging.error("El archivo no existe: " + path_attachment)
             file_content = None
