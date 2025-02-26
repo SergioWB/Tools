@@ -253,11 +253,12 @@ def process_orders(hours=12, local=True):
 
     tk_meli.get_all_tokens()
 
-    new_orders = get_orders_from_odoo(hours)
     db_orders = get_orders_info_DB()
+    new_orders = get_orders_from_odoo(hours)
 
-    procces_new_orders(new_orders, local)
     procces_db_orders(db_orders, local)
+    procces_new_orders(new_orders, local)
+
 
 
 #/////////////////////////////////////////////////////////////////////////////////
