@@ -294,6 +294,7 @@ def process_orders(hours=12, local=True):
                 "status is picked_up": "picked_up",
                 "status is shipped": "shipped",
                 "status is delivered": "delivered",
+                "status is pending": "pending",
                 "éxito": "guide_obtained"
             }
             status = next((value for key, value in status_map.items() if key in message_response), None)
@@ -327,6 +328,7 @@ def process_orders(hours=12, local=True):
                         date_order=date_order,
                         last_update=last_update,
                         processed_successfully=0,
+                        pick_id=pick_id,
                         reason=f"Failed to obtain ZPL: {message_response}",
                         status=status,
                         already_printed=1
@@ -338,6 +340,7 @@ def process_orders(hours=12, local=True):
                         date_order=date_order,
                         last_update=last_update,
                         processed_successfully=0,
+                        pick_id=pick_id,
                         reason=f"Failed to obtain ZPL: {message_response}",
                         status=status,
                         already_printed=0
