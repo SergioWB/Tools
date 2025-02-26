@@ -271,12 +271,13 @@ def procces_db_orders(orders, local):
         count += 1
         print(f'Orden desde DB {count} de {total_}')
 
+        record_id = order["id"] # Registro de la DB
+
         order_id = order['order_id']
         so_name = order['so_name']
         marketplace_reference = order['marketplace_reference']
         seller_marketplace = order['seller_marketplace']
         carrier_tracking_ref = order['carrier_tracking_ref']  # Colecta
-        record_id = order["id"]
         pick_id = order['pick_id']
 
 
@@ -360,9 +361,9 @@ def procces_new_orders(orders, local):
         order_id = order['id']
         carrier_tracking_ref = order['yuju_carrier_tracking_ref']   # Colecta
 
-        last_update = order['write_date']
-        date_order = order['date_order']
-        lastest_date_value = update_latest_date_json(last_update)
+        last_update_odoo = order['write_date']
+        date_order_odoo = order['date_order']
+        lastest_date_value = update_latest_date_json(last_update_odoo)
 
         #logging.info(f'Orden {so_name}')
         #print(f'Orden {so_name}')
@@ -413,8 +414,8 @@ def procces_new_orders(orders, local):
                     marketplace_reference=marketplace_reference,
                     seller_marketplace=seller_marketplace,
                     carrier_tracking_ref=carrier_tracking_ref,
-                    date_order=date_order,
-                    last_update=last_update,
+                    date_order_odoo=date_order_odoo,
+                    last_update_odoo=last_update_odoo,
                     processed_successfully=1,
                     pick_id=pick_id,
                     zpl=zpl_data,
@@ -435,8 +436,8 @@ def procces_new_orders(orders, local):
                         marketplace_reference=marketplace_reference,
                         seller_marketplace=seller_marketplace,
                         carrier_tracking_ref=carrier_tracking_ref,
-                        date_order=date_order,
-                        last_update=last_update,
+                        date_order_odoo=date_order_odoo,
+                        last_update_odoo=last_update_odoo,
                         processed_successfully=0,
                         pick_id=pick_id,
                         reason=f"Failed to obtain ZPL: {message_response}",
@@ -450,8 +451,8 @@ def procces_new_orders(orders, local):
                         marketplace_reference=marketplace_reference,
                         seller_marketplace=seller_marketplace,
                         carrier_tracking_ref=carrier_tracking_ref,
-                        date_order=date_order,
-                        last_update=last_update,
+                        date_order_odoo=date_order_odoo,
+                        last_update_odoo=last_update_odoo,
                         processed_successfully=0,
                         pick_id=pick_id,
                         reason=f"Failed to obtain ZPL: {message_response}",
@@ -602,16 +603,16 @@ def get_db_connection():
         database=os.getenv("DB_NAME")
     )
 
-def save_log_db(so_name, marketplace_reference, date_order, last_update, processed_successfully, pick_id=None, zpl=None, reason=None, status=None, already_printed=None):
+def save_log_db(so_name, marketplace_reference, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, reason=None, status=None, already_printed=None):
     """Guarda la información de una orden procesada o no procesada en ml_guide_insertion."""
     connection = get_db_connection()
     cursor = connection.cursor()
 
     cursor.execute('''
         INSERT INTO ml_guide_insertion (
-            so_name, marketplace_reference, date_order, last_update, processed_successfully, pick_id, zpl, reason, status, already_printed
+            so_name, marketplace_reference, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, reason, status, already_printed
         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    ''', (so_name, marketplace_reference, date_order, last_update, processed_successfully, pick_id, zpl, reason, status, already_printed))
+    ''', (so_name, marketplace_reference, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, reason, status, already_printed))
 
     connection.commit()
     cursor.close()
@@ -623,7 +624,7 @@ def update_log_db(record_id, processed_successfully, status=None, reason=None, z
 
     query = """
         UPDATE ml_guide_insertion
-        SET processed_successfully = %s, status = %s, reason = %s, zpl = %s, already_printed = %s, last_update = NOW()
+        SET processed_successfully = %s, status = %s, reason = %s, zpl = %s, already_printed = %s
         WHERE id = %s;
         """
     cursor.execute(query, (processed_successfully, status, reason, zpl, already_printed, record_id))
