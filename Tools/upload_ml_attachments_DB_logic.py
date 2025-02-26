@@ -62,7 +62,7 @@ def get_orders_from_odoo(hours):
     # filter_date = lastest_date_path_json(lastest_date_path)   # Con en json
     filter_date = get_latest_date_from_db().strftime('%Y-%m-%d %H:%M:%S')
 
-    print(f'Filter date:    {filter_date} \nNow:            {today_date}')
+    print(f'Filter date (DB):    {filter_date} \nNow:            {today_date}')
 
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
@@ -78,7 +78,7 @@ def get_orders_from_odoo(hours):
                                [search_domain],
                                {'fields': ['channel_order_reference', 'id', 'name', 'yuju_seller_id','create_date', 'date_order', 'yuju_carrier_tracking_ref', 'write_date']})
 
-    logging.info(f" Intentando obtener guia de {len(orders)} órdenes")
+    logging.info(f" Intentando obtener guia de {len(orders)} órdenes nuevas")
     print(f" Intentando obtener guia de {len(orders)} órdenes")
 
     # for order in orders:
@@ -653,9 +653,7 @@ def update_latest_date_in_db(new_date_str):
     connection.commit()
     connection.close()
 def get_orders_info_DB():
-    logging.info(f'-----------------------------------------')
-    logging.info(f'Obteniendo info de las órdenes desde DB')
-    logging.info(f'-----------------------------------------')
+    logging.info(f'---------- Obteniendo info de las órdenes desde DB ----------')
 
     connection = get_db_connection()
     cursor = connection.cursor()
@@ -688,6 +686,9 @@ def get_orders_info_DB():
 
     cursor.close()
     connection.close()
+
+    logging.info(f" Intentando obtener guia de {len(orders)} órdenes pendientes en DB")
+    print(f" Intentando obtener guia de {len(orders)} órdenes pendientes en DB")
 
     return orders
 
