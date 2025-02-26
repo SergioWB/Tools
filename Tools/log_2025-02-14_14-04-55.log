@@ -1,4 +1,0 @@
-2025-14-02 02:04:58 PM|root|INFO|Orden SO3398159
-2025-14-02 02:04:58 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
-2025-14-02 02:04:58 PM|root|ERROR|Error get_order_meli: 'shipping'
-2025-14-02 02:04:58 PM|root|INFO|La orden SO3398159 no se encuentra en MercadoLibre
