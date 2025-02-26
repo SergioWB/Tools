@@ -240,22 +240,124 @@ def get_seller_user_id(seller_marketplace):
     return seller_map.get(seller_marketplace)
 
 def process_orders(hours=12, local=True):
-    """ Procesa las órdenes de Odoo y descarga las etiquetas de Mercado Libre. """
-    orders = get_orders_from_odoo(hours)
+    """
+    Primero se procesan las órdenes pendientes de la DB y descarga las etiquetas de Mercado Libre.
+    Si no hay guia disponible, se guarda el estado de la respuesta de ML.
+    Si la hay, se actualiza el registro de la DB.
+
+     Despues procesa las órdenes de Odoo y descarga las etiquetas de Mercado Libre.
+    Si no hay guia disponible, se guarda el estado de la respuesta de ML.
+    La informacion ser carga a la tabla ml_guide_insertion de la db tools.
+
+    """
 
     tk_meli.get_all_tokens()
+
+    new_orders = get_orders_from_odoo(hours)
+    db_orders = get_orders_info_DB()
+
+    procces_new_orders(new_orders, local)
+    procces_db_orders(db_orders, local)
+
+
+#/////////////////////////////////////////////////////////////////////////////////
+# /////////////////////// Funciones de procesamiento por orden ///////////////////
+
+def procces_db_orders(orders, local):
+    count = 0
+    total_ = len(orders)
+    for order in orders:
+        count += 1
+        print(f'Orden desde DB {count} de {total_}')
+
+        order_id = order['order_id']
+        so_name = order['so_name']
+        marketplace_reference = order['marketplace_reference']
+        seller_marketplace = order['seller_marketplace']
+        carrier_tracking_ref = order['carrier_tracking_ref']  # Colecta
+        record_id = order["id"]
+        pick_id = order['pick_id']
+
+
+        user_id_ = get_seller_user_id(seller_marketplace)
+        if not user_id_:
+            logging.info(f'Orden {so_name} no procesable, id del Marketplace desconocido.')
+            continue
+
+        access_token = recupera_meli_token(user_id_, local)
+        # Volvemos a consultar la info de la orden en MercadoLibre porque es muy posible que la informacion haya cambiado
+        order_meli = get_order_meli(marketplace_reference, access_token)
+
+        if not order_meli:
+            logging.info(f'La orden {so_name} no se encuentra en MercadoLibre')
+            continue
+
+        shipment_ids = order_meli['shipping_id']
+        ml_order_status = order_meli['status']
+        if ml_order_status in ['cancelled', 'delivered']:
+            logging.info(f'La orden {so_name} esta en estado {ml_order_status}, no se procesa')
+            continue
+
+        #pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
+
+        zpl_meli_response = get_zpl_meli(shipment_ids, so_name, access_token)
+        message_response = zpl_meli_response['ml_api_message']
+        zpl_data = zpl_meli_response['zpl_response']
+
+        status_map = {
+            "status is picked_up": "picked_up",
+            "status is shipped": "shipped",
+            "status is delivered": "delivered",
+            "status is pending": "pending",
+            "éxito": "guide_obtained"
+        }
+        status = next((value for key, value in status_map.items() if key in message_response), None)
+
+        if ('Error' not in message_response) and ('Advertencia' not in message_response):
+            upload_attachment(so_name, pick_id)
+            carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
+            insert_log_message_pick(pick_id, so_name)
+            update_log_db(record_id,
+                          processed_successfully=1,
+                          status=status,
+                          zpl=zpl_data,
+                          already_printed=0)
+            if "Flex" in carrier_tracking_ref:
+                carrier_option_response = insert_LOIN_carrier_odoo(order_id, so_name)
+                logging.info(
+                    f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
+            else:
+                logging.info(
+                    f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
+        else:
+            logging.info(f'No se pudo obtener ZPL / {message_response} para la orden {so_name}')
+            if status == 'picked_up' or status == 'shipped' or status == 'delivered':
+                update_log_db(record_id,
+                              processed_successfully=0,
+                              status=status,
+                              reason=f"Failed to obtain ZPL: {message_response}",
+                              already_printed=1)
+            else:
+                update_log_db(record_id,
+                              processed_successfully=0,
+                              status=status,
+                              reason=f"Failed to obtain ZPL: {message_response}",
+                              already_printed=0)
+
+
+def procces_new_orders(orders, local):
 
     count = 0
     total_ = len(orders)
     for order in orders:
         count += 1
-        print(f'Orden {count} de {total_}')
+        print(f'Orden desde Odoo {count} de {total_}')
         marketplace_reference = order['channel_order_reference']
         seller_marketplace = order['yuju_seller_id']
         so_name = order['name']
 
         order_id = order['id']
-        carrier_tracking_ref = order['yuju_carrier_tracking_ref']
+        carrier_tracking_ref = order['yuju_carrier_tracking_ref']   # Colecta
 
         last_update = order['write_date']
         date_order = order['date_order']
@@ -285,6 +387,7 @@ def process_orders(hours=12, local=True):
 
 
         pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
+
         if are_there_attachments == 'NO ATTACHMENTS':
             zpl_meli_response = get_zpl_meli(shipment_ids, so_name, access_token)
             message_response = zpl_meli_response['ml_api_message']
@@ -355,6 +458,9 @@ def process_orders(hours=12, local=True):
     if lastest_date_value:
         update_latest_date_in_db(lastest_date_value)
         logging.info(f'---------------- Actualizando la fecha de búsqueda en DB: {lastest_date_value} ----------------')
+
+
+#/////////////////////////////////////////////////////////////////////////////////
 
 def insert_log_in_sheets(log_file, file_id, credentials_json):
     """
@@ -501,6 +607,19 @@ def save_log_db(so_name, marketplace_reference, date_order, last_update, process
     cursor.close()
     connection.close()
 
+def update_log_db(record_id, processed_successfully, status=None, reason=None, zpl=None, already_printed=None):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    query = """
+        UPDATE ml_guide_insertion
+        SET processed_successfully = %s, status = %s, reason = %s, zpl = %s, already_printed = %s, last_update = NOW()
+        WHERE id = %s;
+        """
+    cursor.execute(query, (processed_successfully, status, reason, zpl, already_printed, record_id))
+    connection.commit()
+    cursor.close()
+    connection.close()
 
 def get_latest_date_from_db():
     connection = get_db_connection()
@@ -522,6 +641,40 @@ def update_latest_date_in_db(new_date_str):
     """, (new_date_str, new_date_str))
     connection.commit()
     connection.close()
+def get_orders_info_DB():
+    logging.info(f'-----------------------------------------')
+    logging.info(f'Obteniendo info de las órdenes desde DB')
+    logging.info(f'-----------------------------------------')
+
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    query = """
+        SELECT id, order_id, so_name, marketplace_reference, seller_marketplace, carrier_tracking_ref, pick_id
+        FROM ml_guide_insertion
+        WHERE status = 'pending' AND processed_successfully = 0;
+        """
+
+    cursor.execute(query)
+    results = cursor.fetchall()
+
+    orders = [
+        {
+            "id": row[0],
+            "order_id": row[1],
+            "so_name": row[2],
+            "marketplace_reference": row[3],
+            "seller_marketplace": row[4],
+            "carrier_tracking_ref": row[5],
+            "pick_id": row[6],
+        }
+        for row in results
+    ]
+
+    cursor.close()
+    connection.close()
+
+    return orders
 
 
 if __name__ == "__main__":
