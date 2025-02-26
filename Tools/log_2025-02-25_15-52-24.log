@@ -1,0 +1,42 @@
+2025-25-02 03:52:24 PM|root|INFO|////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+2025-25-02 03:53:33 PM|root|INFO| Intentando obtener guia de 92611 órdenes
+2025-25-02 03:53:35 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
+2025-25-02 03:53:36 PM|root|ERROR|Error get_order_meli: 'shipping'
+2025-25-02 03:53:36 PM|root|INFO|La orden SO3581663 no se encuentra en MercadoLibre
+2025-25-02 03:53:36 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
+2025-25-02 03:53:36 PM|root|ERROR|Error get_order_meli: 'shipping'
+2025-25-02 03:53:36 PM|root|INFO|La orden SO3581661 no se encuentra en MercadoLibre
+2025-25-02 03:53:36 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
+2025-25-02 03:53:36 PM|root|ERROR|Error get_order_meli: 'shipping'
+2025-25-02 03:53:36 PM|root|INFO|La orden SO3581660 no se encuentra en MercadoLibre
+2025-25-02 03:53:36 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
+2025-25-02 03:53:36 PM|root|ERROR|Error get_order_meli: 'shipping'
+2025-25-02 03:53:36 PM|root|INFO|La orden SO3581659 no se encuentra en MercadoLibre
+2025-25-02 03:53:36 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
+2025-25-02 03:53:36 PM|root|ERROR|Error get_order_meli: 'shipping'
+2025-25-02 03:53:36 PM|root|INFO|La orden SO3581654 no se encuentra en MercadoLibre
+2025-25-02 03:53:36 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
+2025-25-02 03:53:37 PM|root|ERROR|Error get_order_meli: 'shipping'
+2025-25-02 03:53:37 PM|root|INFO|La orden SO3581646 no se encuentra en MercadoLibre
+2025-25-02 03:53:37 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
+2025-25-02 03:53:37 PM|root|ERROR|Error get_order_meli: 'shipping'
+2025-25-02 03:53:37 PM|root|INFO|La orden SO3581644 no se encuentra en MercadoLibre
+2025-25-02 03:53:37 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
+2025-25-02 03:53:37 PM|root|ERROR|Error get_order_meli: 'shipping'
+2025-25-02 03:53:37 PM|root|INFO|La orden SO3581642 no se encuentra en MercadoLibre
+2025-25-02 03:53:37 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
+2025-25-02 03:53:37 PM|root|ERROR|Error get_order_meli: 'shipping'
+2025-25-02 03:53:37 PM|root|INFO|La orden SO3581640 no se encuentra en MercadoLibre
+2025-25-02 03:53:37 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
+2025-25-02 03:53:37 PM|root|ERROR|Error get_order_meli: 'shipping'
+2025-25-02 03:53:37 PM|root|INFO|La orden SO3581637 no se encuentra en MercadoLibre
+2025-25-02 03:53:37 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
+2025-25-02 03:53:38 PM|root|ERROR|Error get_order_meli: 'shipping'
+2025-25-02 03:53:38 PM|root|INFO|La orden SO3581636 no se encuentra en MercadoLibre
+2025-25-02 03:53:38 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
+2025-25-02 03:53:38 PM|root|ERROR|Error get_order_meli: 'shipping'
+2025-25-02 03:53:38 PM|root|INFO|La orden SO3581629 no se encuentra en MercadoLibre
+2025-25-02 03:53:38 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 
+2025-25-02 03:53:38 PM|root|ERROR|Error get_order_meli: 'shipping'
+2025-25-02 03:53:38 PM|root|INFO|La orden SO3581622 no se encuentra en MercadoLibre
+2025-25-02 03:53:38 PM|root|ERROR|Error recupera_meli_token() [Errno 2] No such file or directory: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt': 

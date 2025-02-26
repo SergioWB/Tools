@@ -60,7 +60,7 @@ def get_orders_from_odoo(hours):
 
     # El filtro ahora es con la fecha de la ultima orden desde la DB
     # filter_date = lastest_date_path_json(lastest_date_path)   # Con en json
-    filter_date = get_latest_date_from_db()
+    filter_date = get_latest_date_from_db().strftime('%Y-%m-%d %H:%M:%S')
 
     print(f'Filter date:    {filter_date} \nNow:            {today_date}')
 
@@ -68,7 +68,7 @@ def get_orders_from_odoo(hours):
         ('team_id', '=', 'Team_MercadoLibre'),
         ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop Off']),
         #('date_order', '>=', filter_date),
-        ('__last_update', '>=', filter_date),
+        ('write_date', '>=', filter_date),
         ('state', '=', 'done'),
         ('yuju_carrier_tracking_ref', 'not ilike', ' / ')
     ]
@@ -76,7 +76,7 @@ def get_orders_from_odoo(hours):
     orders = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                                'sale.order', 'search_read',
                                [search_domain],
-                               {'fields': ['channel_order_reference', 'id', 'name', 'yuju_seller_id','create_date', 'date_order', 'yuju_carrier_tracking_ref', '__last_update']})
+                               {'fields': ['channel_order_reference', 'id', 'name', 'yuju_seller_id','create_date', 'date_order', 'yuju_carrier_tracking_ref', 'write_date']})
 
     logging.info(f" Intentando obtener guia de {len(orders)} órdenes")
     print(f" Intentando obtener guia de {len(orders)} órdenes")
@@ -157,7 +157,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
         path_attachment = f'{labels_path}/Etiqueta_{so_name}/Etiqueta de envio.txt'
         if os.path.exists(path_attachment):
             with open(path_attachment, 'rb') as file:
-                file_content = base64.b64encode(file.read()).decode('utf-8')
+                file_content = base64.b64encode(file.read())
         else:
             logging.error("El archivo no existe: " + path_attachment)
             file_content = None
@@ -257,7 +257,7 @@ def process_orders(hours=12, local=True):
         order_id = order['id']
         carrier_tracking_ref = order['yuju_carrier_tracking_ref']
 
-        last_update = order['__last_update']
+        last_update = order['write_date']
         date_order = order['date_order']
         lastest_date_value = update_latest_date_json(last_update)
 
@@ -289,6 +289,9 @@ def process_orders(hours=12, local=True):
             zpl_meli_response = get_zpl_meli(shipment_ids, so_name, access_token)
             message_response = zpl_meli_response['ml_api_message']
             zpl_data = zpl_meli_response['zpl_response']
+            print(message_response)
+            print(zpl_data)
+            tm.sleep(1231)
 
 
             status_map = {
