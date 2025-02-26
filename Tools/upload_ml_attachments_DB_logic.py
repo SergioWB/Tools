@@ -408,8 +408,11 @@ def procces_new_orders(orders, local):
                 carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
                 insert_log_message_pick(pick_id, so_name)
                 save_log_db(
+                    order_id=order_id,
                     so_name=so_name,
                     marketplace_reference=marketplace_reference,
+                    seller_marketplace=seller_marketplace,
+                    carrier_tracking_ref=carrier_tracking_ref,
                     date_order=date_order,
                     last_update=last_update,
                     processed_successfully=1,
@@ -427,8 +430,11 @@ def procces_new_orders(orders, local):
                 logging.info(f'No se pudo obtener ZPL / {message_response} para la orden {so_name}')
                 if status == 'picked_up' or status == 'shipped' or status == 'delivered':
                     save_log_db(
+                        order_id=order_id,
                         so_name=so_name,
                         marketplace_reference=marketplace_reference,
+                        seller_marketplace=seller_marketplace,
+                        carrier_tracking_ref=carrier_tracking_ref,
                         date_order=date_order,
                         last_update=last_update,
                         processed_successfully=0,
@@ -439,8 +445,11 @@ def procces_new_orders(orders, local):
                     )
                 else:
                     save_log_db(
+                        order_id=order_id,
                         so_name=so_name,
                         marketplace_reference=marketplace_reference,
+                        seller_marketplace=seller_marketplace,
+                        carrier_tracking_ref=carrier_tracking_ref,
                         date_order=date_order,
                         last_update=last_update,
                         processed_successfully=0,
