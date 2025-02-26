@@ -158,7 +158,6 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
         if os.path.exists(path_attachment):
             with open(path_attachment, 'rb') as file:
                 file_content = base64.b64encode(file.read()).decode('utf-8')
-                print(base64.b64decode(file_content).decode('utf-8'))
         else:
             logging.error("El archivo no existe: " + path_attachment)
             file_content = None
@@ -290,10 +289,6 @@ def process_orders(hours=12, local=True):
             zpl_meli_response = get_zpl_meli(shipment_ids, so_name, access_token)
             message_response = zpl_meli_response['ml_api_message']
             zpl_data = zpl_meli_response['zpl_response']
-            print(message_response)
-            print(zpl_data)
-            tm.sleep(1231)
-
 
             status_map = {
                 "status is picked_up": "picked_up",
