@@ -259,6 +259,7 @@ def process_orders(hours=12, local=True):
     procces_db_orders(db_orders, local)
 
     logging.info(f'*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-')
+    print(f'*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-')
 
     new_orders = get_orders_from_odoo(filter_date,today_date)
     procces_new_orders(new_orders, local)
@@ -341,13 +342,13 @@ def procces_db_orders(orders, local):
                 update_log_db(record_id,
                               processed_successfully=0,
                               status=status,
-                              reason=f"Failed to obtain ZPL: {message_response}",
+                              failure_reason=f"Failed to obtain ZPL: {message_response}",
                               already_printed=1)
             else:
                 update_log_db(record_id,
                               processed_successfully=0,
                               status=status,
-                              reason=f"Failed to obtain ZPL: {message_response}",
+                              failure_reason=f"Failed to obtain ZPL: {message_response}",
                               already_printed=0)
 
 
@@ -444,7 +445,7 @@ def procces_new_orders(orders, local):
                         last_update_odoo=last_update_odoo,
                         processed_successfully=0,
                         pick_id=pick_id,
-                        reason=f"Failed to obtain ZPL: {message_response}",
+                        failure_reason=f"Failed to obtain ZPL: {message_response}",
                         status=status,
                         already_printed=1
                     )
@@ -459,7 +460,7 @@ def procces_new_orders(orders, local):
                         last_update_odoo=last_update_odoo,
                         processed_successfully=0,
                         pick_id=pick_id,
-                        reason=f"Failed to obtain ZPL: {message_response}",
+                        failure_reason=f"Failed to obtain ZPL: {message_response}",
                         status=status,
                         already_printed=0
                     )
@@ -607,39 +608,35 @@ def get_db_connection():
         database=os.getenv("DB_NAME")
     )
 
-def save_log_db(order_id, so_name, marketplace_reference,seller_marketplace, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, reason=None, status=None, already_printed=None):
+def save_log_db(order_id, so_name, marketplace_reference,seller_marketplace, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, failure_reason=None, status=None, already_printed=None):
     """Guarda la información de una orden procesada o no procesada en ml_guide_insertion."""
     connection = get_db_connection()
     cursor = connection.cursor()
 
     cursor.execute('''
         INSERT INTO ml_guide_insertion (
-            order_id, so_name, marketplace_reference, seller_marketplace, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, reason, status, already_printed
+            order_id, so_name, marketplace_reference, seller_marketplace, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed
         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    ''', (order_id, so_name, marketplace_reference,seller_marketplace, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, reason, status, already_printed))
+    ''', (order_id, so_name, marketplace_reference,seller_marketplace, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed))
 
     connection.commit()
     cursor.close()
     connection.close()
 
-def update_log_db(record_id, processed_successfully, status=None, reason=None, zpl=None, already_printed=None):
+def update_log_db(record_id, processed_successfully, status=None, failure_reason=None, zpl=None, already_printed=None):
     connection = get_db_connection()
     cursor = connection.cursor()
 
     query = """
         UPDATE ml_guide_insertion
-        SET processed_successfully = %s, status = %s, reason = %s, zpl = %s, already_printed = %s, update_date_DB = NOW()
+        SET processed_successfully = %s, status = %s, failure_reason = %s, zpl = %s, already_printed = %s, update_date_DB = NOW()
         WHERE id = %s;
         """
-    values = (processed_successfully, status, reason, zpl, already_printed, record_id)
-
-    print("Ejecutando SQL:", query % values)
+    values = (processed_successfully, status, failure_reason, zpl, already_printed, record_id)
 
     cursor.execute(query, values)
     connection.commit()
 
-    print("Filas afectadas:", cursor.rowcount)
-    
     cursor.close()
     connection.close()
 
@@ -676,6 +673,25 @@ def get_orders_info_DB():
             AND seller_marketplace IS NOT NULL AND seller_marketplace != ''
             AND carrier_tracking_ref IS NOT NULL AND carrier_tracking_ref != '';
         """
+
+    query = """
+        WITH valid_orders AS (
+            SELECT order_id, so_name
+            FROM ml_guide_insertion
+            GROUP BY order_id, so_name
+            HAVING SUM(CASE WHEN status IN ('picked_up', 'shipped', 'delivered', 'guide_obtained') THEN 1 ELSE 0 END) = 0
+        )
+        SELECT id, order_id, so_name, marketplace_reference, seller_marketplace, carrier_tracking_ref, pick_id
+        FROM ml_guide_insertion mgi
+        WHERE status = 'pending' 
+            AND processed_successfully = 0
+            AND marketplace_reference IS NOT NULL AND marketplace_reference != ''
+            AND seller_marketplace IS NOT NULL AND seller_marketplace != ''
+            AND carrier_tracking_ref IS NOT NULL AND carrier_tracking_ref != ''
+            AND EXISTS (SELECT 1 FROM valid_orders vo WHERE vo.order_id = mgi.order_id AND vo.so_name = mgi.so_name)
+        ORDER BY id
+        LIMIT 1;
+    """
 
     cursor.execute(query)
     results = cursor.fetchall()
