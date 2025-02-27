@@ -51,18 +51,10 @@ def get_odoo_credentials(environment="test"):
         "url": os.getenv("odoo_url"),
     }
 
-def get_orders_from_odoo(hours):
+def get_orders_from_odoo(filter_date, today_date):
     """ Obtiene las órdenes de Odoo en las últimas 'hours' horas. """
 
-    now_date = datetime.now()
-    today_date = now_date.strftime('%Y-%m-%d %H:%M:%S')
-    #filter_date = (now_date - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
-
-    # El filtro ahora es con la fecha de la ultima orden desde la DB
-    # filter_date = lastest_date_path_json(lastest_date_path)   # Con en json
-    filter_date = get_latest_date_from_db().strftime('%Y-%m-%d %H:%M:%S')
-
-    print(f'Filter date (DB):    {filter_date} \nNow:            {today_date}')
+    print(f'Filter date (DB):    {filter_date} \nNow:               {today_date}')
 
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
@@ -78,8 +70,8 @@ def get_orders_from_odoo(hours):
                                [search_domain],
                                {'fields': ['channel_order_reference', 'id', 'name', 'yuju_seller_id','create_date', 'date_order', 'yuju_carrier_tracking_ref', 'write_date']})
 
-    logging.info(f" Intentando obtener guia de {len(orders)} órdenes nuevas")
-    print(f" Intentando obtener guia de {len(orders)} órdenes")
+    logging.info(f"Intentando obtener guia de {len(orders)} órdenes actualizadas en Odoo")
+    print(f"Intentando obtener guia de {len(orders)} órdenes actualizadas en Odoo")
 
     # for order in orders:
     #     print(order)
@@ -253,10 +245,22 @@ def process_orders(hours=12, local=True):
 
     tk_meli.get_all_tokens()
 
-    db_orders = get_orders_info_DB()
-    new_orders = get_orders_from_odoo(hours)
+    now_date = datetime.now()
+    today_date = now_date.strftime('%Y-%m-%d %H:%M:%S')
+    # filter_date = (now_date - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
 
+    # El filtro ahora es con la fecha de la ultima orden desde la DB
+    # filter_date = lastest_date_path_json(lastest_date_path)   # Con en json
+    filter_date = get_latest_date_from_db().strftime('%Y-%m-%d %H:%M:%S')
+
+
+
+    db_orders = get_orders_info_DB()
     procces_db_orders(db_orders, local)
+
+    logging.info(f'*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-')
+
+    new_orders = get_orders_from_odoo(filter_date,today_date)
     procces_new_orders(new_orders, local)
 
 
@@ -283,7 +287,7 @@ def procces_db_orders(orders, local):
 
         user_id_ = get_seller_user_id(seller_marketplace)
         if not user_id_:
-            logging.info(f'Orden {so_name} no procesable, id del Marketplace desconocido.')
+            logging.info(f'DB: Orden {so_name} no procesable, id del Marketplace desconocido.')
             continue
 
         access_token = recupera_meli_token(user_id_, local)
@@ -291,13 +295,13 @@ def procces_db_orders(orders, local):
         order_meli = get_order_meli(marketplace_reference, access_token)
 
         if not order_meli:
-            logging.info(f'La orden {so_name} no se encuentra en MercadoLibre')
+            logging.info(f'DB: La orden {so_name} no se encuentra en MercadoLibre')
             continue
 
         shipment_ids = order_meli['shipping_id']
         ml_order_status = order_meli['status']
         if ml_order_status in ['cancelled', 'delivered']:
-            logging.info(f'La orden {so_name} esta en estado {ml_order_status}, no se procesa')
+            logging.info(f'DB: La orden {so_name} esta en estado {ml_order_status}, no se procesa')
             continue
 
         #pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
@@ -327,12 +331,12 @@ def procces_db_orders(orders, local):
             if "Flex" in carrier_tracking_ref:
                 carrier_option_response = insert_LOIN_carrier_odoo(order_id, so_name)
                 logging.info(
-                    f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
+                    f'DB: Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
             else:
                 logging.info(
-                    f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
+                    f'DB: Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
         else:
-            logging.info(f'No se pudo obtener ZPL / {message_response} para la orden {so_name}')
+            logging.info(f'DB: No se pudo obtener ZPL / {message_response} para la orden {so_name}')
             if status == 'picked_up' or status == 'shipped' or status == 'delivered':
                 update_log_db(record_id,
                               processed_successfully=0,
@@ -627,8 +631,15 @@ def update_log_db(record_id, processed_successfully, status=None, reason=None, z
         SET processed_successfully = %s, status = %s, reason = %s, zpl = %s, already_printed = %s, update_date_DB = NOW()
         WHERE id = %s;
         """
-    cursor.execute(query, (processed_successfully, status, reason, zpl, already_printed, record_id))
+    values = (processed_successfully, status, reason, zpl, already_printed, record_id)
+
+    print("Ejecutando SQL:", query % values)
+
+    cursor.execute(query, values)
     connection.commit()
+
+    print("Filas afectadas:", cursor.rowcount)
+    
     cursor.close()
     connection.close()
 
@@ -653,8 +664,6 @@ def update_latest_date_in_db(new_date_str):
     connection.commit()
     connection.close()
 def get_orders_info_DB():
-    logging.info(f'---------- Obteniendo info de las órdenes desde DB ----------')
-
     connection = get_db_connection()
     cursor = connection.cursor()
 
@@ -687,14 +696,14 @@ def get_orders_info_DB():
     cursor.close()
     connection.close()
 
-    logging.info(f" Intentando obtener guia de {len(orders)} órdenes pendientes en DB")
-    print(f" Intentando obtener guia de {len(orders)} órdenes pendientes en DB")
+    logging.info(f"Intentando obtener guia de {len(orders)} órdenes pendientes en DB")
+    print(f"Intentando obtener guia de {len(orders)} órdenes pendientes en DB")
 
     return orders
 
 
 if __name__ == "__main__":
-    logging.info("////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
+    logging.info("///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
 
 
     start = tm.time()
