@@ -629,7 +629,7 @@ def update_log_db(record_id, processed_successfully, status=None, failure_reason
 
     query = """
         UPDATE ml_guide_insertion
-        SET processed_successfully = %s, status = %s, failure_reason = %s, zpl = %s, already_printed = %s, update_date_DB = NOW()
+        SET processed_successfully = %s, status = %s, failure_reason = %s, zpl = %s, already_printed = %s, last_update_DB = NOW()
         WHERE id = %s;
         """
     values = (processed_successfully, status, failure_reason, zpl, already_printed, record_id)
