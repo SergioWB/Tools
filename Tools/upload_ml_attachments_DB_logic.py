@@ -231,7 +231,7 @@ def get_seller_user_id(seller_marketplace):
     }
     return seller_map.get(seller_marketplace)
 
-def process_orders(hours=12, local=True):
+def process_orders(local=True):
     """
     Primero se procesan las órdenes pendientes de la DB y descarga las etiquetas de Mercado Libre.
     Si no hay guia disponible, se guarda el estado de la respuesta de ML.
@@ -745,7 +745,7 @@ if __name__ == "__main__":
     uid = common.authenticate(ODOO_DB_NAME, ODOO_USER_ID, ODOO_PASSWORD, {})
     models = xmlrpc.client.ServerProxy(f'{ODOO_URL}/xmlrpc/2/object')
 
-    process_orders(48, local=False)  # Ordenes creadas en las ultimas N horas, Entorno local o Instancia
+    process_orders(local=False)  # Ordenes creadas en las ultimas N horas, Entorno local o Instancia
 
     end = tm.time()
 
