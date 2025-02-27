@@ -603,16 +603,16 @@ def get_db_connection():
         database=os.getenv("DB_NAME")
     )
 
-def save_log_db(so_name, marketplace_reference, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, reason=None, status=None, already_printed=None):
+def save_log_db(order_id, so_name, marketplace_reference, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, reason=None, status=None, already_printed=None):
     """Guarda la información de una orden procesada o no procesada en ml_guide_insertion."""
     connection = get_db_connection()
     cursor = connection.cursor()
 
     cursor.execute('''
         INSERT INTO ml_guide_insertion (
-            so_name, marketplace_reference, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, reason, status, already_printed
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    ''', (so_name, marketplace_reference, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, reason, status, already_printed))
+            order_id, so_name, marketplace_reference, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, reason, status, already_printed
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    ''', (order_id, so_name, marketplace_reference, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, reason, status, already_printed))
 
     connection.commit()
     cursor.close()
