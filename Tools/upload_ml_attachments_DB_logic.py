@@ -624,7 +624,7 @@ def update_log_db(record_id, processed_successfully, status=None, reason=None, z
 
     query = """
         UPDATE ml_guide_insertion
-        SET processed_successfully = %s, status = %s, reason = %s, zpl = %s, already_printed = %s
+        SET processed_successfully = %s, status = %s, reason = %s, zpl = %s, already_printed = %s, update_date_DB = NOW()
         WHERE id = %s;
         """
     cursor.execute(query, (processed_successfully, status, reason, zpl, already_printed, record_id))
