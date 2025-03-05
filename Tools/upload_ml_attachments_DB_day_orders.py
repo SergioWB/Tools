@@ -330,7 +330,7 @@ def procces_db_orders(orders, local):
         seller_marketplace = order['seller_marketplace']
         carrier_tracking_ref = order['carrier_tracking_ref']  # Colecta
         pick_id = order['pick_id']
-        print(so_name, pick_id)
+        print(so_name, pick_id, type(pick_id))
 
 
         user_id_ = get_seller_user_id(seller_marketplace)
