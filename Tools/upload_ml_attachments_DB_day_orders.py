@@ -440,6 +440,7 @@ def procces_new_orders(orders, local):
 
 
         pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
+        print(pick_id)
 
         if are_there_attachments == 'NO ATTACHMENTS':
             zpl_meli_response = get_zpl_meli(shipment_ids, so_name, access_token)
