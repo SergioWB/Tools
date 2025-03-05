@@ -3,11 +3,15 @@ from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import os
 import xmlrpc.client
+import time as tm
 
 load_dotenv()
 
 
 if __name__ == "__main__":
+
+    print(get_local_utc_range())
+    tm.sleep(4323)
 
     enviroment = 'production'
 

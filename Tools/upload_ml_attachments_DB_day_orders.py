@@ -14,7 +14,7 @@ import mysql.connector
 
 # Ajustar la hora manualmente restando 6 horas (UTC → CDMX)
 def get_cdmx_time():
-    return (datetime.now() - timedelta(hours=6)).strftime('%Y-%d-%m %I:%M:%S %p')
+    return (datetime.now() - timedelta(hours=6)).strftime('%Y-%m-%d %H:%M:%S')
 
 def get_local_utc_range():
     """ Obtiene el rango de fecha en UTC 0 basado en la hora local de CDMX (UTC-6). """
@@ -330,7 +330,7 @@ def procces_db_orders(orders, local):
         seller_marketplace = order['seller_marketplace']
         carrier_tracking_ref = order['carrier_tracking_ref']  # Colecta
         pick_id = int(order['pick_id'])
-        print(so_name, pick_id, type(pick_id))
+        # print(so_name, pick_id, type(pick_id))
 
 
         user_id_ = get_seller_user_id(seller_marketplace)
