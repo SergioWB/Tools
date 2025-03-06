@@ -296,9 +296,10 @@ def process_orders(local=True):
 
     logging.info(f'*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-')
     print(f'*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-')
+    # Rango de busqueda de ordenes del día. Busca desde las 00:00 hrs a las 23:59 hrs del dia actual
     start_date, end_date = get_local_utc_range()
 
-    # Obtenemos las nuevas ordenes de ODoo sin guia de ML
+    # Obtenemos las nuevas ordenes de Odoo sin guia de ML
     new_orders_odoo = get_orders_from_odoo(filter_date,today_date)
 
     # Obtenemos las ordenes que deben ser procesadas el dia actual
@@ -783,7 +784,8 @@ def get_orders_day_info_crawl(start_date, end_date):
             SELECT DISTINCT status_name, sub_status_name, txn_id_mp, inserted_at
             FROM ml_sr_orders_h
             WHERE inserted_at > '{start_date}'
-            AND inserted_at < '{end_date}';
+            AND inserted_at < '{end_date}'
+            AND status_name = 'Envíos de hoy';
             """
 
     cursor.execute(query)

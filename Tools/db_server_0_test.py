@@ -10,8 +10,9 @@ load_dotenv()
 
 if __name__ == "__main__":
 
-    print(get_local_utc_range())
-    tm.sleep(4323)
+    start_date, end_date = get_local_utc_range()
+
+    print(start_date, end_date)
 
     enviroment = 'production'
 
@@ -28,7 +29,7 @@ if __name__ == "__main__":
 
     print("//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
 
-    db_orders = get_orders_day_info_crawl('2025-03-03', '2025-03-04')
+    db_orders = get_orders_day_info_crawl(start_date, end_date)
     # for order in orders:
     #     print(order)
 
