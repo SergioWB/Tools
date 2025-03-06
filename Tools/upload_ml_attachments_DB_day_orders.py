@@ -788,6 +788,18 @@ def get_orders_day_info_crawl(start_date, end_date):
             AND status_name = 'Envíos de hoy';
             """
 
+    query = f"""
+            SELECT status_name, sub_status_name, txn_id_mp, inserted_at
+            FROM (
+                SELECT *, ROW_NUMBER() OVER (PARTITION BY txn_id_mp ORDER BY inserted_at DESC) AS rn
+                FROM ml_sr_orders_h
+                WHERE inserted_at >= '{start_date}'
+                AND inserted_at < '{end_date}'
+                AND status_name = 'Envíos de hoy'
+            ) t
+            WHERE rn = 1;
+            """
+
     cursor.execute(query)
     results = cursor.fetchall()
 
