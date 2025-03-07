@@ -98,8 +98,7 @@ def get_orders_from_odoo(filter_date, today_date):
         ('write_date', '>=', filter_date),
         ('state', '=', 'done'),
         ('yuju_carrier_tracking_ref', 'not ilike', ' / '),
-        ('effective_date', '=', False),
-        ('name', '=', 'SOxxx99999912312312')
+        ('effective_date', '=', False)
     ]
 
     orders = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
@@ -408,6 +407,7 @@ def procces_new_orders(orders, local):
 
     # Inicializamos lastest_date_value = False en caso de que no haya habido ordenes a procesar
     lastest_date_value = False
+
     for order in orders:
         count += 1
         print(f'Orden desde Odoo {count} de {total_}')
@@ -524,9 +524,6 @@ def procces_new_orders(orders, local):
     if lastest_date_value:
         update_latest_date_in_db(lastest_date_value)
         logging.info(f'---------------- Actualizando la fecha de búsqueda en DB: {lastest_date_value} ----------------')
-
-    print('No Error')
-    tm.sleep(100)
 
 #/////////////////////////////////////////////////////////////////////////////////
 
