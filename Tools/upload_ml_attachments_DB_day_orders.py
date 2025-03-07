@@ -405,6 +405,9 @@ def procces_new_orders(orders, local):
 
     count = 0
     total_ = len(orders)
+
+    # Inicializamos lastest_date_value = False en caso de que no haya habido ordenes a procesar
+    lastest_date_value = False
     for order in orders:
         count += 1
         print(f'Orden desde Odoo {count} de {total_}')
@@ -417,13 +420,11 @@ def procces_new_orders(orders, local):
 
         last_update_odoo = order['write_date']
         date_order_odoo = order['date_order']
+
+        # Obtenemos la fecha de consulta mas reciente dentro de las ordenes procesadas en el for actual.
         lastest_date_value = update_latest_date_json(last_update_odoo)
 
-        #logging.info(f'Orden {so_name}')
-        #print(f'Orden {so_name}')
-
         user_id_ = get_seller_user_id(seller_marketplace)
-        #print(user_id_)
         if not user_id_:
             logging.info(f'Orden {so_name} no procesable, id del Marketplace desconocido.')
             continue
@@ -519,11 +520,13 @@ def procces_new_orders(orders, local):
         else:
             #Los logs del resto de casos están en la funcion search_pick_id
             pass
-    print(len(orders))
+
     if lastest_date_value:
         update_latest_date_in_db(lastest_date_value)
         logging.info(f'---------------- Actualizando la fecha de búsqueda en DB: {lastest_date_value} ----------------')
 
+    print('No Error')
+    tm.sleep(100)
 
 #/////////////////////////////////////////////////////////////////////////////////
 
