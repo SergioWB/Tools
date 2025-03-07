@@ -98,7 +98,8 @@ def get_orders_from_odoo(filter_date, today_date):
         ('write_date', '>=', filter_date),
         ('state', '=', 'done'),
         ('yuju_carrier_tracking_ref', 'not ilike', ' / '),
-        ('effective_date', '=', False)
+        ('effective_date', '=', False),
+        ('name', '=', 'SOxxx99999912312312')
     ]
 
     orders = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
@@ -518,7 +519,7 @@ def procces_new_orders(orders, local):
         else:
             #Los logs del resto de casos están en la funcion search_pick_id
             pass
-
+    print(len(orders))
     if lastest_date_value:
         update_latest_date_in_db(lastest_date_value)
         logging.info(f'---------------- Actualizando la fecha de búsqueda en DB: {lastest_date_value} ----------------')
@@ -837,7 +838,7 @@ def filter_matching_orders(odoo_orders, db_orders):
         if order["channel_order_reference"] in db_order_ids or order["yuju_pack_id"] in db_order_ids
     ]
 
-    logging.info("//////////////////////////////////////////////////////////////////////////////////////////////////")
+    logging.info("-------------------------------------------------------------------------------")
     logging.info(f"Órdenes encontradas en Odoo y en ML (crawl DB): {len(matching_orders)}")
     print(f"Órdenes encontradas en Odoo y en ML (crawl DB): {len(matching_orders)}")
 
