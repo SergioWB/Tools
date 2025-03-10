@@ -290,12 +290,17 @@ def process_orders(local=True):
     filter_date = get_latest_date_from_db().strftime('%Y-%m-%d %H:%M:%S')
 
 
-    # Primero procesamos las ordenes pendientes de obtener su guia en ML
+    # ---------- Actualizamos el stado de las ordenes de la DB ------------------------------
+    update_orders_from_crawl()
+    # ---------- Procesamos las ordenes pendientes de obtener su guia en ML------------------
     db_orders = get_orders_info_DB()
     procces_db_orders(db_orders, local)
+    # --------------------------------------------------------------------------------------
 
     logging.info(f'*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-')
     print(f'*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-')
+
+    # --------------------------------------------------------------------------------------
     # Rango de busqueda de ordenes del día. Busca desde las 00:00 hrs a las 23:59 hrs del dia actual
     start_date, end_date = get_local_utc_range()
 
@@ -311,6 +316,7 @@ def process_orders(local=True):
     # Procesamos esas ordenes. La info viene de Odoo pero solo son las que si deben procesarse ne el dia actual
     procces_new_orders(orders_to_process, local)
 
+    # --------------------------------------------------------------------------------------
 
 
 #/////////////////////////////////////////////////////////////////////////////////
@@ -333,6 +339,9 @@ def procces_db_orders(orders, local):
         pick_id = int(order['pick_id'])
         # print(so_name, pick_id, type(pick_id))
 
+        # --------------------------------------
+        ml_crawl_status = order["ml_status"]
+        # --------------------------------------
 
         user_id_ = get_seller_user_id(seller_marketplace)
         if not user_id_:
@@ -354,50 +363,64 @@ def procces_db_orders(orders, local):
             continue
 
         #pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
+        if ml_crawl_status == 'Envíos de hoy':
+            zpl_meli_response = get_zpl_meli(shipment_ids, so_name, access_token)
+            message_response = zpl_meli_response['ml_api_message']
+            zpl_data = zpl_meli_response['zpl_response']
 
-        zpl_meli_response = get_zpl_meli(shipment_ids, so_name, access_token)
-        message_response = zpl_meli_response['ml_api_message']
-        zpl_data = zpl_meli_response['zpl_response']
+            status_map = {
+                "status is picked_up": "picked_up",
+                "status is shipped": "shipped",
+                "status is delivered": "delivered",
+                "status is pending": "pending",
+                "éxito": "guide_obtained"
+            }
+            status = next((value for key, value in status_map.items() if key in message_response), None)
 
-        status_map = {
-            "status is picked_up": "picked_up",
-            "status is shipped": "shipped",
-            "status is delivered": "delivered",
-            "status is pending": "pending",
-            "éxito": "guide_obtained"
-        }
-        status = next((value for key, value in status_map.items() if key in message_response), None)
-
-        if ('Error' not in message_response) and ('Advertencia' not in message_response):
-            upload_attachment(so_name, pick_id)
-            carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
-            insert_log_message_pick(pick_id, so_name)
-            update_log_db(record_id,
-                          processed_successfully=1,
-                          status=status,
-                          zpl=zpl_data,
-                          already_printed=0)
-            if "Flex" in carrier_tracking_ref:
-                carrier_option_response = insert_LOIN_carrier_odoo(order_id, so_name)
-                logging.info(
-                    f'DB: Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
+            if ('Error' not in message_response) and ('Advertencia' not in message_response):
+                upload_attachment(so_name, pick_id)
+                carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
+                insert_log_message_pick(pick_id, so_name)
+                update_log_db(record_id,
+                              processed_successfully=1,
+                              status=status,
+                              zpl=zpl_data,
+                              already_printed=0,
+                              ml_status=ml_crawl_status)
+                if "Flex" in carrier_tracking_ref:
+                    carrier_option_response = insert_LOIN_carrier_odoo(order_id, so_name)
+                    logging.info(
+                        f'DB: Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
+                else:
+                    logging.info(
+                        f'DB: Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
             else:
-                logging.info(
-                    f'DB: Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
+                logging.info(f'DB: No se pudo obtener ZPL / {message_response} para la orden {so_name}')
+                if status == 'picked_up' or status == 'shipped' or status == 'delivered':
+                    update_log_db(record_id,
+                                  processed_successfully=0,
+                                  status=status,
+                                  failure_reason=f"Failed to obtain ZPL: {message_response}",
+                                  already_printed=1,
+                                  ml_status=ml_crawl_status)
+                else:
+                    update_log_db(record_id,
+                                  processed_successfully=0,
+                                  status=status,
+                                  failure_reason=f"Failed to obtain ZPL: {message_response}",
+                                  already_printed=0,
+                                  ml_status=ml_crawl_status)
+
         else:
-            logging.info(f'DB: No se pudo obtener ZPL / {message_response} para la orden {so_name}')
-            if status == 'picked_up' or status == 'shipped' or status == 'delivered':
-                update_log_db(record_id,
-                              processed_successfully=0,
-                              status=status,
-                              failure_reason=f"Failed to obtain ZPL: {message_response}",
-                              already_printed=1)
-            else:
-                update_log_db(record_id,
-                              processed_successfully=0,
-                              status=status,
-                              failure_reason=f"Failed to obtain ZPL: {message_response}",
-                              already_printed=0)
+            # El status en ML dice que NO es para hoy:
+            status = 'not_for_today'
+            update_log_db(record_id,
+                          processed_successfully=0,
+                          status=status,
+                          failure_reason=f"Esta orden aun no es procesable para hoy [ACT]",
+                          already_printed=0,
+                          ml_status=ml_crawl_status)
+
 
 
 def procces_new_orders(orders, local):
@@ -420,6 +443,10 @@ def procces_new_orders(orders, local):
 
         last_update_odoo = order['write_date']
         date_order_odoo = order['date_order']
+
+        # --------------------------------------
+        ml_crawl_status = order["status_name"]
+        # --------------------------------------
 
         # Obtenemos la fecha de consulta mas reciente dentro de las ordenes procesadas en el for actual.
         lastest_date_value = update_latest_date_json(last_update_odoo)
@@ -445,81 +472,105 @@ def procces_new_orders(orders, local):
 
         pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
 
-        if are_there_attachments == 'NO ATTACHMENTS':
-            zpl_meli_response = get_zpl_meli(shipment_ids, so_name, access_token)
-            message_response = zpl_meli_response['ml_api_message']
-            zpl_data = zpl_meli_response['zpl_response']
+        if ml_crawl_status == 'Envíos de hoy':
+            if are_there_attachments == 'NO ATTACHMENTS':
+                zpl_meli_response = get_zpl_meli(shipment_ids, so_name, access_token)
+                message_response = zpl_meli_response['ml_api_message']
+                zpl_data = zpl_meli_response['zpl_response']
 
-            status_map = {
-                "status is picked_up": "picked_up",
-                "status is shipped": "shipped",
-                "status is delivered": "delivered",
-                "status is pending": "pending",
-                "éxito": "guide_obtained"
-            }
-            status = next((value for key, value in status_map.items() if key in message_response), None)
+                status_map = {
+                    "status is picked_up": "picked_up",
+                    "status is shipped": "shipped",
+                    "status is delivered": "delivered",
+                    "status is pending": "pending",
+                    "éxito": "guide_obtained"
+                }
+                status = next((value for key, value in status_map.items() if key in message_response), None)
 
-            if ('Error' not in message_response) and ('Advertencia' not in message_response):
-                upload_attachment(so_name, pick_id)
-                carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
-                insert_log_message_pick(pick_id, so_name)
-                save_log_db(
-                    order_id=order_id,
-                    so_name=so_name,
-                    marketplace_reference=marketplace_reference,
-                    seller_marketplace=seller_marketplace,
-                    carrier_tracking_ref=carrier_tracking_ref,
-                    date_order_odoo=date_order_odoo,
-                    last_update_odoo=last_update_odoo,
-                    processed_successfully=1,
-                    pick_id=pick_id,
-                    zpl=zpl_data,
-                    status=status,
-                    already_printed=0
-                )
-                if "Flex" in carrier_tracking_ref:
-                    carrier_option_response = insert_LOIN_carrier_odoo(order_id, so_name)
-                    logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
-                else:
-                    logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
-            else:
-                logging.info(f'No se pudo obtener ZPL / {message_response} para la orden {so_name}')
-                if status == 'picked_up' or status == 'shipped' or status == 'delivered':
+                if ('Error' not in message_response) and ('Advertencia' not in message_response):
+                    upload_attachment(so_name, pick_id)
+                    carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
+                    insert_log_message_pick(pick_id, so_name)
                     save_log_db(
                         order_id=order_id,
                         so_name=so_name,
                         marketplace_reference=marketplace_reference,
                         seller_marketplace=seller_marketplace,
+                        ml_status=ml_crawl_status,
                         carrier_tracking_ref=carrier_tracking_ref,
                         date_order_odoo=date_order_odoo,
                         last_update_odoo=last_update_odoo,
-                        processed_successfully=0,
+                        processed_successfully=1,
                         pick_id=pick_id,
-                        failure_reason=f"Failed to obtain ZPL: {message_response}",
-                        status=status,
-                        already_printed=1
-                    )
-                else:
-                    save_log_db(
-                        order_id=order_id,
-                        so_name=so_name,
-                        marketplace_reference=marketplace_reference,
-                        seller_marketplace=seller_marketplace,
-                        carrier_tracking_ref=carrier_tracking_ref,
-                        date_order_odoo=date_order_odoo,
-                        last_update_odoo=last_update_odoo,
-                        processed_successfully=0,
-                        pick_id=pick_id,
-                        failure_reason=f"Failed to obtain ZPL: {message_response}",
+                        zpl=zpl_data,
                         status=status,
                         already_printed=0
                     )
-        elif are_there_attachments == 'THERE ARE ATTACHMENTS':
-            insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
-            logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se consulta ML ni se agrega guia.')
+                    if "Flex" in carrier_tracking_ref:
+                        carrier_option_response = insert_LOIN_carrier_odoo(order_id, so_name)
+                        logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
+                    else:
+                        logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
+                else:
+                    logging.info(f'No se pudo obtener ZPL / {message_response} para la orden {so_name}')
+                    if status == 'picked_up' or status == 'shipped' or status == 'delivered':
+                        save_log_db(
+                            order_id=order_id,
+                            so_name=so_name,
+                            marketplace_reference=marketplace_reference,
+                            seller_marketplace=seller_marketplace,
+                            ml_status=ml_crawl_status,
+                            carrier_tracking_ref=carrier_tracking_ref,
+                            date_order_odoo=date_order_odoo,
+                            last_update_odoo=last_update_odoo,
+                            processed_successfully=0,
+                            pick_id=pick_id,
+                            failure_reason=f"Failed to obtain ZPL: {message_response}",
+                            status=status,
+                            already_printed=1
+                        )
+                    else:
+                        save_log_db(
+                            order_id=order_id,
+                            so_name=so_name,
+                            marketplace_reference=marketplace_reference,
+                            seller_marketplace=seller_marketplace,
+                            ml_status=ml_crawl_status,
+                            carrier_tracking_ref=carrier_tracking_ref,
+                            date_order_odoo=date_order_odoo,
+                            last_update_odoo=last_update_odoo,
+                            processed_successfully=0,
+                            pick_id=pick_id,
+                            failure_reason=f"Failed to obtain ZPL: {message_response}",
+                            status=status,
+                            already_printed=0
+                        )
+            elif are_there_attachments == 'THERE ARE ATTACHMENTS':
+                insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
+                logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se consulta ML ni se agrega guia.')
+            else:
+                #Los logs del resto de casos están en la funcion search_pick_id
+                pass
+
         else:
-            #Los logs del resto de casos están en la funcion search_pick_id
-            pass
+            # El status en ML dice que NO es para hoy:
+            status = 'not_for_today'
+            save_log_db(
+                order_id=order_id,
+                so_name=so_name,
+                marketplace_reference=marketplace_reference,
+                seller_marketplace=seller_marketplace,
+                ml_status=ml_crawl_status,
+                carrier_tracking_ref=carrier_tracking_ref,
+                date_order_odoo=date_order_odoo,
+                last_update_odoo=last_update_odoo,
+                processed_successfully=0,
+                pick_id=pick_id,
+                failure_reason=f"Esta orden aun no es procesable para hoy",
+                status=status,
+                already_printed=0
+            )
+
 
     if lastest_date_value:
         update_latest_date_in_db(lastest_date_value)
@@ -657,31 +708,31 @@ def get_db_connection():
         database=os.getenv("DB_NAME")
     )
 
-def save_log_db(order_id, so_name, marketplace_reference,seller_marketplace, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, failure_reason=None, status=None, already_printed=None):
+def save_log_db(order_id, so_name, marketplace_reference,seller_marketplace, ml_status, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, failure_reason=None, status=None, already_printed=None):
     """Guarda la información de una orden procesada o no procesada en ml_guide_insertion."""
     connection = get_db_connection()
     cursor = connection.cursor()
 
     cursor.execute('''
         INSERT INTO ml_guide_insertion (
-            order_id, so_name, marketplace_reference, seller_marketplace, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    ''', (order_id, so_name, marketplace_reference,seller_marketplace, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed))
+            order_id, so_name, marketplace_reference, seller_marketplace, ml_status, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    ''', (order_id, so_name, marketplace_reference, seller_marketplace, ml_status, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed))
 
     connection.commit()
     cursor.close()
     connection.close()
 
-def update_log_db(record_id, processed_successfully, status=None, failure_reason=None, zpl=None, already_printed=None):
+def update_log_db(record_id, processed_successfully, status=None, failure_reason=None, zpl=None, already_printed=None, ml_status=None):
     connection = get_db_connection()
     cursor = connection.cursor()
 
     query = """
         UPDATE ml_guide_insertion
-        SET processed_successfully = %s, status = %s, failure_reason = %s, zpl = %s, already_printed = %s, last_update_DB = NOW()
+        SET processed_successfully = %s, ml_status = %s, status = %s, failure_reason = %s, zpl = %s, already_printed = %s, last_update_DB = NOW()
         WHERE id = %s;
         """
-    values = (processed_successfully, status, failure_reason, zpl, already_printed, record_id)
+    values = (processed_successfully, ml_status, status, failure_reason, zpl, already_printed, record_id)
 
     cursor.execute(query, values)
     connection.commit()
@@ -729,9 +780,9 @@ def get_orders_info_DB():
             SELECT order_id, so_name
             FROM ml_guide_insertion
             GROUP BY order_id, so_name
-            HAVING SUM(CASE WHEN status IN ('picked_up', 'shipped', 'delivered', 'guide_obtained') THEN 1 ELSE 0 END) = 0
+            HAVING SUM(CASE WHEN status IN ('picked_up', 'shipped', 'delivered', 'guide_obtained', 'not_for_today') THEN 1 ELSE 0 END) = 0
         )
-        SELECT id, order_id, so_name, marketplace_reference, seller_marketplace, carrier_tracking_ref, pick_id
+        SELECT id, order_id, so_name, marketplace_reference, seller_marketplace, ml_status, carrier_tracking_ref, pick_id, status
         FROM ml_guide_insertion mgi
         WHERE status = 'pending' 
             AND processed_successfully = 0
@@ -752,8 +803,10 @@ def get_orders_info_DB():
             "so_name": row[2],
             "marketplace_reference": row[3],
             "seller_marketplace": row[4],
-            "carrier_tracking_ref": row[5],
-            "pick_id": row[6],
+            "ml_status": row[5],
+            "carrier_tracking_ref": row[6],
+            "pick_id": row[7],
+            "status": row[8]
         }
         for row in results
     ]
@@ -781,6 +834,7 @@ def get_orders_day_info_crawl(start_date, end_date):
     connection = get_db_connection_server0()
     cursor = connection.cursor()
 
+    # V1
     query = f"""
             SELECT DISTINCT status_name, sub_status_name, txn_id_mp, inserted_at
             FROM ml_sr_orders_h
@@ -789,6 +843,7 @@ def get_orders_day_info_crawl(start_date, end_date):
             AND status_name = 'Envíos de hoy';
             """
 
+    # V2
     query = f"""
             SELECT status_name, sub_status_name, txn_id_mp, inserted_at
             FROM (
@@ -800,6 +855,18 @@ def get_orders_day_info_crawl(start_date, end_date):
             ) t
             WHERE rn = 1;
             """
+
+    # V3
+    query = f"""
+                SELECT status_name, sub_status_name, txn_id_mp, inserted_at
+                FROM (
+                    SELECT *, ROW_NUMBER() OVER (PARTITION BY txn_id_mp ORDER BY inserted_at DESC) AS rn
+                    FROM ml_sr_orders_h
+                    WHERE inserted_at >= '{start_date}'
+                    AND inserted_at < '{end_date}' 
+                ) t
+                WHERE rn = 1;
+                """
 
     cursor.execute(query)
     results = cursor.fetchall()
@@ -825,7 +892,7 @@ def get_orders_day_info_crawl(start_date, end_date):
 
 #//////////////////// Funcion para hacer el INNER JOIN /////////////////////////
 
-def filter_matching_orders(odoo_orders, db_orders):
+def filter_matching_orders_v0(odoo_orders, db_orders):
     """ Filtra las órdenes de Odoo que también existen en la base de datos crawl. """
 
 
@@ -843,6 +910,105 @@ def filter_matching_orders(odoo_orders, db_orders):
     print(f"Órdenes encontradas en Odoo y en ML (crawl DB): {len(matching_orders)}")
 
     return matching_orders
+
+
+def filter_matching_orders(odoo_orders, db_orders):
+    """ Filtra las órdenes de Odoo que también existen en la base de datos ML (crawl DB) y añade `status_name`. """
+
+    # Crear un diccionario {txn_id_mp: status_name} para búsqueda rápida
+    db_orders_dict = {order["txn_id_mp"]: order["status_name"] for order in db_orders}
+
+    # Lista de órdenes que tienen coincidencia con ML
+    matching_orders = []
+
+    for order in odoo_orders:
+        channel_ref = order.get("channel_order_reference")
+        yuju_pack_id = order.get("yuju_pack_id")
+
+        # Obtener el status_name si alguna de las claves está en db_orders_dict
+        status_name = db_orders_dict.get(channel_ref) or db_orders_dict.get(yuju_pack_id)
+
+        # Agregamos la orden a la lista con la info de Odoo + el status_name de ML si hubo coincidencia
+        if status_name:
+            order["status_name"] = status_name
+            matching_orders.append(order)
+
+    match_count = len(matching_orders)
+    logging.info(f"Órdenes encontradas en Odoo y en ML (crawl DB): {match_count}")
+    print(f"Órdenes encontradas en Odoo y en ML (crawl DB): {match_count}")
+
+    return matching_orders
+
+
+# //////// Funcion para actualizar el estado de ML para ordenes pendientes en la base de datos /////////
+
+def update_orders_from_crawl():
+    """
+    Actualiza el `status` y `ml_status` de las órdenes en `tools.ml_guide_insertion`
+    con la información más reciente de `crawl.ml_sr_orders_h`.
+    """
+
+    # Conectar a la base de datos de inserción de guías (tools)
+    connection_tools = get_db_connection()
+    cursor_tools = connection_tools.cursor()
+
+    # Obtener órdenes con `status = 'not_for_today'`
+    cursor_tools.execute("""
+        SELECT id, marketpalce_reference
+        FROM ml_guide_insertion
+        WHERE status = 'not_for_today';
+    """)
+    orders = cursor_tools.fetchall()  # Lista de (id, txn_id_mp)
+
+    if not orders:
+        logging.info("------------------------------- No hay órdenes con status 'not_for_today' -------------------------------")
+        cursor_tools.close()
+        connection_tools.close()
+        return
+
+    # Conectar a la base de datos de Mercado Libre (crawl)
+    connection_crawl = get_db_connection_server0()
+    cursor_crawl = connection_crawl.cursor()
+
+    # Diccionario para mapear txn_id_mp -> status_name más reciente
+    status_map = {}
+
+    # Extraer `status_name` más reciente para cada txn_id_mp
+    mkp_ids = tuple(order[1] for order in orders)  # Extraer solo txn_id_mp
+
+    query = f"""
+        SELECT txn_id_mp, status_name
+        FROM (
+            SELECT txn_id_mp, status_name, ROW_NUMBER() OVER (PARTITION BY txn_id_mp ORDER BY inserted_at DESC) AS rn
+            FROM ml_sr_orders_h
+            WHERE txn_id_mp IN {mkp_ids}
+        ) t
+        WHERE rn = 1;
+    """
+
+    cursor_crawl.execute(query)
+    results = cursor_crawl.fetchall()  # Lista de (txn_id_mp, status_name)
+
+    # Construir diccionario {txn_id_mp: status_name}
+    status_map = {row[0]: row[1] for row in results}
+
+    # Cerrar conexión con `crawl`
+    cursor_crawl.close()
+    connection_crawl.close()
+
+    # Actualizar `ml_status` y `status` en `tools.ml_guide_insertion`
+    for record_id, mkp_id in orders:
+        new_status_name = status_map.get(mkp_id, "unknown")  # Default a "unknown" si no se encuentra
+        if new_status_name == 'Envíos de hoy':
+            update_log_db(record_id, processed_successfully=0, status="pending", failure_reason=None, zpl=None, already_printed=None, ml_status=new_status_name)
+        else:
+            update_log_db(record_id, processed_successfully=0, status="not_for_today", failure_reason=None, zpl=None, already_printed=None, ml_status=new_status_name)
+
+    # Cerrar conexión con `tools`
+    cursor_tools.close()
+    connection_tools.close()
+
+    logging.info(f"----------- Órdenes actualizadas con status 'pending' y ml_status actualizado: {len(orders)} -----------")
 
 
 if __name__ == "__main__":
