@@ -288,7 +288,6 @@ def process_orders(local=True):
     # El filtro ahora es con la fecha de la ultima orden desde la DB
     # filter_date = lastest_date_path_json(lastest_date_path)   # Con en json
     filter_date = get_latest_date_from_db().strftime('%Y-%m-%d %H:%M:%S')
-    filter_date = '2025-03-08 06:22:20'
 
 
     # Primero procesamos las ordenes pendientes de obtener su guia en ML
