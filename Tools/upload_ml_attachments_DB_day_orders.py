@@ -954,7 +954,7 @@ def update_orders_from_crawl():
 
     # Obtener órdenes con `status = 'not_for_today'`
     cursor_tools.execute("""
-        SELECT id, marketpalce_reference
+        SELECT id, marketplace_reference
         FROM ml_guide_insertion
         WHERE status = 'not_for_today';
     """)
