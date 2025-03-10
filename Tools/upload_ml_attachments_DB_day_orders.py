@@ -1008,7 +1008,8 @@ def update_orders_from_crawl():
     cursor_tools.close()
     connection_tools.close()
 
-    logging.info(f"----------- Órdenes actualizadas con status 'pending' y ml_status actualizado: {len(orders)} -----------")
+    logging.info(f"----------- Órdenes de tools con ml_status actualizado: {len(orders)} -----------")
+    print(f"----------- Órdenes de tools con ml_status actualizado: {len(orders)} -----------")
 
 
 if __name__ == "__main__":
