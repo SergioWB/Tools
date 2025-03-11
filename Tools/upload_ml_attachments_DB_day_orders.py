@@ -89,7 +89,7 @@ def get_odoo_model(environment='test'):
 def get_orders_from_odoo(filter_date, today_date):
     """ Obtiene las órdenes de Odoo en las últimas 'hours' horas. """
 
-    print(f'Filter date (DB):    {filter_date} \nNow:               {today_date}')
+    print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                {today_date}')
 
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
@@ -297,8 +297,7 @@ def process_orders(local=True):
     procces_db_orders(db_orders, local)
     # --------------------------------------------------------------------------------------
 
-    logging.info(f'*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-')
-    print(f'*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-')
+    logging.info(f'------------------------------------------------------------------------------------------------------------------------------')
 
     # --------------------------------------------------------------------------------------
     # Rango de busqueda de ordenes del día. Busca desde las 00:00 hrs a las 23:59 hrs del dia actual
@@ -894,8 +893,8 @@ def get_orders_day_info_crawl(start_date, end_date):
     cursor.close()
     connection.close()
 
-    logging.info(f"{len(orders)} Órdenes en la DB ML")
-    print(f"{len(orders)} Órdenes en la DB ML")
+    logging.info(f"{len(orders)} registros en la DB ML")
+    print(f"{len(orders)} registros en la DB ML")
 
     return orders
 
@@ -916,8 +915,8 @@ def filter_matching_orders_v0(odoo_orders, db_orders):
     ]
 
     logging.info("-------------------------------------------------------------------------------")
-    logging.info(f"Órdenes encontradas en Odoo y en ML (crawl DB): {len(matching_orders)}")
-    print(f"Órdenes encontradas en Odoo y en ML (crawl DB): {len(matching_orders)}")
+    logging.info(f"Órdenes encontradas en Odoo y en ML (órdenes nuevas): {len(matching_orders)}")
+    print(f"Órdenes encontradas en Odoo y en ML (órdenes nuevas): {len(matching_orders)}")
 
     return matching_orders
 
@@ -973,8 +972,8 @@ def filter_matching_orders(odoo_orders, db_ML_orders):
             matching_orders.append(order)
 
     match_count = len(matching_orders)
-    logging.info(f"Órdenes encontradas en Odoo y en ML (crawl DB): {match_count}")
-    print(f"Órdenes encontradas en Odoo y en ML (crawl DB): {match_count}")
+    logging.info(f"Órdenes encontradas en Odoo y en ML (órdenes nuevas): {match_count}")
+    print(f"Órdenes encontradas en Odoo y en ML (órdenes nuevas): {match_count}")
 
     return matching_orders
 
