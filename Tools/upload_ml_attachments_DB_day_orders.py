@@ -330,12 +330,12 @@ def procces_db_orders(orders, local):
 
         record_id = order["id"] # Registro de la DB
 
-        order_id = order['order_id']
+        order_id = order['order_id'] # Ya viene como int
         so_name = order['so_name']
         marketplace_reference = order['marketplace_reference']
         seller_marketplace = order['seller_marketplace']
         carrier_tracking_ref = order['carrier_tracking_ref']  # Colecta
-        pick_id = int(order['pick_id'])
+        pick_id = order['pick_id'] # Ya viene como int
         # print(so_name, pick_id, type(pick_id))
 
         # --------------------------------------
@@ -424,7 +424,6 @@ def procces_db_orders(orders, local):
                           failure_reason=f"Esta orden aun no es procesable para hoy [ACT]",
                           already_printed=0,
                           ml_status=ml_crawl_status)
-
 
 
 def procces_new_orders(orders, local):
@@ -639,10 +638,10 @@ def insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref):
                           'sale.order', 'write',
                           [[order_id], {'yuju_carrier_tracking_ref': new_carrier_tracking_ref}])
 
-        return 'Número de guia actualizado'
+        return 'Número de guia actualizado '
 
     except Exception as e:
-        return 'No se ha podido actualizar el número de guía'
+        return f'No se ha podido actualizar el número de guía / {e} '
 
 def insert_LOIN_carrier_odoo(order_id, so_name):
     try:
@@ -657,12 +656,12 @@ def insert_LOIN_carrier_odoo(order_id, so_name):
                               'sale.order', 'write',
                               [[order_id], {'carrier_selection_relational': carrier_id}])
 
-            return f"Carrier asignado correctamente a la orden {so_name}"
+            return f"Carrier asignado correctamente a la orden {so_name} "
         else:
-            return f"No se ecncontró el carrier"
+            return f"No se ecncontró el carrier "
 
     except Exception as e:
-        return f"No se pudo modificar el carrier para la orden {so_name}"
+        return f"No se pudo modificar el carrier para la orden {so_name} / {e} "
 
 def insert_log_message_pick(pick_id, so_name):
     current_utc_time = datetime.now()
@@ -808,13 +807,13 @@ def get_orders_info_DB():
     orders = [
         {
             "id": row[0],
-            "order_id": row[1],
+            "order_id": int(row[1]),
             "so_name": row[2],
             "marketplace_reference": row[3],
             "seller_marketplace": row[4],
             "ml_status": row[5],
             "carrier_tracking_ref": row[6],
-            "pick_id": row[7],
+            "pick_id": int(row[7]),
             "status": row[8]
         }
         for row in results
@@ -1059,10 +1058,10 @@ def update_orders_from_crawl():
     cursor_tools.close()
     connection_tools.close()
 
-    logging.info(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Envíos para hoy: {for_today_count}")
+    logging.info(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count}")
     logging.info('----------------------------------------------------------')
 
-    print(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Envíos para hoy: {for_today_count}")
+    print(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count}")
 
 
 if __name__ == "__main__":
