@@ -89,7 +89,7 @@ def get_odoo_model(environment='test'):
 def get_orders_from_odoo(filter_date, today_date):
     """ Obtiene las órdenes de Odoo en las últimas 'hours' horas. """
 
-    print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                {today_date}')
+    print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
 
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
