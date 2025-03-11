@@ -938,12 +938,12 @@ def filter_matching_orders(odoo_orders, db_ML_orders):
 
     # Obtener SOLO los txn_id_mp que coincidan con los posibles valores en candidate_ids
     cursor.execute(f"""
-                            SELECT txn_id_mp 
+                            SELECT marketplace_reference 
                             FROM ml_guide_insertion
-                            WHERE txn_id_mp IN ({placeholders});
+                            WHERE marketplace_reference IN ({placeholders});
                         """, tuple(candidate_ids_list))
 
-    existing_txn_ids = {row[0] for row in cursor.fetchall()}  # Convertir a conjunto para búsqueda rápida
+    existing_mkp_ids = {row[0] for row in cursor.fetchall()}  # Convertir a conjunto para búsqueda rápida
 
     # Cerrar conexión a la base de datos
     cursor.close()
@@ -963,7 +963,7 @@ def filter_matching_orders(odoo_orders, db_ML_orders):
         status_name = db_orders_dict.get(channel_ref) or db_orders_dict.get(yuju_pack_id)
 
         # Verificar si la orden ya existe en la base de datos
-        if status_name and (channel_ref not in existing_txn_ids and yuju_pack_id not in existing_txn_ids):
+        if status_name and (channel_ref not in existing_mkp_ids and yuju_pack_id not in existing_mkp_ids):
             order["status_name"] = status_name
             matching_orders.append(order)
 
