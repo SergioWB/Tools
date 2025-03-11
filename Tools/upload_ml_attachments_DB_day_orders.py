@@ -360,6 +360,11 @@ def procces_db_orders(orders, local):
         ml_order_status = order_meli['status']
         if ml_order_status in ['cancelled', 'delivered']:
             logging.info(f'DB: La orden {so_name} esta en estado {ml_order_status}, no se procesa')
+            update_log_db(record_id,
+                          processed_successfully=0,
+                          status=ml_order_status,
+                          already_printed=0,
+                          ml_status=ml_crawl_status)
             continue
 
         #pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
@@ -785,7 +790,7 @@ def get_orders_info_DB():
             SELECT order_id, so_name
             FROM ml_guide_insertion
             GROUP BY order_id, so_name
-            HAVING SUM(CASE WHEN status IN ('picked_up', 'shipped', 'delivered', 'guide_obtained', 'not_for_today') THEN 1 ELSE 0 END) = 0
+            HAVING SUM(CASE WHEN status IN ('picked_up', 'shipped', 'delivered', 'guide_obtained', 'not_for_today', 'cancelled', 'delivered') THEN 1 ELSE 0 END) = 0
         )
         SELECT id, order_id, so_name, marketplace_reference, seller_marketplace, ml_status, carrier_tracking_ref, pick_id, status
         FROM ml_guide_insertion mgi
