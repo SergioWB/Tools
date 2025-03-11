@@ -311,7 +311,7 @@ def process_orders(local=True):
     orders_day_DB_crawl = get_orders_day_info_crawl(start_date, end_date)
 
     # Hacer un INNER JOIN (trabajamos con conjuuntos) para matchear las ordenes
-    orders_to_process = filter_matching_orders(odoo_orders=new_orders_odoo, db_orders=orders_day_DB_crawl)
+    orders_to_process = filter_matching_orders(odoo_orders=new_orders_odoo, db_ML_orders=orders_day_DB_crawl)
 
     # Procesamos esas ordenes. La info viene de Odoo pero solo son las que si deben procesarse ne el dia actual
     procces_new_orders(orders_to_process, local)
