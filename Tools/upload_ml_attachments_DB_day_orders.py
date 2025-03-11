@@ -290,7 +290,7 @@ def process_orders(local=True):
     filter_date = get_latest_date_from_db().strftime('%Y-%m-%d %H:%M:%S')
 
 
-    # ---------- Actualizamos el stado de las ordenes de la DB ------------------------------
+    # ---------- Actualizamos el estado de las ordenes de la DB ------------------------------
     update_orders_from_crawl()
     # ---------- Procesamos las ordenes pendientes de obtener su guia en ML------------------
     db_orders = get_orders_info_DB()
@@ -435,6 +435,7 @@ def procces_new_orders(orders, local):
         count += 1
         print(f'Orden desde Odoo {count} de {total_}')
         marketplace_reference = order['channel_order_reference']
+        pack_id = order['yuju_pack_id']
         seller_marketplace = order['yuju_seller_id']
         so_name = order['name']
 
@@ -496,6 +497,7 @@ def procces_new_orders(orders, local):
                         so_name=so_name,
                         marketplace_reference=marketplace_reference,
                         seller_marketplace=seller_marketplace,
+                        pack_id=pack_id,
                         ml_status=ml_crawl_status,
                         carrier_tracking_ref=carrier_tracking_ref,
                         date_order_odoo=date_order_odoo,
@@ -518,6 +520,7 @@ def procces_new_orders(orders, local):
                             order_id=order_id,
                             so_name=so_name,
                             marketplace_reference=marketplace_reference,
+                            pack_id=pack_id,
                             seller_marketplace=seller_marketplace,
                             ml_status=ml_crawl_status,
                             carrier_tracking_ref=carrier_tracking_ref,
@@ -534,6 +537,7 @@ def procces_new_orders(orders, local):
                             order_id=order_id,
                             so_name=so_name,
                             marketplace_reference=marketplace_reference,
+                            pack_id=pack_id,
                             seller_marketplace=seller_marketplace,
                             ml_status=ml_crawl_status,
                             carrier_tracking_ref=carrier_tracking_ref,
@@ -559,6 +563,7 @@ def procces_new_orders(orders, local):
                 order_id=order_id,
                 so_name=so_name,
                 marketplace_reference=marketplace_reference,
+                pack_id=pack_id,
                 seller_marketplace=seller_marketplace,
                 ml_status=ml_crawl_status,
                 carrier_tracking_ref=carrier_tracking_ref,
@@ -708,16 +713,16 @@ def get_db_connection():
         database=os.getenv("DB_NAME")
     )
 
-def save_log_db(order_id, so_name, marketplace_reference,seller_marketplace, ml_status, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, failure_reason=None, status=None, already_printed=None):
+def save_log_db(order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, failure_reason=None, status=None, already_printed=None):
     """Guarda la información de una orden procesada o no procesada en ml_guide_insertion."""
     connection = get_db_connection()
     cursor = connection.cursor()
 
     cursor.execute('''
         INSERT INTO ml_guide_insertion (
-            order_id, so_name, marketplace_reference, seller_marketplace, ml_status, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    ''', (order_id, so_name, marketplace_reference, seller_marketplace, ml_status, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed))
+            order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    ''', (order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed))
 
     connection.commit()
     cursor.close()
@@ -912,11 +917,35 @@ def filter_matching_orders_v0(odoo_orders, db_orders):
     return matching_orders
 
 
-def filter_matching_orders(odoo_orders, db_orders):
-    """ Filtra las órdenes de Odoo que también existen en la base de datos ML (crawl DB) y añade `status_name`. """
+def filter_matching_orders(odoo_orders, db_ML_orders):
+    """
+    Filtra las órdenes de Odoo que también existen en la base de datos ML (crawl DB),
+    añade `status_name`, pero no los agrega si ya estan en la tabla `ml_guide_insertion`.
+    """
+
+    # Extraer los posibles valores que pueden coincidir en la BD
+    candidate_ids = {order["channel_order_reference"] for order in odoo_orders} | \
+                    {order["yuju_pack_id"] for order in odoo_orders if order.get("yuju_pack_id")}
+
+    # Conectar a la base de datos para verificar duplicados
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    # Obtener SOLO los txn_id_mp que coincidan con los posibles valores en candidate_ids
+    cursor.execute("""
+                    SELECT txn_id_mp 
+                    FROM ml_guide_insertion
+                    AND txn_id_mp = ANY(%s);
+                    """, (list(candidate_ids),))
+
+    existing_txn_ids = {row[0] for row in cursor.fetchall()}  # Convertir a conjunto para búsqueda rápida
+
+    # Cerrar conexión a la base de datos
+    cursor.close()
+    connection.close()
 
     # Crear un diccionario {txn_id_mp: status_name} para búsqueda rápida
-    db_orders_dict = {order["txn_id_mp"]: order["status_name"] for order in db_orders}
+    db_orders_dict = {order["txn_id_mp"]: order["status_name"] for order in db_ML_orders}
 
     # Lista de órdenes que tienen coincidencia con ML
     matching_orders = []
@@ -928,8 +957,8 @@ def filter_matching_orders(odoo_orders, db_orders):
         # Obtener el status_name si alguna de las claves está en db_orders_dict
         status_name = db_orders_dict.get(channel_ref) or db_orders_dict.get(yuju_pack_id)
 
-        # Agregamos la orden a la lista con la info de Odoo + el status_name de ML si hubo coincidencia
-        if status_name:
+        # Verificar si la orden ya existe en la base de datos
+        if status_name and (channel_ref not in existing_txn_ids and yuju_pack_id not in existing_txn_ids):
             order["status_name"] = status_name
             matching_orders.append(order)
 
@@ -954,7 +983,7 @@ def update_orders_from_crawl():
 
     # Obtener órdenes con `status = 'not_for_today'`
     cursor_tools.execute("""
-        SELECT id, marketplace_reference
+        SELECT id, marketplace_reference, pack_id
         FROM ml_guide_insertion
         WHERE status = 'not_for_today';
     """)
@@ -962,6 +991,7 @@ def update_orders_from_crawl():
 
     if not orders:
         logging.info("------------------------------- No hay órdenes con status 'not_for_today' -------------------------------")
+        print("------------------------------- No hay órdenes con status 'not_for_today' -------------------------------")
         cursor_tools.close()
         connection_tools.close()
         return
@@ -973,20 +1003,26 @@ def update_orders_from_crawl():
     # Diccionario para mapear txn_id_mp -> status_name más reciente
     status_map = {}
 
-    # Extraer `status_name` más reciente para cada txn_id_mp
-    mkp_ids = tuple(order[1] for order in orders)  # Extraer solo txn_id_mp
+    # Extraer los valores de marketplace_reference y pack_id, excluyendo los `None`
+    mkp_ids = tuple(order[1] for order in orders if order[1] is not None)
+    pack_ids = tuple(order[2] for order in orders if order[2] is not None)
+
+    # Placeholders
+    placeholders_mkp = ','.join(['%s'] * len(mkp_ids)) if mkp_ids else "NULL"
+    placeholders_pack = ','.join(['%s'] * len(pack_ids)) if pack_ids else "NULL"
 
     query = f"""
-        SELECT txn_id_mp, status_name
-        FROM (
-            SELECT txn_id_mp, status_name, ROW_NUMBER() OVER (PARTITION BY txn_id_mp ORDER BY inserted_at DESC) AS rn
-            FROM ml_sr_orders_h
-            WHERE txn_id_mp IN {mkp_ids}
-        ) t
-        WHERE rn = 1;
-    """
+            SELECT txn_id_mp, status_name
+            FROM (
+                SELECT txn_id_mp, status_name, ROW_NUMBER() OVER (PARTITION BY txn_id_mp ORDER BY inserted_at DESC) AS rn
+                FROM ml_sr_orders_h
+                WHERE txn_id_mp IN ({placeholders_mkp}) OR txn_id_mp IN ({placeholders_pack})
+            ) t
+            WHERE rn = 1;
+        """
 
-    cursor_crawl.execute(query)
+    query_params = mkp_ids + pack_ids
+    cursor_crawl.execute(query, query_params)
     results = cursor_crawl.fetchall()  # Lista de (txn_id_mp, status_name)
 
     # Construir diccionario {txn_id_mp: status_name}
@@ -997,18 +1033,22 @@ def update_orders_from_crawl():
     connection_crawl.close()
 
     # Actualizar `ml_status` y `status` en `tools.ml_guide_insertion`
-    for record_id, mkp_id in orders:
-        new_status_name = status_map.get(mkp_id, "unknown")  # Default a "unknown" si no se encuentra
-        if new_status_name == 'Envíos de hoy':
-            update_log_db(record_id, processed_successfully=0, status="pending", failure_reason=None, zpl=None, already_printed=None, ml_status=new_status_name)
-        else:
-            update_log_db(record_id, processed_successfully=0, status="not_for_today", failure_reason=None, zpl=None, already_printed=None, ml_status=new_status_name)
+    for record_id, mkp_id, pack_id in orders:
+        new_status_name = status_map.get(mkp_id) or status_map.get(pack_id) or "unknown"  # Default a "unknown" si no se encuentra
+        new_status = "pending" if new_status_name == "Envíos de hoy" else "not_for_today"
+
+        update_log_db(
+            record_id, processed_successfully=0, status=new_status,
+            failure_reason=None, zpl=None, already_printed=None, ml_status=new_status_name
+        )
 
     # Cerrar conexión con `tools`
     cursor_tools.close()
     connection_tools.close()
 
-    logging.info(f"----------- Órdenes de tools con ml_status actualizado: {len(orders)} -----------")
+    logging.info(f"Órdenes de tools con ml_status actualizado: {len(orders)}")
+    logging.info('----------------------------------------------------------')
+
     print(f"----------- Órdenes de tools con ml_status actualizado: {len(orders)} -----------")
 
 
