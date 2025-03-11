@@ -927,16 +927,21 @@ def filter_matching_orders(odoo_orders, db_ML_orders):
     candidate_ids = {order["channel_order_reference"] for order in odoo_orders} | \
                     {order["yuju_pack_id"] for order in odoo_orders if order.get("yuju_pack_id")}
 
+    candidate_ids_list = list(candidate_ids)
+
     # Conectar a la base de datos para verificar duplicados
     connection = get_db_connection()
     cursor = connection.cursor()
 
+    # Crear la cadena de placeholders para IN
+    placeholders = ', '.join(['%s'] * len(candidate_ids_list))
+
     # Obtener SOLO los txn_id_mp que coincidan con los posibles valores en candidate_ids
-    cursor.execute("""
-                    SELECT txn_id_mp 
-                    FROM ml_guide_insertion
-                    AND txn_id_mp = ANY(%s);
-                    """, (list(candidate_ids),))
+    cursor.execute(f"""
+                            SELECT txn_id_mp 
+                            FROM ml_guide_insertion
+                            WHERE txn_id_mp IN ({placeholders});
+                        """, tuple(candidate_ids_list))
 
     existing_txn_ids = {row[0] for row in cursor.fetchall()}  # Convertir a conjunto para búsqueda rápida
 
