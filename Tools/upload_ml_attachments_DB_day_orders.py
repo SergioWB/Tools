@@ -1043,9 +1043,13 @@ def update_orders_from_crawl():
     connection_crawl.close()
 
     # Actualizar `ml_status` y `status` en `tools.ml_guide_insertion`
+    for_today_count = 0
     for record_id, mkp_id, pack_id in orders:
         new_status_name = status_map.get(mkp_id) or status_map.get(pack_id) or "unknown"  # Default a "unknown" si no se encuentra
         new_status = "pending" if new_status_name == "Envíos de hoy" else "not_for_today"
+
+        if new_status_name == "Envíos de hoy":
+            for_today_count += 1
 
         update_log_db(
             record_id, processed_successfully=0, status=new_status,
@@ -1056,10 +1060,10 @@ def update_orders_from_crawl():
     cursor_tools.close()
     connection_tools.close()
 
-    logging.info(f"Órdenes de tools con ml_status actualizado: {len(orders)}")
+    logging.info(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Envíos para hoy: {for_today_count}")
     logging.info('----------------------------------------------------------')
 
-    print(f"----------- Órdenes de tools con ml_status actualizado: {len(orders)} -----------")
+    print(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Envíos para hoy: {for_today_count}")
 
 
 if __name__ == "__main__":
