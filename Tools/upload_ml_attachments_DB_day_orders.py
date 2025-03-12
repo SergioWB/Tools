@@ -92,9 +92,9 @@ def get_orders_from_odoo(filter_date, today_date):
     print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
 
     # --------------------------------------------------------
-    #filter_date = '2025-03-08 18:38:34'
+    filter_date = '2025-03-08 18:38:34'
     # --------------------------------------------------------
-    
+
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
         ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop Off']),
