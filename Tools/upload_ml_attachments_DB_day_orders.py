@@ -92,7 +92,7 @@ def get_orders_from_odoo(filter_date, today_date):
     print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
 
     # --------------------------------------------------------
-    #filter_date = '2025-03-08 18:38:34'
+    filter_date = '2025-03-01 18:38:34'
     # --------------------------------------------------------
 
     search_domain = [
@@ -435,6 +435,8 @@ def procces_new_orders(orders, local):
     count = 0
     total_ = len(orders)
 
+    process_coun = 0
+
     # Inicializamos lastest_date_value = False en caso de que no haya habido ordenes a procesar
     lastest_date_value = False
 
@@ -518,8 +520,10 @@ def procces_new_orders(orders, local):
                     if "Flex" in carrier_tracking_ref:
                         carrier_option_response = insert_LOIN_carrier_odoo(order_id, so_name)
                         logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
+                        process_coun += 1
                     else:
                         logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
+                        process_coun += 1
                 else:
                     logging.info(f'No se pudo obtener ZPL / {message_response} para la orden {so_name}')
                     if status == 'picked_up' or status == 'shipped' or status == 'delivered':
@@ -583,6 +587,9 @@ def procces_new_orders(orders, local):
                 already_printed=0
             )
 
+    logging.info('-----------------------------------------------------------------------------------------------------------------------------------------')
+    logging.info(f'Se ha agregado guía a {process_coun} órdenes de {total_} posibles. / {total_ - process_coun} órdenes quedan pendientes y se agregan a la base de datos')
+    logging.info('-----------------------------------------------------------------------------------------------------------------------------------------')
 
     if lastest_date_value:
         update_latest_date_in_db(lastest_date_value)
