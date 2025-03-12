@@ -91,7 +91,10 @@ def get_orders_from_odoo(filter_date, today_date):
 
     print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
 
-    filter_date = '2025-03-08 18:38:34'
+    # --------------------------------------------------------
+    #filter_date = '2025-03-08 18:38:34'
+    # --------------------------------------------------------
+    
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
         ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop Off']),
@@ -213,7 +216,8 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
 
             if state == 'confirmed':
                 logging.info(f'El PICK {pick_id} de la orden {so_name} está en espera para procesarse.')
-                return pick_id, 'PICK en espera'
+                pass # Aunque el pick no esté "Listo", se procesará normal
+                #return pick_id, 'PICK en espera'
             elif state == 'done':
                 return pick_id, 'PICK ya hecho'
 
@@ -367,7 +371,6 @@ def procces_db_orders(orders, local):
                           ml_status=ml_crawl_status)
             continue
 
-        #pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
         if ml_crawl_status == 'Envíos de hoy':
             zpl_meli_response = get_zpl_meli(shipment_ids, so_name, access_token)
             message_response = zpl_meli_response['ml_api_message']
