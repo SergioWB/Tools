@@ -92,7 +92,7 @@ def get_orders_from_odoo(filter_date, today_date):
     print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
 
     # --------------------------------------------------------
-    #filter_date = '2025-03-01 18:38:34'
+    filter_date = '2025-03-01 18:38:34'
     # --------------------------------------------------------
 
     search_domain = [
@@ -885,6 +885,7 @@ def get_orders_day_info_crawl(start_date, end_date):
                 ) t
                 WHERE rn = 1;
                 """
+    print(query)
 
     cursor.execute(query)
     results = cursor.fetchall()
