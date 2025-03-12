@@ -833,8 +833,8 @@ def get_orders_info_DB():
     cursor.close()
     connection.close()
 
-    logging.info(f"{len(orders)} órdenes pendientes en DB")
-    print(f"{len(orders)} órdenes pendientes en DB")
+    logging.info(f" {len(orders)} órdenes pendientes en DB")
+    print(f" {len(orders)} órdenes pendientes en DB")
 
     return orders
 
