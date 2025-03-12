@@ -589,7 +589,6 @@ def procces_new_orders(orders, local):
 
     logging.info('-----------------------------------------------------------------------------------------------------------------------------------------')
     logging.info(f'Se ha agregado guía a {process_coun} órdenes de {total_} posibles. / {total_ - process_coun} órdenes quedan pendientes y se agregan a la base de datos')
-    logging.info('-----------------------------------------------------------------------------------------------------------------------------------------')
 
     if lastest_date_value:
         update_latest_date_in_db(lastest_date_value)
