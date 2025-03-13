@@ -936,49 +936,55 @@ def filter_matching_orders(odoo_orders, db_ML_orders):
     añade `status_name`, pero no los agrega si ya estan en la tabla `ml_guide_insertion`.
     """
 
-    # Extraer los posibles valores que pueden coincidir en la BD
-    candidate_ids = {order["channel_order_reference"] for order in odoo_orders} | \
-                    {order["yuju_pack_id"] for order in odoo_orders if order.get("yuju_pack_id")}
+    if odoo_orders and db_ML_orders: # Que no sean listas vacias
 
-    candidate_ids_list = list(candidate_ids)
+        # Extraer los posibles valores que pueden coincidir en la BD
+        candidate_ids = {order["channel_order_reference"] for order in odoo_orders} | \
+                        {order["yuju_pack_id"] for order in odoo_orders if order.get("yuju_pack_id")}
 
-    # Conectar a la base de datos para verificar duplicados
-    connection = get_db_connection()
-    cursor = connection.cursor()
+        candidate_ids_list = list(candidate_ids)
 
-    # Crear la cadena de placeholders para IN
-    placeholders = ', '.join(['%s'] * len(candidate_ids_list))
+        # Conectar a la base de datos para verificar duplicados
+        connection = get_db_connection()
+        cursor = connection.cursor()
 
-    # Obtener SOLO los txn_id_mp que coincidan con los posibles valores en candidate_ids
-    cursor.execute(f"""
-                            SELECT marketplace_reference 
-                            FROM ml_guide_insertion
-                            WHERE marketplace_reference IN ({placeholders});
-                        """, tuple(candidate_ids_list))
+        # Crear la cadena de placeholders para IN
+        placeholders = ', '.join(['%s'] * len(candidate_ids_list))
 
-    existing_mkp_ids = {row[0] for row in cursor.fetchall()}  # Convertir a conjunto para búsqueda rápida
+        # Obtener SOLO los txn_id_mp que coincidan con los posibles valores en candidate_ids
+        cursor.execute(f"""
+                                SELECT marketplace_reference 
+                                FROM ml_guide_insertion
+                                WHERE marketplace_reference IN ({placeholders});
+                            """, tuple(candidate_ids_list))
 
-    # Cerrar conexión a la base de datos
-    cursor.close()
-    connection.close()
+        existing_mkp_ids = {row[0] for row in cursor.fetchall()}  # Convertir a conjunto para búsqueda rápida
 
-    # Crear un diccionario {txn_id_mp: status_name} para búsqueda rápida
-    db_orders_dict = {order["txn_id_mp"]: order["status_name"] for order in db_ML_orders}
+        # Cerrar conexión a la base de datos
+        cursor.close()
+        connection.close()
 
-    # Lista de órdenes que tienen coincidencia con ML
-    matching_orders = []
+        # Crear un diccionario {txn_id_mp: status_name} para búsqueda rápida
+        db_orders_dict = {order["txn_id_mp"]: order["status_name"] for order in db_ML_orders}
 
-    for order in odoo_orders:
-        channel_ref = order.get("channel_order_reference")
-        yuju_pack_id = order.get("yuju_pack_id")
+        # Lista de órdenes que tienen coincidencia con ML
+        matching_orders = []
 
-        # Obtener el status_name si alguna de las claves está en db_orders_dict
-        status_name = db_orders_dict.get(channel_ref) or db_orders_dict.get(yuju_pack_id)
+        for order in odoo_orders:
+            channel_ref = order.get("channel_order_reference")
+            yuju_pack_id = order.get("yuju_pack_id")
 
-        # Verificar si la orden ya existe en la base de datos
-        if status_name and (channel_ref not in existing_mkp_ids and yuju_pack_id not in existing_mkp_ids):
-            order["status_name"] = status_name
-            matching_orders.append(order)
+            # Obtener el status_name si alguna de las claves está en db_orders_dict
+            status_name = db_orders_dict.get(channel_ref) or db_orders_dict.get(yuju_pack_id)
+
+            # Verificar si la orden ya existe en la base de datos
+            if status_name and (channel_ref not in existing_mkp_ids and yuju_pack_id not in existing_mkp_ids):
+                order["status_name"] = status_name
+                matching_orders.append(order)
+
+    else:
+        matching_orders = []
+
 
     match_count = len(matching_orders)
     logging.info(f"Órdenes encontradas en Odoo y en ML (órdenes nuevas): {match_count}")
