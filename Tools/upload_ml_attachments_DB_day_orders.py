@@ -90,7 +90,7 @@ def get_orders_from_odoo(filter_date, today_date):
     """ Obtiene las órdenes de Odoo en las últimas 'hours' horas. """
 
     # --------------------------------------------------------
-    filter_date = '2025-03-01 00:00:00'
+    # filter_date = '2025-03-21 00:00:00'
     # --------------------------------------------------------
 
     print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
@@ -309,7 +309,6 @@ def process_orders(local=True):
     # --------------------------------------------------------------------------------------
     # Rango de busqueda de ordenes del día. Busca desde las 00:00 hrs a las 23:59 hrs del dia actual
     start_date, end_date = get_local_utc_range()
-    print(start_date, end_date)
 
     # Obtenemos las nuevas ordenes de Odoo sin guia de ML
     new_orders_odoo = get_orders_from_odoo(filter_date,today_date)
