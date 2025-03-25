@@ -90,7 +90,7 @@ def get_orders_from_odoo(filter_date, today_date):
     """ Obtiene las órdenes de Odoo en las últimas 'hours' horas. """
 
     # --------------------------------------------------------
-    filter_date = '2025-03-21 00:00:00'
+    filter_date = '2025-03-01 00:00:00'
     # --------------------------------------------------------
 
     print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
