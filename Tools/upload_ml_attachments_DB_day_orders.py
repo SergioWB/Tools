@@ -309,6 +309,7 @@ def process_orders(local=True):
     # --------------------------------------------------------------------------------------
     # Rango de busqueda de ordenes del día. Busca desde las 00:00 hrs a las 23:59 hrs del dia actual
     start_date, end_date = get_local_utc_range()
+    print(start_date, end_date)
 
     # Obtenemos las nuevas ordenes de Odoo sin guia de ML
     new_orders_odoo = get_orders_from_odoo(filter_date,today_date)
