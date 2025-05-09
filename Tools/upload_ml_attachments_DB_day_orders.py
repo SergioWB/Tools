@@ -90,7 +90,7 @@ def get_orders_from_odoo(filter_date, today_date):
     """ Obtiene las órdenes de Odoo en las últimas 'hours' horas. """
 
     # --------------------------------------------------------
-    filter_date = '2025-03-21 00:00:00'
+    #filter_date = '2025-03-21 00:00:00'
     # --------------------------------------------------------
 
     print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
@@ -883,7 +883,8 @@ def get_orders_day_info_crawl(start_date, end_date):
                     SELECT *, ROW_NUMBER() OVER (PARTITION BY txn_id_mp ORDER BY inserted_at DESC) AS rn
                     FROM ml_sr_orders_h
                     WHERE inserted_at >= '{start_date}'
-                    AND inserted_at < '{end_date}' 
+                    AND inserted_at < '{end_date}'
+                    AND status_name IN ('Envíos de hoy', 'Próximos días')
                 ) t
                 WHERE rn = 1;
                 """
