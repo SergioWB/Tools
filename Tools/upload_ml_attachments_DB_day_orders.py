@@ -90,7 +90,7 @@ def get_orders_from_odoo(filter_date, today_date):
     """ Obtiene las órdenes de Odoo en las últimas 'hours' horas. """
 
     # --------------------------------------------------------
-    #filter_date = '2025-05-05 00:00:00'
+    filter_date = '2025-05-15 00:00:00'
     # --------------------------------------------------------
 
     print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
@@ -906,8 +906,8 @@ def get_orders_day_info_crawl(start_date, end_date):
     cursor.close()
     connection.close()
 
-    logging.info(f"{len(orders)} registros en la DB ML")
-    print(f"{len(orders)} registros en la DB ML")
+    logging.info(f"{len(orders)} registros en la DB ML (Tabla de crawlers)")
+    print(f"{len(orders)} registros en la DB ML (Tabla de crawlers)")
 
     return orders
 
