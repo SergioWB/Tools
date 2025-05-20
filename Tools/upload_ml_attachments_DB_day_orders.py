@@ -881,14 +881,14 @@ def get_orders_day_info_crawl(start_date, end_date):
                 SELECT status_name, sub_status_name, txn_id_mp, inserted_at
                 FROM (
                     SELECT *, ROW_NUMBER() OVER (PARTITION BY txn_id_mp ORDER BY inserted_at DESC) AS rn
-                    FROM ml_sr_orders_h
+                    FROM ml_sales_hist
                     WHERE inserted_at >= '{start_date}'
                     AND inserted_at < '{end_date}'
                     AND status_name IN ('Envíos de hoy', 'Próximos días')
                 ) t
                 WHERE rn = 1;
                 """
-    # #ml_sales_hist
+    # #ml_sales_hist, ml_sr_orders_h
 
     cursor.execute(query)
     results = cursor.fetchall()
