@@ -1002,7 +1002,7 @@ def filter_matching_orders(odoo_orders, db_ML_orders):
 def update_orders_from_crawl():
     """
     Actualiza el `status` y `ml_status` de las órdenes en `tools.ml_guide_insertion`
-    con la información más reciente de `crawl.ml_sr_orders_h`.
+    con la información más reciente de `crawl.ml_sales_hist`.
     """
 
     # Conectar a la base de datos de inserción de guías (tools)
@@ -1043,7 +1043,7 @@ def update_orders_from_crawl():
             SELECT txn_id_mp, status_name
             FROM (
                 SELECT txn_id_mp, status_name, ROW_NUMBER() OVER (PARTITION BY txn_id_mp ORDER BY inserted_at DESC) AS rn
-                FROM ml_sr_orders_h
+                FROM ml_sales_hist
                 WHERE txn_id_mp IN ({placeholders_mkp}) OR txn_id_mp IN ({placeholders_pack})
             ) t
             WHERE rn = 1;
