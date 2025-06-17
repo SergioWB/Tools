@@ -97,15 +97,34 @@ def get_orders_from_odoo(filter_date, today_date):
     logging.info(f'Filter date (ml_insertion_guide DB): {filter_date} / Now: {today_date}')
     logging.info('--------------------------------------------------------------------------------')
 
+    # ----------------------------------------------------------------------------------------------
+    # **** Cambio 17-06-2025 para garantizar que ordenes migran a WMS hasta tener guia adjunta en pick. ****
+
+
+    # search_domain = [
+    #     ('team_id', '=', 'Team_MercadoLibre'),
+    #     ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop Off', 'Cross Docking con Drop Off']),
+    #     #('date_order', '>=', filter_date),
+    #     ('write_date', '>=', filter_date),
+    #     ('state', '=', 'done'),
+    #     ('yuju_carrier_tracking_ref', 'not ilike', ' / '),
+    #     ('effective_date', '=', False)
+    # ]
+
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
-        ('yuju_carrier_tracking_ref', 'in', ['Colecta', 'Flex', 'Drop Off', 'Cross Docking con Drop Off']),
-        #('date_order', '>=', filter_date),
+        '|', '|', '|',  # 4 ORs
+        ('yuju_carrier_tracking_ref', 'ilike', 'Colecta'),
+        ('yuju_carrier_tracking_ref', 'ilike', 'Flex'),
+        ('yuju_carrier_tracking_ref', 'ilike', 'Drop Off'),
+        ('yuju_carrier_tracking_ref', 'ilike', 'Cross Docking con Drop Off'),
         ('write_date', '>=', filter_date),
         ('state', '=', 'done'),
         ('yuju_carrier_tracking_ref', 'not ilike', ' / '),
         ('effective_date', '=', False)
     ]
+
+    # ----------------------------------------------------------------------------------------------
 
     orders = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                                'sale.order', 'search_read',
@@ -387,6 +406,12 @@ def procces_db_orders(orders, local):
         marketplace_reference = order['marketplace_reference']
         seller_marketplace = order['seller_marketplace']
         carrier_tracking_ref = order['carrier_tracking_ref']  # Colecta
+
+        # ----------------------------------------------------------------------------------------------
+        # **** Cambio 17-06-2025 para garantizar que ordenes migran a WMS hasta tener guia adjunta en pick. ****
+        carrier_selection_relational = order['carrier_selection']  # Se añadio el campo carrier_selection a la DB "tools.ml_guide_insertion"
+        # ----------------------------------------------------------------------------------------------
+
         pick_id = order['pick_id'] # Ya viene como int
         # print(so_name, pick_id, type(pick_id))
 
@@ -441,7 +466,7 @@ def procces_db_orders(orders, local):
                     meessage_empty_file = ''
 
                 upload_attachment(so_name, pick_id)
-                carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
+                carrier_traking_response = insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref, carrier_selection_relational)
                 insert_log_message_pick(pick_id, so_name)
                 update_log_db(record_id,
                               processed_successfully=1,
@@ -503,7 +528,14 @@ def procces_new_orders(orders, local):
         so_name = order['name']
 
         order_id = order['id']
-        carrier_tracking_ref = order['yuju_carrier_tracking_ref']   # Colecta
+
+        # ----------------------------------------------------------------------------------------------
+        # **** Cambio 17-06-2025 para garantizar que ordenes migran a WMS hasta tener guia adjunta en pick. ****
+
+        # carrier_tracking_ref = order['yuju_carrier_tracking_ref']   # Colecta
+        carrier_tracking_ref, carrier_selection_relational = [x.strip() for x in order['yuju_carrier_tracking_ref'].split('|')]
+
+        # ----------------------------------------------------------------------------------------------
 
         last_update_odoo = order['write_date']
         date_order_odoo = order['date_order']
@@ -553,7 +585,7 @@ def procces_new_orders(orders, local):
 
                 if ('Error' not in message_response) and ('Advertencia' not in message_response):
                     upload_attachment(so_name, pick_id)
-                    carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
+                    carrier_traking_response = insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref, carrier_selection_relational)
                     insert_log_message_pick(pick_id, so_name)
                     save_log_db(
                         order_id=order_id,
@@ -563,6 +595,7 @@ def procces_new_orders(orders, local):
                         pack_id=pack_id,
                         ml_status=ml_crawl_status,
                         carrier_tracking_ref=carrier_tracking_ref,
+                        carrier_selection=carrier_selection_relational,
                         date_order_odoo=date_order_odoo,
                         last_update_odoo=last_update_odoo,
                         processed_successfully=1,
@@ -589,6 +622,7 @@ def procces_new_orders(orders, local):
                             seller_marketplace=seller_marketplace,
                             ml_status=ml_crawl_status,
                             carrier_tracking_ref=carrier_tracking_ref,
+                            carrier_selection=carrier_selection_relational,
                             date_order_odoo=date_order_odoo,
                             last_update_odoo=last_update_odoo,
                             processed_successfully=0,
@@ -606,6 +640,7 @@ def procces_new_orders(orders, local):
                             seller_marketplace=seller_marketplace,
                             ml_status=ml_crawl_status,
                             carrier_tracking_ref=carrier_tracking_ref,
+                            carrier_selection=carrier_selection_relational,
                             date_order_odoo=date_order_odoo,
                             last_update_odoo=last_update_odoo,
                             processed_successfully=0,
@@ -615,7 +650,7 @@ def procces_new_orders(orders, local):
                             already_printed=0
                         )
             elif are_there_attachments == 'THERE ARE ATTACHMENTS':
-                insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
+                insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref, carrier_selection_relational)
                 logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se consulta ML ni se agrega guia.')
             else:
                 #Los logs del resto de casos están en la funcion search_pick_id
@@ -632,6 +667,7 @@ def procces_new_orders(orders, local):
                 seller_marketplace=seller_marketplace,
                 ml_status=ml_crawl_status,
                 carrier_tracking_ref=carrier_tracking_ref,
+                carrier_selection=carrier_selection_relational,
                 date_order_odoo=date_order_odoo,
                 last_update_odoo=last_update_odoo,
                 processed_successfully=0,
@@ -694,7 +730,40 @@ def delete_log_file(file_path):
     except PermissionError:
         print(f"No se pudo eliminar el archivo, puede estar en uso: {file_path}")
 
-def insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref):
+# -----------------------------------------------------------------------------------------------------
+def insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref, carrier_selection = 'CMEL'): # CMEL > Colecta MELI
+    """
+        Actualiza en Odoo el número de guía (yuju_carrier_tracking_ref) y el Paqueteria o carrier (carrier_selection_relational)
+        para una orden de venta dada.
+        """
+
+    try:
+        new_carrier_tracking_ref = carrier_tracking_ref + ' / ' + so_name
+
+        carrier_map = {
+            'CMEL': 10,
+            'FDX': 1,
+            'PQX': 4,
+            'JTE': 19
+        }
+
+        carrier_selection_relational = carrier_map.get(carrier_selection)
+
+        models.execute_kw(
+            ODOO_DB_NAME, uid, ODOO_PASSWORD,
+            'sale.order', 'write',
+            [[order_id], {
+                'yuju_carrier_tracking_ref': new_carrier_tracking_ref,
+                'carrier_selection_relational': carrier_selection_relational
+            }]
+        )
+
+        return 'Número de guia y carrier actualizado '
+
+    except Exception as e:
+        return f'No se ha podido actualizar el número de guía o carrier / {e} '
+
+def insert_carrier_tracking_ref_odoo_backup(order_id, so_name, carrier_tracking_ref):
     try:
         new_carrier_tracking_ref = carrier_tracking_ref + ' / ' + so_name
 
@@ -706,7 +775,7 @@ def insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref):
 
     except Exception as e:
         return f'No se ha podido actualizar el número de guía / {e} '
-
+# -----------------------------------------------------------------------------------------------------
 def insert_LOIN_carrier_odoo(order_id, so_name):
     try:
         carriers = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
@@ -780,16 +849,16 @@ def get_db_connection():
         database=os.getenv("DB_NAME")
     )
 
-def save_log_db(order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, failure_reason=None, status=None, already_printed=None):
+def save_log_db(order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, carrier_tracking_ref, carrier_selection, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, failure_reason=None, status=None, already_printed=None):
     """Guarda la información de una orden procesada o no procesada en ml_guide_insertion."""
     connection = get_db_connection()
     cursor = connection.cursor()
 
     cursor.execute('''
         INSERT INTO ml_guide_insertion (
-            order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    ''', (order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, carrier_tracking_ref, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed))
+            order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, carrier_tracking_ref, carrier_selection, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    ''', (order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, carrier_tracking_ref, carrier_selection, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed))
 
     connection.commit()
     cursor.close()
@@ -854,7 +923,7 @@ def get_orders_info_DB():
             GROUP BY order_id, so_name
             HAVING SUM(CASE WHEN status IN ('picked_up', 'shipped', 'delivered', 'guide_obtained', 'not_for_today', 'cancelled', 'delivered') THEN 1 ELSE 0 END) = 0
         )
-        SELECT id, order_id, so_name, marketplace_reference, seller_marketplace, ml_status, carrier_tracking_ref, pick_id, status
+        SELECT id, order_id, so_name, marketplace_reference, seller_marketplace, ml_status, carrier_tracking_ref, carrier_selection, pick_id, status
         FROM ml_guide_insertion mgi
         WHERE status = 'pending' 
             AND processed_successfully = 0
@@ -877,8 +946,9 @@ def get_orders_info_DB():
             "seller_marketplace": row[4],
             "ml_status": row[5],
             "carrier_tracking_ref": row[6],
-            "pick_id": int(row[7]),
-            "status": row[8]
+            "carrier_selection": row[7],
+            "pick_id": int(row[8]),
+            "status": row[9]
         }
         for row in results
     ]
