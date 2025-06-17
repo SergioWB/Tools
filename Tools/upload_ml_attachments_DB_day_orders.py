@@ -90,7 +90,7 @@ def get_orders_from_odoo(filter_date, today_date):
     """ Obtiene las órdenes de Odoo en las últimas 'hours' horas. """
 
     # --------------------------------------------------------
-    filter_date = '2025-05-15 00:00:00'
+    filter_date = '2025-06-10 00:00:00'
     # --------------------------------------------------------
 
     print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
@@ -324,6 +324,51 @@ def process_orders(local=True):
 
     # --------------------------------------------------------------------------------------
 
+def delete_attachments_with_name_contains(pick_id, keyword='empty'):
+    """
+    Elimina adjuntos del picking cuyo nombre contengaun string en especifico.
+
+    Parámetros:
+    - pick_id: ID del picking (`stock.picking`).
+    - keyword: Cadena que debe estar contenida en el nombre del archivo para ser eliminado.
+
+    Retorna:
+    - True si se eliminó al menos uno, False si no se eliminó ninguno.
+    """
+    try:
+        # Buscar IDs de adjuntos del picking
+        attachment_ids = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
+                                           'ir.attachment', 'search',
+                                           [[['res_model', '=', 'stock.picking'], ['res_id', '=', pick_id]]])
+
+        if not attachment_ids:
+            # print(f"No hay adjuntos en picking ID {pick_id}")
+            return False
+
+        # Leer los nombres de los adjuntos
+        attachments = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
+                                        'ir.attachment', 'read',
+                                        [attachment_ids],
+                                        {'fields': ['id', 'name']})
+
+        # Filtrar los que contengan la palabra clave
+        to_delete_ids = [att['id'] for att in attachments if keyword.lower() in att['name'].lower()]
+
+        if not to_delete_ids:
+            # print(f"No se encontraron adjuntos con la palabra '{keyword}' en el nombre.")
+            return False
+
+        # Eliminar solo esos adjuntos
+        models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
+                          'ir.attachment', 'unlink',
+                          [to_delete_ids])
+
+        # print(f"Se eliminaron {len(to_delete_ids)} adjuntos con '{keyword}' en el nombre.")
+        return True
+
+    except Exception as e:
+        # print(f"Error al eliminar adjuntos: {e}")
+        return False
 
 #/////////////////////////////////////////////////////////////////////////////////
 # /////////////////////// Funciones de procesamiento por orden ///////////////////
@@ -388,6 +433,13 @@ def procces_db_orders(orders, local):
             status = next((value for key, value in status_map.items() if key in message_response), None)
 
             if ('Error' not in message_response) and ('Advertencia' not in message_response):
+                empty_file = delete_attachments_with_name_contains(pick_id,'empty')
+
+                if empty_file:
+                    meessage_empty_file = 'Archivo dummy eliminado /'
+                else:
+                    meessage_empty_file = ''
+
                 upload_attachment(so_name, pick_id)
                 carrier_traking_response = insert_carrier_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
                 insert_log_message_pick(pick_id, so_name)
@@ -400,10 +452,10 @@ def procces_db_orders(orders, local):
                 if "Flex" in carrier_tracking_ref:
                     carrier_option_response = insert_LOIN_carrier_odoo(order_id, so_name)
                     logging.info(
-                        f'DB: Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
+                        f'DB: {meessage_empty_file}. Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
                 else:
                     logging.info(
-                        f'DB: Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
+                        f'DB: {meessage_empty_file}. Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
             else:
                 logging.info(f'DB: No se pudo obtener ZPL / {message_response} para la orden {so_name}')
                 if status == 'picked_up' or status == 'shipped' or status == 'delivered':
