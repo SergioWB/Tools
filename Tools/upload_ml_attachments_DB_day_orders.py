@@ -1135,6 +1135,7 @@ def filter_matching_orders(odoo_orders, db_ML_orders):
 # //////// Funcion para actualizar el estado de ML para ordenes pendientes en la base de datos /////////
 
 def update_orders_from_crawl():
+    print("En: update_orders_from_crawl")
     """
     Actualiza el `status` y `ml_status` de las órdenes en `tools.ml_guide_insertion`
     con la información más reciente de `crawl.ml_sales_hist`.
@@ -1151,6 +1152,7 @@ def update_orders_from_crawl():
         WHERE status = 'not_for_today';
     """)
     orders = cursor_tools.fetchall()  # Lista de (id, txn_id_mp)
+    print(len(orders))
 
     if not orders:
         logging.info("------------------------------- No hay órdenes con status 'not_for_today' -------------------------------")
@@ -1221,7 +1223,7 @@ def update_orders_from_crawl():
 
 if __name__ == "__main__":
     logging.info("///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
-
+    print("////////////////////////////////////////////////////")
 
     start = tm.time()
     # Cargar variables de entorno
