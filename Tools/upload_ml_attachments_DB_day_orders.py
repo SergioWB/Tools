@@ -533,8 +533,8 @@ def procces_new_orders(orders, local):
         # **** Cambio 17-06-2025 para garantizar que ordenes migran a WMS hasta tener guia adjunta en pick. ****
 
         # carrier_tracking_ref = order['yuju_carrier_tracking_ref']   # Colecta
-        carrier_tracking_ref, carrier_selection_relational = [x.strip() for x in order['yuju_carrier_tracking_ref'].split('|')]
-
+        #carrier_tracking_ref, carrier_selection_relational = [x.strip() for x in order['yuju_carrier_tracking_ref'].split('|')]
+        carrier_tracking_ref, carrier_selection_relational = parse_tracking_and_carrier(order['yuju_carrier_tracking_ref'])
         # ----------------------------------------------------------------------------------------------
 
         last_update_odoo = order['write_date']
@@ -731,12 +731,18 @@ def delete_log_file(file_path):
         print(f"No se pudo eliminar el archivo, puede estar en uso: {file_path}")
 
 # -----------------------------------------------------------------------------------------------------
-def insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref, carrier_selection = 'CMEL'): # CMEL > Colecta MELI
-    """
-        Actualiza en Odoo el número de guía (yuju_carrier_tracking_ref) y el Paqueteria o carrier (carrier_selection_relational)
-        para una orden de venta dada.
-        """
+def parse_tracking_and_carrier(value):
+    parts = [x.strip() for x in value.split('|')]
 
+    if len(parts) == 1:
+        return parts[0], 'DEFINED'
+    else:
+        return parts[0], parts[1]
+def insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref, carrier_selection='CMEL'):
+    """
+    Actualiza en Odoo el número de guía (yuju_carrier_tracking_ref) y el carrier (carrier_selection_relational)
+    para una orden de venta dada.
+    """
     try:
         new_carrier_tracking_ref = carrier_tracking_ref + ' / ' + so_name
 
@@ -747,21 +753,28 @@ def insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref
             'JTE': 19
         }
 
-        carrier_selection_relational = carrier_map.get(carrier_selection)
+        if carrier_selection == 'DEFINED':
+            # Solo actualiza el número de guía
+            values = {
+                'yuju_carrier_tracking_ref': new_carrier_tracking_ref
+            }
+        else:
+            carrier_selection_relational = carrier_map.get(carrier_selection)
+            values = {
+                'yuju_carrier_tracking_ref': new_carrier_tracking_ref,
+                'carrier_selection_relational': carrier_selection_relational
+            }
 
         models.execute_kw(
             ODOO_DB_NAME, uid, ODOO_PASSWORD,
             'sale.order', 'write',
-            [[order_id], {
-                'yuju_carrier_tracking_ref': new_carrier_tracking_ref,
-                'carrier_selection_relational': carrier_selection_relational
-            }]
+            [[order_id], values]
         )
 
-        return 'Número de guia y carrier actualizado '
+        return 'Número de guía y carrier actualizado correctamente'
 
     except Exception as e:
-        return f'No se ha podido actualizar el número de guía o carrier / {e} '
+        return f'Error al actualizar número de guía o carrier: {e}'
 
 def insert_carrier_tracking_ref_odoo_backup(order_id, so_name, carrier_tracking_ref):
     try:
