@@ -90,7 +90,7 @@ def get_orders_from_odoo(filter_date, today_date):
     """ Obtiene las órdenes de Odoo en las últimas 'hours' horas. """
 
     # --------------------------------------------------------
-    filter_date = '2025-06-10 00:00:00'
+    # filter_date = '2025-06-10 00:00:00'
     # --------------------------------------------------------
 
     print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
@@ -237,7 +237,7 @@ def search_pick_id(so_name, type='/PICK/', count_attachments = False):
 
             if state == 'confirmed':
                 logging.info(f'El PICK {pick_id} de la orden {so_name} está en espera para procesarse.')
-                pass # Aunque el pick no esté "Listo", se procesará normal
+                pass # Aunque el pick no esté "Listo", se procesará normal, se inserta guia.
                 #return pick_id, 'PICK en espera'
             elif state == 'done':
                 return pick_id, 'PICK ya hecho'
@@ -313,7 +313,14 @@ def process_orders(local=True):
 
     # El filtro ahora es con la fecha de la ultima orden desde la DB
     # filter_date = lastest_date_path_json(lastest_date_path)   # Con en json
-    filter_date = get_latest_date_from_db().strftime('%Y-%m-%d %H:%M:%S')
+    # latest_date_db = get_latest_date_from_db().strftime('%Y-%m-%d %H:%M:%S')
+
+    latest_date_db = get_latest_date_from_db()
+    if latest_date_db:
+        lastest_date = latest_date_db - timedelta(days=20)
+        filter_date = lastest_date.strftime('%Y-%m-%d %H:%M:%S')
+    else:
+        filter_date = '2025-07-10 00:00:00'
 
 
     # ---------- Actualizamos el estado de las ordenes de la DB ------------------------------
@@ -409,7 +416,7 @@ def procces_db_orders(orders, local):
 
         # ----------------------------------------------------------------------------------------------
         # **** Cambio 17-06-2025 para garantizar que ordenes migran a WMS hasta tener guia adjunta en pick. ****
-        carrier_selection_relational = order['carrier_selection']  # Se añadio el campo carrier_selection a la DB "tools.ml_guide_insertion"
+        # carrier_selection_relational = order['carrier_selection']  # Se añadio el campo carrier_selection a la DB "tools.ml_guide_insertion"
         # ----------------------------------------------------------------------------------------------
 
         pick_id = order['pick_id'] # Ya viene como int
@@ -466,7 +473,7 @@ def procces_db_orders(orders, local):
                     meessage_empty_file = ''
 
                 upload_attachment(so_name, pick_id)
-                carrier_traking_response = insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref, carrier_selection_relational)
+                carrier_traking_response = insert_carrier_tracking_ref_odoo_backup(order_id, so_name, carrier_tracking_ref)
                 insert_log_message_pick(pick_id, so_name)
                 update_log_db(record_id,
                               processed_successfully=1,
@@ -533,9 +540,14 @@ def procces_new_orders(orders, local):
         # **** Cambio 17-06-2025 para garantizar que ordenes migran a WMS hasta tener guia adjunta en pick. ****
 
         # carrier_tracking_ref = order['yuju_carrier_tracking_ref']   # Colecta
-        #carrier_tracking_ref, carrier_selection_relational = [x.strip() for x in order['yuju_carrier_tracking_ref'].split('|')]
-        carrier_tracking_ref, carrier_selection_relational = parse_tracking_and_carrier(order['yuju_carrier_tracking_ref'])
+        # carrier_tracking_ref, carrier_selection_relational = [x.strip() for x in order['yuju_carrier_tracking_ref'].split('|')]
+        # carrier_tracking_ref, carrier_selection_relational = parse_tracking_and_carrier(order['yuju_carrier_tracking_ref'])
         # ----------------------------------------------------------------------------------------------
+
+        # Eric inserta carrier.  cambio 15/julio/2025
+        carrier_tracking_ref = order['yuju_carrier_tracking_ref']   # Colecta
+        # ----------------------------------------------------------------------------------------------
+
 
         last_update_odoo = order['write_date']
         date_order_odoo = order['date_order']
@@ -585,7 +597,7 @@ def procces_new_orders(orders, local):
 
                 if ('Error' not in message_response) and ('Advertencia' not in message_response):
                     upload_attachment(so_name, pick_id)
-                    carrier_traking_response = insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref, carrier_selection_relational)
+                    carrier_traking_response = insert_carrier_tracking_ref_odoo_backup(order_id, so_name, carrier_tracking_ref)
                     insert_log_message_pick(pick_id, so_name)
                     save_log_db(
                         order_id=order_id,
@@ -595,7 +607,7 @@ def procces_new_orders(orders, local):
                         pack_id=pack_id,
                         ml_status=ml_crawl_status,
                         carrier_tracking_ref=carrier_tracking_ref,
-                        carrier_selection=carrier_selection_relational,
+                        carrier_selection='NULL', # No se utiliza este campo, Eric inserta carrier.  cambio 15/julio/2025
                         date_order_odoo=date_order_odoo,
                         last_update_odoo=last_update_odoo,
                         processed_successfully=1,
@@ -622,7 +634,7 @@ def procces_new_orders(orders, local):
                             seller_marketplace=seller_marketplace,
                             ml_status=ml_crawl_status,
                             carrier_tracking_ref=carrier_tracking_ref,
-                            carrier_selection=carrier_selection_relational,
+                            carrier_selection='NULL', # No se utiliza este campo, Eric inserta carrier.  cambio 15/julio/2025
                             date_order_odoo=date_order_odoo,
                             last_update_odoo=last_update_odoo,
                             processed_successfully=0,
@@ -640,7 +652,7 @@ def procces_new_orders(orders, local):
                             seller_marketplace=seller_marketplace,
                             ml_status=ml_crawl_status,
                             carrier_tracking_ref=carrier_tracking_ref,
-                            carrier_selection=carrier_selection_relational,
+                            carrier_selection='NULL', # No se utiliza este campo, Eric inserta carrier.  cambio 15/julio/2025
                             date_order_odoo=date_order_odoo,
                             last_update_odoo=last_update_odoo,
                             processed_successfully=0,
@@ -650,7 +662,7 @@ def procces_new_orders(orders, local):
                             already_printed=0
                         )
             elif are_there_attachments == 'THERE ARE ATTACHMENTS':
-                insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref, carrier_selection_relational)
+                insert_carrier_tracking_ref_odoo_backup(order_id, so_name, carrier_tracking_ref)
                 logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se consulta ML ni se agrega guia.')
             else:
                 #Los logs del resto de casos están en la funcion search_pick_id
@@ -667,7 +679,7 @@ def procces_new_orders(orders, local):
                 seller_marketplace=seller_marketplace,
                 ml_status=ml_crawl_status,
                 carrier_tracking_ref=carrier_tracking_ref,
-                carrier_selection=carrier_selection_relational,
+                carrier_selection='NULL', # No se utiliza este campo, Eric inserta carrier.  cambio 15/julio/2025
                 date_order_odoo=date_order_odoo,
                 last_update_odoo=last_update_odoo,
                 processed_successfully=0,
