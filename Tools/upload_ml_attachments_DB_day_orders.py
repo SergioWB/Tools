@@ -93,10 +93,6 @@ def get_orders_from_odoo(filter_date, today_date):
     # filter_date = '2025-06-10 00:00:00'
     # --------------------------------------------------------
 
-    print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
-    logging.info(f'Filter date (ml_insertion_guide DB): {filter_date} / Now: {today_date}')
-    logging.info('--------------------------------------------------------------------------------')
-
     # ----------------------------------------------------------------------------------------------
     # **** Cambio 17-06-2025 para garantizar que ordenes migran a WMS hasta tener guia adjunta en pick. ****
 
@@ -321,6 +317,10 @@ def process_orders(local=True):
         filter_date = lastest_date.strftime('%Y-%m-%d %H:%M:%S')
     else:
         filter_date = '2025-07-10 00:00:00'
+
+    print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
+    logging.info(f'Filter date (ml_insertion_guide DB): {filter_date} / Now: {today_date}')
+    logging.info('--------------------------------------------------------------------------------')
 
 
     # ---------- Actualizamos el estado de las ordenes de la DB ------------------------------
