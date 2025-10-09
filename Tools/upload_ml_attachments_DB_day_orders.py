@@ -404,7 +404,7 @@ def procces_db_orders(orders, local):
     count = 0
     total_ = len(orders)
 
-    cdmx_time = get_cdmx_time()
+    cdmx_time = datetime.strptime(get_cdmx_time(), "%Y-%m-%d %H:%M:%S")
     limit_hour = cdmx_time.replace(hour=16, minute=0, second=0, microsecond=0)  # 4pm CDMX
 
     print(f'cdmx_time: {cdmx_time}')
@@ -549,7 +549,7 @@ def procces_new_orders(orders, local):
     # Inicializamos lastest_date_value = False en caso de que no haya habido ordenes a procesar
     lastest_date_value = False
 
-    cdmx_time = get_cdmx_time()
+    cdmx_time = datetime.strptime(get_cdmx_time(), "%Y-%m-%d %H:%M:%S")
     limit_hour = cdmx_time.replace(hour=16, minute=0, second=0, microsecond=0) # 4pm CDMX
 
     for order in orders:
