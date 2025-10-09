@@ -538,6 +538,8 @@ def procces_db_orders(orders, local):
                           already_printed=0,
                           ml_status=ml_crawl_status)
 
+        break
+
 
 def procces_new_orders(orders, local):
 
@@ -728,6 +730,7 @@ def procces_new_orders(orders, local):
                 status=status,
                 already_printed=0
             )
+        break
 
     logging.info('-----------------------------------------------------------------------------------------------------------------------------------------')
     logging.info(f'Se ha agregado guía a {process_coun} órdenes de {total_} posibles. / {total_ - process_coun} órdenes quedan pendientes y se agregan a la base de datos')
