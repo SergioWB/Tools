@@ -988,7 +988,7 @@ def get_orders_info_DB():
             GROUP BY order_id, so_name
             HAVING SUM(CASE WHEN status IN ('picked_up', 'shipped', 'delivered', 'guide_obtained', 'not_for_today', 'cancelled', 'delivered') THEN 1 ELSE 0 END) = 0
         )
-        SELECT id, order_id, so_name, marketplace_reference, seller_marketplace, ml_status, carrier_tracking_ref, carrier_selection, pick_id, status
+        SELECT id, order_id, so_name, marketplace_reference, seller_marketplace, ml_status, card_name, carrier_tracking_ref, carrier_selection, pick_id, status
         FROM ml_guide_insertion mgi
         WHERE status = 'pending' 
             AND processed_successfully = 0
@@ -1010,10 +1010,11 @@ def get_orders_info_DB():
             "marketplace_reference": row[3],
             "seller_marketplace": row[4],
             "ml_status": row[5],
-            "carrier_tracking_ref": row[6],
-            "carrier_selection": row[7],
-            "pick_id": int(row[8]),
-            "status": row[9]
+            "card_name": row[6],
+            "carrier_tracking_ref": row[7],
+            "carrier_selection": row[8],
+            "pick_id": int(row[9]),
+            "status": row[10]
         }
         for row in results
     ]
@@ -1267,12 +1268,16 @@ def update_orders_from_crawl():
     connection_tools = get_db_connection()
     cursor_tools = connection_tools.cursor()
 
+    actual_date = datetime.strptime(get_cdmx_time(), "%Y-%m-%d %H:%M:%S")
+    limit_date = actual_date - timedelta(days=60)
+
     # Obtener órdenes con `status = 'not_for_today'`
-    cursor_tools.execute("""
+    cursor_tools.execute(f"""
         SELECT id, marketplace_reference, pack_id
         FROM ml_guide_insertion
         WHERE status = 'not_for_today'
-        AND ml_status in ('Próximos días', 'En tránsito');
+        AND ml_status in ('Próximos días')
+        AND last_update_odoo >= '{limit_date}';
     """)
     orders = cursor_tools.fetchall()  # Lista de (id, txn_id_mp)
     print(len(orders))
@@ -1323,6 +1328,7 @@ def update_orders_from_crawl():
 
     # Actualizar `ml_status`, `card_name` y `status` en `tools.ml_guide_insertion`
     for_today_count = 0
+    for_tomorrow_count = 0
     for record_id, mkp_id, pack_id in orders:
         # Se busca el diccionario de datos del crawl
         crawl_data = crawl_data_map.get(mkp_id) or crawl_data_map.get(pack_id)
@@ -1334,10 +1340,12 @@ def update_orders_from_crawl():
             new_status_name = "unknown"
             new_card_name = None
 
-        new_status = "pending" if new_status_name == "Envíos de hoy" else "not_for_today"
+        new_status = "pending" if new_status_name == "Envíos de hoy" or new_card_name == "Colecta | Mañana" else "not_for_today"
 
         if new_status_name == "Envíos de hoy":
             for_today_count += 1
+        if new_card_name == "Colecta | Mañana":
+            for_tomorrow_count += 1
 
         # Se pasa el nuevo card_name a la función de actualización
         update_log_db(
@@ -1355,10 +1363,10 @@ def update_orders_from_crawl():
     cursor_tools.close()
     connection_tools.close()
 
-    logging.info(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count}")
+    logging.info(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count} / Colecta | Mañana: {for_tomorrow_count}")
     logging.info('----------------------------------------------------------')
 
-    print(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count}")
+    print(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count} / Colecta | Mañana: {for_tomorrow_count}")
 
 
 if __name__ == "__main__":
