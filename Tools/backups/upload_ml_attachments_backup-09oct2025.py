@@ -1,5 +1,4 @@
 import base64
-import time
 import zipfile
 import requests
 import json
@@ -403,15 +402,9 @@ def delete_attachments_with_name_contains(pick_id, keyword='empty'):
 def procces_db_orders(orders, local):
     count = 0
     total_ = len(orders)
-
-    cdmx_time = get_cdmx_time()
-    limit_hour = cdmx_time.replace(hour=16, minute=0, second=0, microsecond=0)  # 4pm CDMX
-
-    print(f'cdmx_time: {cdmx_time}')
-
     for order in orders:
         count += 1
-        #print(f'Orden desde DB {count} de {total_}')
+        print(f'Orden desde DB {count} de {total_}')
 
         record_id = order["id"] # Registro de la DB
 
@@ -431,7 +424,6 @@ def procces_db_orders(orders, local):
 
         # --------------------------------------
         ml_crawl_status = order["ml_status"]
-        card_name = order["card_name"]
         # --------------------------------------
 
         user_id_ = get_seller_user_id(seller_marketplace)
@@ -454,22 +446,11 @@ def procces_db_orders(orders, local):
             update_log_db(record_id,
                           processed_successfully=0,
                           status=ml_order_status,
-                          card_name=card_name,
                           already_printed=0,
                           ml_status=ml_crawl_status)
             continue
 
-
-        # --------- Logica para colecta mañana 09/octubre/2025 ------------------
-        if cdmx_time >= limit_hour and card_name == 'Colecta | Mañana':
-            get_label_for_tomorrow = True
-            message_for_tomorrow = 'Guía de Colecta | Mañana ADELANTADA // '
-        else:
-            get_label_for_tomorrow = False
-            message_for_tomorrow = ''
-        # -------------------------------------------------------------------------
-
-        if ml_crawl_status == 'Envíos de hoy' or get_label_for_tomorrow:
+        if ml_crawl_status == 'Envíos de hoy':
             zpl_meli_response = get_zpl_meli(shipment_ids, so_name, access_token)
             message_response = zpl_meli_response['ml_api_message']
             zpl_data = zpl_meli_response['zpl_response']
@@ -497,24 +478,22 @@ def procces_db_orders(orders, local):
                 update_log_db(record_id,
                               processed_successfully=1,
                               status=status,
-                              card_name=card_name,
                               zpl=zpl_data,
                               already_printed=0,
                               ml_status=ml_crawl_status)
                 if "Flex" in carrier_tracking_ref:
                     carrier_option_response = insert_LOIN_carrier_odoo(order_id, so_name)
                     logging.info(
-                        f'DB: {message_for_tomorrow}{meessage_empty_file}. Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
+                        f'DB: {meessage_empty_file}. Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
                 else:
                     logging.info(
-                        f'DB: {message_for_tomorrow}{meessage_empty_file}. Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
+                        f'DB: {meessage_empty_file}. Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
             else:
                 logging.info(f'DB: No se pudo obtener ZPL / {message_response} para la orden {so_name}')
                 if status == 'picked_up' or status == 'shipped' or status == 'delivered':
                     update_log_db(record_id,
                                   processed_successfully=0,
                                   status=status,
-                                  card_name=card_name,
                                   failure_reason=f"Failed to obtain ZPL: {message_response}",
                                   already_printed=1,
                                   ml_status=ml_crawl_status)
@@ -522,7 +501,6 @@ def procces_db_orders(orders, local):
                     update_log_db(record_id,
                                   processed_successfully=0,
                                   status=status,
-                                  card_name=card_name,
                                   failure_reason=f"Failed to obtain ZPL: {message_response}",
                                   already_printed=0,
                                   ml_status=ml_crawl_status)
@@ -533,7 +511,6 @@ def procces_db_orders(orders, local):
             update_log_db(record_id,
                           processed_successfully=0,
                           status=status,
-                          card_name=card_name,
                           failure_reason=f"Esta orden aun no es procesable para hoy [ACT]",
                           already_printed=0,
                           ml_status=ml_crawl_status)
@@ -548,9 +525,6 @@ def procces_new_orders(orders, local):
 
     # Inicializamos lastest_date_value = False en caso de que no haya habido ordenes a procesar
     lastest_date_value = False
-
-    cdmx_time = get_cdmx_time()
-    limit_hour = cdmx_time.replace(hour=16, minute=0, second=0, microsecond=0) # 4pm CDMX
 
     for order in orders:
         count += 1
@@ -580,7 +554,6 @@ def procces_new_orders(orders, local):
 
         # --------------------------------------
         ml_crawl_status = order["status_name"]
-        card_name = order['card_name']
         # --------------------------------------
 
         # Obtenemos la fecha de consulta mas reciente dentro de las ordenes procesadas en el for actual.
@@ -607,16 +580,7 @@ def procces_new_orders(orders, local):
 
         pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
 
-        # --------- Logica para colecta mañana 09/octubre/2025 ------------------
-        if cdmx_time >= limit_hour and card_name == 'Colecta | Mañana':
-            get_label_for_tomorrow = True
-            message_for_tomorrow = 'Guía de Colecta | Mañana ADELANTADA // '
-        else:
-            get_label_for_tomorrow = False
-            message_for_tomorrow = ''
-        # -------------------------------------------------------------------------
-
-        if ml_crawl_status == 'Envíos de hoy' or get_label_for_tomorrow:
+        if ml_crawl_status == 'Envíos de hoy':
             if are_there_attachments == 'NO ATTACHMENTS':
                 zpl_meli_response = get_zpl_meli(shipment_ids, so_name, access_token)
                 message_response = zpl_meli_response['ml_api_message']
@@ -642,7 +606,6 @@ def procces_new_orders(orders, local):
                         seller_marketplace=seller_marketplace,
                         pack_id=pack_id,
                         ml_status=ml_crawl_status,
-                        card_name=card_name,
                         carrier_tracking_ref=carrier_tracking_ref,
                         carrier_selection='NULL', # No se utiliza este campo, Eric inserta carrier.  cambio 15/julio/2025
                         date_order_odoo=date_order_odoo,
@@ -655,10 +618,10 @@ def procces_new_orders(orders, local):
                     )
                     if "Flex" in carrier_tracking_ref:
                         carrier_option_response = insert_LOIN_carrier_odoo(order_id, so_name)
-                        logging.info(f'{message_for_tomorrow}Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
+                        logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}. FLEX: {carrier_option_response}')
                         process_coun += 1
                     else:
-                        logging.info(f'{message_for_tomorrow}Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
+                        logging.info(f'Se ha agregago la guia al PICK {pick_id} de la orden {so_name}. {carrier_traking_response}')
                         process_coun += 1
                 else:
                     logging.info(f'No se pudo obtener ZPL / {message_response} para la orden {so_name}')
@@ -670,7 +633,6 @@ def procces_new_orders(orders, local):
                             pack_id=pack_id,
                             seller_marketplace=seller_marketplace,
                             ml_status=ml_crawl_status,
-                            card_name=card_name,
                             carrier_tracking_ref=carrier_tracking_ref,
                             carrier_selection='NULL', # No se utiliza este campo, Eric inserta carrier.  cambio 15/julio/2025
                             date_order_odoo=date_order_odoo,
@@ -689,7 +651,6 @@ def procces_new_orders(orders, local):
                             pack_id=pack_id,
                             seller_marketplace=seller_marketplace,
                             ml_status=ml_crawl_status,
-                            card_name=card_name,
                             carrier_tracking_ref=carrier_tracking_ref,
                             carrier_selection='NULL', # No se utiliza este campo, Eric inserta carrier.  cambio 15/julio/2025
                             date_order_odoo=date_order_odoo,
@@ -717,7 +678,6 @@ def procces_new_orders(orders, local):
                 pack_id=pack_id,
                 seller_marketplace=seller_marketplace,
                 ml_status=ml_crawl_status,
-                card_name=card_name,
                 carrier_tracking_ref=carrier_tracking_ref,
                 carrier_selection='NULL', # No se utiliza este campo, Eric inserta carrier.  cambio 15/julio/2025
                 date_order_odoo=date_order_odoo,
@@ -914,31 +874,31 @@ def get_db_connection():
         database=os.getenv("DB_NAME")
     )
 
-def save_log_db(order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, card_name, carrier_tracking_ref, carrier_selection, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, failure_reason=None, status=None, already_printed=None):
+def save_log_db(order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, carrier_tracking_ref, carrier_selection, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, failure_reason=None, status=None, already_printed=None):
     """Guarda la información de una orden procesada o no procesada en ml_guide_insertion."""
     connection = get_db_connection()
     cursor = connection.cursor()
 
     cursor.execute('''
         INSERT INTO ml_guide_insertion (
-            order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, card_name, carrier_tracking_ref, carrier_selection, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    ''', (order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, card_name, carrier_tracking_ref, carrier_selection, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed))
+            order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, carrier_tracking_ref, carrier_selection, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    ''', (order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, carrier_tracking_ref, carrier_selection, date_order_odoo, last_update_odoo, processed_successfully, pick_id, zpl, failure_reason, status, already_printed))
 
     connection.commit()
     cursor.close()
     connection.close()
 
-def update_log_db(record_id, processed_successfully, status=None, card_name=None, failure_reason=None, zpl=None, already_printed=None, ml_status=None):
+def update_log_db(record_id, processed_successfully, status=None, failure_reason=None, zpl=None, already_printed=None, ml_status=None):
     connection = get_db_connection()
     cursor = connection.cursor()
 
     query = """
         UPDATE ml_guide_insertion
-        SET processed_successfully = %s, ml_status = %s, status = %s, card_name = %s, failure_reason = %s, zpl = %s, already_printed = %s, last_update_DB = NOW()
+        SET processed_successfully = %s, ml_status = %s, status = %s, failure_reason = %s, zpl = %s, already_printed = %s, last_update_DB = NOW()
         WHERE id = %s;
         """
-    values = (processed_successfully, ml_status, status, card_name, failure_reason, zpl, already_printed, record_id)
+    values = (processed_successfully, ml_status, status, failure_reason, zpl, already_printed, record_id)
 
     cursor.execute(query, values)
     connection.commit()
@@ -974,7 +934,7 @@ def get_orders_info_DB():
     query = """
         SELECT id, order_id, so_name, marketplace_reference, seller_marketplace, carrier_tracking_ref, pick_id
         FROM ml_guide_insertion
-        WHERE status = 'pending' 
+        WHERE status = 'pending'
             AND processed_successfully = 0
             AND marketplace_reference IS NOT NULL AND marketplace_reference != ''
             AND seller_marketplace IS NOT NULL AND seller_marketplace != ''
@@ -990,7 +950,7 @@ def get_orders_info_DB():
         )
         SELECT id, order_id, so_name, marketplace_reference, seller_marketplace, ml_status, carrier_tracking_ref, carrier_selection, pick_id, status
         FROM ml_guide_insertion mgi
-        WHERE status = 'pending' 
+        WHERE status = 'pending'
             AND processed_successfully = 0
             AND marketplace_reference IS NOT NULL AND marketplace_reference != ''
             AND seller_marketplace IS NOT NULL AND seller_marketplace != ''
@@ -1065,7 +1025,7 @@ def get_orders_day_info_crawl(start_date, end_date):
 
     # V3
     query = f"""
-                SELECT status_name, sub_status_name, card_name, txn_id_mp, inserted_at
+                SELECT status_name, sub_status_name, txn_id_mp, inserted_at
                 FROM (
                     SELECT *, ROW_NUMBER() OVER (PARTITION BY txn_id_mp ORDER BY inserted_at DESC) AS rn
                     FROM ml_sales_hist
@@ -1084,9 +1044,8 @@ def get_orders_day_info_crawl(start_date, end_date):
         {
             "status_name": row[0],
             "sub_status_name": row[1],
-            "card_name": row[2],
-            "txn_id_mp": row[3],
-            "inserted_at": row[4],
+            "txn_id_mp": row[2],
+            "inserted_at": row[3],
         }
         for row in results
     ]
@@ -1145,76 +1104,7 @@ def filter_matching_orders(odoo_orders, db_ML_orders):
 
         # Obtener SOLO los txn_id_mp que coincidan con los posibles valores en candidate_ids
         cursor.execute(f"""
-                                SELECT marketplace_reference 
-                                FROM ml_guide_insertion
-                                WHERE marketplace_reference IN ({placeholders});
-                            """, tuple(candidate_ids_list))
-
-        existing_mkp_ids = {row[0] for row in cursor.fetchall()}  # Convertir a conjunto para búsqueda rápida
-
-        # Cerrar conexión a la base de datos
-        cursor.close()
-        connection.close()
-
-        # Crear un diccionario {txn_id_mp: {'status_name': ..., 'card_name': ...}} para búsqueda rápida
-        db_orders_dict = {
-            order["txn_id_mp"]: {
-                "status_name": order["status_name"],
-                "card_name": order["card_name"]
-            } for order in db_ML_orders
-        }
-
-        # Lista de órdenes que tienen coincidencia con ML
-        matching_orders = []
-
-        for order in odoo_orders:
-            channel_ref = order.get("channel_order_reference")
-            yuju_pack_id = order.get("yuju_pack_id")
-
-            # Obtener el diccionario de datos si alguna de las claves está en db_orders_dict
-            order_data = db_orders_dict.get(channel_ref) or db_orders_dict.get(yuju_pack_id)
-
-            # Verificar si la orden ya existe en la base de datos
-            if order_data and (channel_ref not in existing_mkp_ids and yuju_pack_id not in existing_mkp_ids):
-                # Añadimos los datos extraídos a la orden de Odoo
-                order["status_name"] = order_data["status_name"]
-                order["card_name"] = order_data["card_name"]
-                matching_orders.append(order)
-
-    else:
-        matching_orders = []
-
-
-    match_count = len(matching_orders)
-    logging.info(f"Órdenes encontradas en Odoo y en ML (órdenes nuevas): {match_count}")
-    print(f"Órdenes encontradas en Odoo y en ML (órdenes nuevas): {match_count}")
-
-    return matching_orders
-
-def filter_matching_orders_backup(odoo_orders, db_ML_orders):
-    """
-    Filtra las órdenes de Odoo que también existen en la base de datos ML (crawl DB),
-    añade `status_name`, pero no los agrega si ya estan en la tabla `ml_guide_insertion`.
-    """
-
-    if odoo_orders and db_ML_orders: # Que no sean listas vacias
-
-        # Extraer los posibles valores que pueden coincidir en la BD
-        candidate_ids = {order["channel_order_reference"] for order in odoo_orders} | \
-                        {order["yuju_pack_id"] for order in odoo_orders if order.get("yuju_pack_id")}
-
-        candidate_ids_list = list(candidate_ids)
-
-        # Conectar a la base de datos para verificar duplicados
-        connection = get_db_connection()
-        cursor = connection.cursor()
-
-        # Crear la cadena de placeholders para IN
-        placeholders = ', '.join(['%s'] * len(candidate_ids_list))
-
-        # Obtener SOLO los txn_id_mp que coincidan con los posibles valores en candidate_ids
-        cursor.execute(f"""
-                                SELECT marketplace_reference 
+                                SELECT marketplace_reference
                                 FROM ml_guide_insertion
                                 WHERE marketplace_reference IN ({placeholders});
                             """, tuple(candidate_ids_list))
@@ -1259,7 +1149,7 @@ def filter_matching_orders_backup(odoo_orders, db_ML_orders):
 def update_orders_from_crawl():
     print("En: update_orders_from_crawl")
     """
-    Actualiza el `status`, `ml_status` y `card_name` de las órdenes en `tools.ml_guide_insertion`
+    Actualiza el `status` y `ml_status` de las órdenes en `tools.ml_guide_insertion`
     con la información más reciente de `crawl.ml_sales_hist`.
     """
 
@@ -1271,8 +1161,7 @@ def update_orders_from_crawl():
     cursor_tools.execute("""
         SELECT id, marketplace_reference, pack_id
         FROM ml_guide_insertion
-        WHERE status = 'not_for_today'
-        AND ml_status in ('Próximos días', 'En tránsito');
+        WHERE status = 'not_for_today';
     """)
     orders = cursor_tools.fetchall()  # Lista de (id, txn_id_mp)
     print(len(orders))
@@ -1300,9 +1189,9 @@ def update_orders_from_crawl():
     placeholders_pack = ','.join(['%s'] * len(pack_ids)) if pack_ids else "NULL"
 
     query = f"""
-            SELECT txn_id_mp, status_name, card_name
+            SELECT txn_id_mp, status_name
             FROM (
-                SELECT txn_id_mp, status_name, card_name, ROW_NUMBER() OVER (PARTITION BY txn_id_mp ORDER BY inserted_at DESC) AS rn
+                SELECT txn_id_mp, status_name, ROW_NUMBER() OVER (PARTITION BY txn_id_mp ORDER BY inserted_at DESC) AS rn
                 FROM ml_sales_hist
                 WHERE txn_id_mp IN ({placeholders_mkp}) OR txn_id_mp IN ({placeholders_pack})
             ) t
@@ -1311,44 +1200,27 @@ def update_orders_from_crawl():
 
     query_params = mkp_ids + pack_ids
     cursor_crawl.execute(query, query_params)
-    results = cursor_crawl.fetchall()  # Lista de (txn_id_mp, status_name, card_name)
+    results = cursor_crawl.fetchall()  # Lista de (txn_id_mp, status_name)
 
     # Construir diccionario {txn_id_mp: status_name}
-    #status_map = {row[0]: row[1] for row in results}
-    crawl_data_map = {row[0]: {"status_name": row[1], "card_name": row[2]} for row in results}
+    status_map = {row[0]: row[1] for row in results}
 
     # Cerrar conexión con `crawl`
     cursor_crawl.close()
     connection_crawl.close()
 
-    # Actualizar `ml_status`, `card_name` y `status` en `tools.ml_guide_insertion`
+    # Actualizar `ml_status` y `status` en `tools.ml_guide_insertion`
     for_today_count = 0
     for record_id, mkp_id, pack_id in orders:
-        # Se busca el diccionario de datos del crawl
-        crawl_data = crawl_data_map.get(mkp_id) or crawl_data_map.get(pack_id)
-
-        if crawl_data:
-            new_status_name = crawl_data.get("status_name", "unknown")
-            new_card_name = crawl_data.get("card_name")
-        else:
-            new_status_name = "unknown"
-            new_card_name = None
-
+        new_status_name = status_map.get(mkp_id) or status_map.get(pack_id) or "unknown"  # Default a "unknown" si no se encuentra
         new_status = "pending" if new_status_name == "Envíos de hoy" else "not_for_today"
 
         if new_status_name == "Envíos de hoy":
             for_today_count += 1
 
-        # Se pasa el nuevo card_name a la función de actualización
         update_log_db(
-            record_id,
-            processed_successfully=0,
-            status=new_status,
-            card_name=new_card_name,
-            failure_reason=None,
-            zpl=None,
-            already_printed=None,
-            ml_status=new_status_name
+            record_id, processed_successfully=0, status=new_status,
+            failure_reason=None, zpl=None, already_printed=None, ml_status=new_status_name
         )
 
     # Cerrar conexión con `tools`
@@ -1395,4 +1267,3 @@ if __name__ == "__main__":
     finally:
         logging.shutdown()
         delete_log_file(log_filename)
-
