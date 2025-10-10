@@ -461,9 +461,9 @@ def procces_db_orders(orders, local):
 
 
         # --------- Logica para colecta mañana 09/octubre/2025 ------------------
-        if cdmx_time >= limit_hour and card_name == 'Colecta | Mañana':
+        if cdmx_time >= limit_hour and 'Mañana' in card_name:
             get_label_for_tomorrow = True
-            message_for_tomorrow = 'Guía de Colecta | Mañana ADELANTADA // '
+            message_for_tomorrow = 'Guía de Mañana ADELANTADA // '
         else:
             get_label_for_tomorrow = False
             message_for_tomorrow = ''
@@ -538,8 +538,6 @@ def procces_db_orders(orders, local):
                           already_printed=0,
                           ml_status=ml_crawl_status)
 
-        break
-
 
 def procces_new_orders(orders, local):
 
@@ -610,9 +608,9 @@ def procces_new_orders(orders, local):
         pick_id, are_there_attachments = search_pick_id(so_name, type="/PICK/", count_attachments=True)
 
         # --------- Logica para colecta mañana 09/octubre/2025 ------------------
-        if cdmx_time >= limit_hour and card_name == 'Colecta | Mañana':
+        if cdmx_time >= limit_hour and 'Mañana' in card_name:
             get_label_for_tomorrow = True
-            message_for_tomorrow = 'Guía de Colecta | Mañana ADELANTADA // '
+            message_for_tomorrow = 'Guía de Mañana ADELANTADA // '
         else:
             get_label_for_tomorrow = False
             message_for_tomorrow = ''
@@ -1343,11 +1341,11 @@ def update_orders_from_crawl():
             new_status_name = "unknown"
             new_card_name = None
 
-        new_status = "pending" if new_status_name == "Envíos de hoy" or new_card_name == "Colecta | Mañana" else "not_for_today"
+        new_status = "pending" if new_status_name == "Envíos de hoy" or 'Mañana' in new_card_name else "not_for_today"
 
         if new_status_name == "Envíos de hoy":
             for_today_count += 1
-        if new_card_name == "Colecta | Mañana":
+        if 'Mañana' in new_card_name:
             for_tomorrow_count += 1
 
         # Se pasa el nuevo card_name a la función de actualización
@@ -1366,10 +1364,10 @@ def update_orders_from_crawl():
     cursor_tools.close()
     connection_tools.close()
 
-    logging.info(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count} / Colecta | Mañana: {for_tomorrow_count}")
+    logging.info(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count} / Para Mañana: {for_tomorrow_count}")
     logging.info('----------------------------------------------------------')
 
-    print(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count} / Colecta | Mañana: {for_tomorrow_count}")
+    print(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count} / Para Mañana: {for_tomorrow_count}")
 
 
 if __name__ == "__main__":
