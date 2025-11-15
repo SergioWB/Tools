@@ -1400,10 +1400,10 @@ def update_orders_from_crawl():
     cursor_tools.close()
     connection_tools.close()
 
-    logging.info(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count} / Para Mañana: {for_tomorrow_count}")
+    logging.info(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count} / Próximos días: {for_tomorrow_count}")
     logging.info('----------------------------------------------------------')
 
-    print(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count} / Para Mañana: {for_tomorrow_count}")
+    print(f" Órdenes de tools con ml_status actualizado: {len(orders)} / Pendientes (Envíos para hoy): {for_today_count} / Próximos días: {for_tomorrow_count}")
 
 
 if __name__ == "__main__":
