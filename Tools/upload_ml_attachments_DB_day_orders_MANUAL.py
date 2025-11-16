@@ -14,7 +14,7 @@ import time as tm
 import mysql.connector
 
 
-CARD_NAME_TO_EXTRACT = ['Mañana', 'Martes']
+CARD_NAME_TO_EXTRACT = ['Mañana', 'Colecta | Martes']
 
 
 # Ajustar la hora manualmente restando 6 horas (UTC → CDMX)
@@ -114,14 +114,14 @@ def get_orders_from_odoo(filter_date, today_date):
 
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
-        '|', '|', '|',  # 4 ORs
-        ('yuju_carrier_tracking_ref', 'ilike', 'Colecta'),
-        ('yuju_carrier_tracking_ref', 'ilike', 'Flex'),
-        ('yuju_carrier_tracking_ref', 'ilike', 'Drop Off'),
-        ('yuju_carrier_tracking_ref', 'ilike', 'Cross Docking con Drop Off'),
+        #'|', '|', '|',  # 4 ORs
+        #('yuju_carrier_tracking_ref', 'ilike', 'Colecta'),
+        #('yuju_carrier_tracking_ref', 'ilike', 'Flex'),
+        #('yuju_carrier_tracking_ref', 'ilike', 'Drop Off'),
+        #('yuju_carrier_tracking_ref', 'ilike', 'Cross Docking con Drop Off'),
         ('write_date', '>=', filter_date),
         ('state', '=', 'done'),
-        ('yuju_carrier_tracking_ref', 'not ilike', ' / '),
+        #('yuju_carrier_tracking_ref', 'not ilike', ' / '),
         ('effective_date', '=', False)
     ]
 
@@ -510,7 +510,7 @@ def procces_db_orders(orders, local):
                     meessage_empty_file = ''
 
                 upload_attachment(so_name, pick_id)
-                carrier_traking_response = insert_carrier_tracking_ref_odoo_backup(order_id, so_name, carrier_tracking_ref)
+                carrier_traking_response = insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
                 insert_log_message_pick(pick_id, so_name)
                 update_log_db(record_id,
                               processed_successfully=1,
@@ -579,6 +579,9 @@ def procces_new_orders(orders, local):
         so_name = order['name']
 
         order_id = order['id']
+
+        print(f'Orden desde Odoo {count} de {total_} / {so_name}')
+        time.sleep(5)
 
         # ----------------------------------------------------------------------------------------------
         # **** Cambio 17-06-2025 para garantizar que ordenes migran a WMS hasta tener guia adjunta en pick. ****
@@ -667,7 +670,7 @@ def procces_new_orders(orders, local):
 
                 if ('Error' not in message_response) and ('Advertencia' not in message_response):
                     upload_attachment(so_name, pick_id)
-                    carrier_traking_response = insert_carrier_tracking_ref_odoo_backup(order_id, so_name, carrier_tracking_ref)
+                    carrier_traking_response = insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
                     insert_log_message_pick(pick_id, so_name)
                     save_log_db(
                         order_id=order_id,
@@ -735,7 +738,7 @@ def procces_new_orders(orders, local):
                             already_printed=0
                         )
             elif are_there_attachments == 'THERE ARE ATTACHMENTS':
-                insert_carrier_tracking_ref_odoo_backup(order_id, so_name, carrier_tracking_ref)
+                insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
                 logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se consulta ML ni se agrega guia.')
             else:
                 #Los logs del resto de casos están en la funcion search_pick_id
@@ -830,7 +833,8 @@ def insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref
     para una orden de venta dada.
     """
     try:
-        new_carrier_tracking_ref = carrier_tracking_ref + ' / ' + so_name
+        carrier_tracking_ref = 'Colecta'
+        new_carrier_tracking_ref = carrier_tracking_ref + ' // ' + so_name
 
         carrier_map = {
             'CMEL': 10,
