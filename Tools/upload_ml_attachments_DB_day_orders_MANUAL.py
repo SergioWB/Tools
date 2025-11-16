@@ -581,7 +581,7 @@ def procces_new_orders(orders, local):
         order_id = order['id']
 
         print(f'Orden desde Odoo {count} de {total_} / {so_name}')
-        time.sleep(5)
+        time.sleep(50)
 
         # ----------------------------------------------------------------------------------------------
         # **** Cambio 17-06-2025 para garantizar que ordenes migran a WMS hasta tener guia adjunta en pick. ****
@@ -1111,6 +1111,8 @@ def get_orders_day_info_crawl(start_date, end_date):
                     WHERE inserted_at >= '{start_date}'
                     AND inserted_at < '{end_date}'
                     AND status_name IN ('Envíos de hoy', 'Próximos días')
+                    AND card_name IN ('Colecta | Martes', 'Flex | Martes')
+                    AND sub_status_name = 'Etiquetas por imprimir'
                 ) t
                 WHERE rn = 1;
                 """
