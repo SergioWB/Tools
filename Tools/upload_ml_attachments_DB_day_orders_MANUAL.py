@@ -115,13 +115,15 @@ def get_orders_from_odoo(filter_date, today_date):
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
         #'|', '|', '|',  # 4 ORs
+        '|',
+        ('yuju_carrier_tracking_ref', 'not ilike', ' / '),
+        ('yuju_carrier_tracking_ref', 'not ilike', ' // '),
         #('yuju_carrier_tracking_ref', 'ilike', 'Colecta'),
         #('yuju_carrier_tracking_ref', 'ilike', 'Flex'),
         #('yuju_carrier_tracking_ref', 'ilike', 'Drop Off'),
         #('yuju_carrier_tracking_ref', 'ilike', 'Cross Docking con Drop Off'),
         ('write_date', '>=', filter_date),
         ('state', '=', 'done'),
-        #('yuju_carrier_tracking_ref', 'not ilike', ' / '),
         ('effective_date', '=', False)
     ]
 
@@ -582,8 +584,6 @@ def procces_new_orders(orders, local):
 
         print(f'Orden desde Odoo {count} de {total_} / {so_name}')
 
-        if count == 3:
-            time.sleep(100)
 
         # ----------------------------------------------------------------------------------------------
         # **** Cambio 17-06-2025 para garantizar que ordenes migran a WMS hasta tener guia adjunta en pick. ****
