@@ -581,7 +581,9 @@ def procces_new_orders(orders, local):
         order_id = order['id']
 
         print(f'Orden desde Odoo {count} de {total_} / {so_name}')
-        time.sleep(50)
+
+        if count == 3:
+            time.sleep(100)
 
         # ----------------------------------------------------------------------------------------------
         # **** Cambio 17-06-2025 para garantizar que ordenes migran a WMS hasta tener guia adjunta en pick. ****
