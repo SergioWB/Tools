@@ -597,6 +597,9 @@ def procces_new_orders(orders, local):
         carrier_tracking_ref = order['yuju_carrier_tracking_ref']   # Colecta
         # ----------------------------------------------------------------------------------------------
 
+        if not carrier_tracking_ref:
+            carrier_tracking_ref = order['card_name'].split('|')[0].strip()
+
 
         last_update_odoo = order['write_date']
         date_order_odoo = order['date_order']
