@@ -512,7 +512,7 @@ def procces_db_orders(orders, local):
                     meessage_empty_file = ''
 
                 upload_attachment(so_name, pick_id)
-                carrier_traking_response = insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
+                carrier_traking_response = insert_carrier_tracking_ref_odoo_backup(order_id, so_name, carrier_tracking_ref)
                 insert_log_message_pick(pick_id, so_name)
                 update_log_db(record_id,
                               processed_successfully=1,
@@ -675,7 +675,7 @@ def procces_new_orders(orders, local):
 
                 if ('Error' not in message_response) and ('Advertencia' not in message_response):
                     upload_attachment(so_name, pick_id)
-                    carrier_traking_response = insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
+                    carrier_traking_response = insert_carrier_tracking_ref_odoo_backup(order_id, so_name, carrier_tracking_ref)
                     insert_log_message_pick(pick_id, so_name)
                     save_log_db(
                         order_id=order_id,
@@ -743,7 +743,7 @@ def procces_new_orders(orders, local):
                             already_printed=0
                         )
             elif are_there_attachments == 'THERE ARE ATTACHMENTS':
-                insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref)
+                insert_carrier_tracking_ref_odoo_backup(order_id, so_name, carrier_tracking_ref)
                 logging.info(f'El PICK: {pick_id} de la orden {so_name} YA tiene guia adjunta, no se consulta ML ni se agrega guia.')
             else:
                 #Los logs del resto de casos están en la funcion search_pick_id
