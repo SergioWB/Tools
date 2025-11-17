@@ -14,7 +14,7 @@ import time as tm
 import mysql.connector
 
 
-CARD_NAME_TO_EXTRACT = ['Mañana', 'Colecta | Martes']
+CARD_NAME_TO_EXTRACT = ['Mañana', 'Colecta | Martes', '19 de noviembre']
 
 
 # Ajustar la hora manualmente restando 6 horas (UTC → CDMX)
@@ -1116,7 +1116,7 @@ def get_orders_day_info_crawl(start_date, end_date):
                     WHERE inserted_at >= '{start_date}'
                     AND inserted_at < '{end_date}'
                     AND status_name IN ('Envíos de hoy', 'Próximos días')
-                    AND card_name IN ('Colecta | Martes', 'Flex | Martes')
+                    AND card_name IN ('Colecta | Martes', 'Flex | Martes') or card_name like '%19 de noviembre'
                     AND sub_status_name = 'Etiquetas por imprimir'
                 ) t
                 WHERE rn = 1;
