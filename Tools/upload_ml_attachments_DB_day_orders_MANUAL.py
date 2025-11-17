@@ -114,16 +114,16 @@ def get_orders_from_odoo(filter_date, today_date):
 
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
-        #'|', '|', '|',  # 4 ORs
-        '|',
-        ('yuju_carrier_tracking_ref', 'not ilike', ' / '),
-        ('yuju_carrier_tracking_ref', 'not ilike', ' // '),
-        #('yuju_carrier_tracking_ref', 'ilike', 'Colecta'),
-        #('yuju_carrier_tracking_ref', 'ilike', 'Flex'),
-        #('yuju_carrier_tracking_ref', 'ilike', 'Drop Off'),
-        #('yuju_carrier_tracking_ref', 'ilike', 'Cross Docking con Drop Off'),
+        '|', '|', '|',  # 4 ORs
+        #'|',
+        #('yuju_carrier_tracking_ref', 'not ilike', ' // '),
+        ('yuju_carrier_tracking_ref', 'ilike', 'Colecta'),
+        ('yuju_carrier_tracking_ref', 'ilike', 'Flex'),
+        ('yuju_carrier_tracking_ref', 'ilike', 'Drop Off'),
+        ('yuju_carrier_tracking_ref', 'ilike', 'Cross Docking con Drop Off'),
         ('write_date', '>=', filter_date),
         ('state', '=', 'done'),
+        ('yuju_carrier_tracking_ref', 'not ilike', ' / '),
         ('effective_date', '=', False)
     ]
 
