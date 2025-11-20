@@ -14,7 +14,7 @@ import time as tm
 import mysql.connector
 
 
-CARD_NAME_TO_EXTRACT = ('Colecta | A partir del 22 de noviembre')
+CARD_NAME_TO_EXTRACT = ('Colecta | A partir del 22 de noviembre',)
 after_to = 14 # 2:00 pm
 
 
@@ -1109,6 +1109,7 @@ def get_orders_day_info_crawl(start_date, end_date):
             """
 
     # V3
+    cards = "', '".join(CARD_NAME_TO_EXTRACT)
     query = f"""
                 SELECT status_name, sub_status_name, card_name, txn_id_mp, inserted_at
                 FROM (
@@ -1117,7 +1118,7 @@ def get_orders_day_info_crawl(start_date, end_date):
                     WHERE inserted_at >= '{start_date}'
                     AND inserted_at < '{end_date}'
                     AND status_name IN ('Envíos de hoy', 'Próximos días')
-                    AND card_name IN ({CARD_NAME_TO_EXTRACT})
+                    AND card_name IN ('{cards}')
                     AND sub_status_name = 'Etiquetas por imprimir'
                 ) t
                 WHERE rn = 1;
