@@ -14,7 +14,8 @@ import time as tm
 import mysql.connector
 
 
-CARD_NAME_TO_EXTRACT = ['Mañana', 'Colecta | Martes', '19 de noviembre']
+CARD_NAME_TO_EXTRACT = ('Colecta | A partir del 22 de noviembre')
+after_to = 14 # 2:00 pm
 
 
 # Ajustar la hora manualmente restando 6 horas (UTC → CDMX)
@@ -411,7 +412,7 @@ def procces_db_orders(orders, local):
     total_ = len(orders)
 
     cdmx_time = datetime.strptime(get_cdmx_time(), "%Y-%m-%d %H:%M:%S")
-    limit_hour = cdmx_time.replace(hour=14, minute=0, second=0, microsecond=0)  # 2pm CDMX
+    limit_hour = cdmx_time.replace(hour=after_to, minute=0, second=0, microsecond=0)  # 2pm CDMX
 
     print(f'cdmx_time: {cdmx_time}')
 
@@ -570,7 +571,7 @@ def procces_new_orders(orders, local):
     lastest_date_value = False
 
     cdmx_time = datetime.strptime(get_cdmx_time(), "%Y-%m-%d %H:%M:%S")
-    limit_hour = cdmx_time.replace(hour=14, minute=0, second=0, microsecond=0)  # 2pm CDMX
+    limit_hour = cdmx_time.replace(hour=after_to, minute=0, second=0, microsecond=0)  # 2pm CDMX
 
     for order in orders:
         count += 1
@@ -1116,7 +1117,7 @@ def get_orders_day_info_crawl(start_date, end_date):
                     WHERE inserted_at >= '{start_date}'
                     AND inserted_at < '{end_date}'
                     AND status_name IN ('Envíos de hoy', 'Próximos días')
-                    AND card_name IN ('Colecta | Martes', 'Flex | Martes') or card_name like '%19 de noviembre'
+                    AND card_name IN ({CARD_NAME_TO_EXTRACT})
                     AND sub_status_name = 'Etiquetas por imprimir'
                 ) t
                 WHERE rn = 1;
