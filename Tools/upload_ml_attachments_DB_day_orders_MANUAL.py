@@ -14,8 +14,8 @@ import time as tm
 import mysql.connector
 
 
-CARD_NAME_TO_EXTRACT = ('Colecta | A partir del 22 de noviembre',)
-after_to = 14 # 2:00 pm
+CARD_NAME_TO_EXTRACT = ('Colecta | A partir del 22 de noviembre','Colecta | A partir del 24 de noviembre')
+after_to = 14 # Hora CDMX
 
 
 # Ajustar la hora manualmente restando 6 horas (UTC → CDMX)
