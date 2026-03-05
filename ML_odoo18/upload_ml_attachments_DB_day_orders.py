@@ -7,7 +7,7 @@ import os
 import xmlrpc.client
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from ML_odoo18.access_meli import tokens_meli as tk_meli
+from access_meli import tokens_meli as tk_meli
 import gspread
 import time as tm
 import mysql.connector
