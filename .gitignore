@@ -23,6 +23,14 @@ Tools/tokens_meli_skyBrands.txt
 Tools/google_cred.json
 Tools/latest_date.json
 
+
+ML_odoo18/.env
+ML_odoo18/tokens_meli.txt
+ML_odoo18/tokens_meli_oficiales.txt
+ML_odoo18/tokens_meli_skyBrands.txt
+ML_odoo18/google_cred.json
+ML_odoo18/latest_date.json
+
 .DS_Store
 
 *.log
