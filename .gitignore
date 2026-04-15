@@ -35,4 +35,6 @@ ML_odoo18/latest_date.json
 
 *.log
 
+.env
+.env2
 

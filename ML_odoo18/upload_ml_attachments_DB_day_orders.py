@@ -93,13 +93,13 @@ def get_orders_from_odoo(filter_date, today_date):
     search_domain = [
         ('team_id', '=', 'Team_MercadoLibre'),
         '|', '|', '|',  # 4 ORs
-        ('yuju_carrier_tracking_ref', 'ilike', 'Colecta'),
-        ('yuju_carrier_tracking_ref', 'ilike', 'Flex'),
-        ('yuju_carrier_tracking_ref', 'ilike', 'Drop Off'),
-        ('yuju_carrier_tracking_ref', 'ilike', 'Cross Docking con Drop Off'),
+        ('data_tracking_readwrite', 'ilike', 'Colecta'),
+        ('data_tracking_readwrite', 'ilike', 'Flex'),
+        ('data_tracking_readwrite', 'ilike', 'Drop Off'),
+        ('data_tracking_readwrite', 'ilike', 'Cross Docking con Drop Off'),
         ('write_date', '>=', filter_date),
         ('state', '=', 'done'),
-        ('yuju_carrier_tracking_ref', 'not ilike', ' / '),
+        ('data_tracking_readwrite', 'not ilike', ' / '),
         ('effective_date', '=', False)
     ]
 
@@ -108,7 +108,7 @@ def get_orders_from_odoo(filter_date, today_date):
     orders = models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                                'sale.order', 'search_read',
                                [search_domain],
-                               {'fields': ['channel_order_reference', 'yuju_pack_id', 'id', 'name', 'yuju_seller_id','create_date', 'date_order', 'yuju_carrier_tracking_ref', 'write_date']})
+                               {'fields': ['channel_order_reference', 'yuju_pack_id', 'id', 'name', 'yuju_seller_id','create_date', 'date_order', 'data_tracking_readwrite', 'write_date']})
 
     logging.info(f"{len(orders)} órdenes actualizadas en Odoo")
     print(f"{len(orders)} órdenes actualizadas en Odoo")
@@ -303,14 +303,12 @@ def upload_attachment(so_name, order_id):
             logging.error("El archivo no existe: " + path_attachment)
             return False
 
-        # Preparamos los datos para tu modelo custom
         attachment_data = {
             'file_name': f"{so_name}.txt",
             'so_id': order_id,
             'attachment': file_content
         }
 
-        # Insertamos en sale.order.attachment
         models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD, 'sale.order.attachment', 'create', [attachment_data])
         return True
     except Exception as e:
@@ -524,13 +522,13 @@ def procces_new_orders(orders, local):
         # ----------------------------------------------------------------------------------------------
         # **** Cambio 17-06-2025 para garantizar que ordenes migran a WMS hasta tener guia adjunta en pick. ****
 
-        # carrier_tracking_ref = order['yuju_carrier_tracking_ref']   # Colecta
-        # carrier_tracking_ref, carrier_selection_relational = [x.strip() for x in order['yuju_carrier_tracking_ref'].split('|')]
-        # carrier_tracking_ref, carrier_selection_relational = parse_tracking_and_carrier(order['yuju_carrier_tracking_ref'])
+        # carrier_tracking_ref = order['data_tracking_readwrite']   # Colecta
+        # carrier_tracking_ref, carrier_selection_relational = [x.strip() for x in order['data_tracking_readwrite'].split('|')]
+        # carrier_tracking_ref, carrier_selection_relational = parse_tracking_and_carrier(order['data_tracking_readwrite'])
         # ----------------------------------------------------------------------------------------------
 
         # Eric inserta carrier.  cambio 15/julio/2025
-        carrier_tracking_ref = order['yuju_carrier_tracking_ref']   # Colecta
+        carrier_tracking_ref = order['data_tracking_readwrite']   # Colecta
         # ----------------------------------------------------------------------------------------------
 
 
@@ -758,7 +756,7 @@ def parse_tracking_and_carrier(value):
         return parts[0], parts[1]
 def insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref, carrier_selection='CMEL'):
     """
-    Actualiza en Odoo el número de guía (yuju_carrier_tracking_ref) y el carrier (carrier_selection_relational)
+    Actualiza en Odoo el número de guía (data_tracking_readwrite) y el carrier (carrier_selection_relational)
     para una orden de venta dada.
     """
     try:
@@ -774,12 +772,12 @@ def insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref
         if carrier_selection == 'DEFINED':
             # Solo actualiza el número de guía
             values = {
-                'yuju_carrier_tracking_ref': new_carrier_tracking_ref
+                'data_tracking_readwrite': new_carrier_tracking_ref
             }
         else:
             carrier_selection_relational = carrier_map.get(carrier_selection)
             values = {
-                'yuju_carrier_tracking_ref': new_carrier_tracking_ref,
+                'data_tracking_readwrite': new_carrier_tracking_ref,
                 'carrier_selection_relational': carrier_selection_relational
             }
 
@@ -800,7 +798,7 @@ def insert_carrier_tracking_ref_odoo_backup(order_id, so_name, carrier_tracking_
 
         models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                           'sale.order', 'write',
-                          [[order_id], {'yuju_carrier_tracking_ref': new_carrier_tracking_ref}])
+                          [[order_id], {'data_tracking_readwrite': new_carrier_tracking_ref}])
 
         return 'Número de guia actualizado '
 

@@ -109,7 +109,7 @@ if __name__ == "__main__":
             'sale.order', 'search_read',
             [[['name', '=', NOMBRE_SO_PRUEBA]]],
             {'fields': ['channel_order_reference', 'yuju_pack_id', 'id', 'name', 'yuju_seller_id', 'create_date',
-                        'date_order', 'yuju_carrier_tracking_ref', 'write_date']}
+                        'date_order', 'data_tracking_readwrite', 'write_date']}
         )
 
         if test_orders:
@@ -125,8 +125,8 @@ if __name__ == "__main__":
                 orden_odoo['channel_order_reference'] = 'TEST_CHANNEL_REF_123'
             if not orden_odoo.get('yuju_seller_id'):
                 orden_odoo['yuju_seller_id'] = '160190870'  # Un seller válido para el diccionario de tokens
-            if not orden_odoo.get('yuju_carrier_tracking_ref'):
-                orden_odoo['yuju_carrier_tracking_ref'] = 'Colecta'  # Forzamos que entre a la lógica de Colecta
+            if not orden_odoo.get('data_tracking_readwrite'):
+                orden_odoo['data_tracking_readwrite'] = 'Colecta'  # Forzamos que entre a la lógica de Colecta
 
             print("\nIniciando proceso de insersión de Guía y Mensaje en la Orden...")
             # Invocamos DIRECTAMENTE la función de nuevas órdenes pasando nuestra lista de 1 elemento
