@@ -1333,7 +1333,7 @@ if __name__ == "__main__":
     load_dotenv()
 
     # ////////////////////////////////////////////////
-    enviroment = 'test_18' # test_18 / production_18
+    enviroment = 'production_18' # test_18 / production_18
     # ////////////////////////////////////////////////
 
     labels_path = "/home/ubuntu/Documents/server-Tln/Tools/etiquetazpl/Etiquetas"
