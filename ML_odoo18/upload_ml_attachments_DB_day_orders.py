@@ -55,17 +55,17 @@ def get_odoo_credentials(environment="test_18"):
     """ Obtiene las credenciales de Odoo según el entorno. """
     if environment == "test_18":
         return {
-                "db": os.getenv("odoo_db_test_18"),
-                "user": os.getenv("odoo_user_test_18"),
-                "password": os.getenv("odoo_password_test_18"),
-                "url": os.getenv("odoo_url_test_18"),
+                'db': os.getenv('odoo_db_testV18'),
+                'user': os.getenv('odoo_user_dataV18'),
+                'password': os.getenv('odoo_password_dataV18'),
+                'url': os.getenv('odoo_url_testV18'),
             }
     elif environment == "production_18":
         return {
-            "db": os.getenv("odoo_db_18"),
-            "user": os.getenv("odoo_user_18"),
-            "password": os.getenv("odoo_password_18"),
-            "url": os.getenv("odoo_url_18"),
+            'db': os.getenv('odoo_dbV18'),
+            'user': os.getenv('odoo_user_dataV18'),
+            'password': os.getenv('odoo_password_dataV18'),
+            'url': os.getenv('odoo_urlV18'),
         }
 
 def get_odoo_model(environment='test'):
@@ -98,7 +98,8 @@ def get_orders_from_odoo(filter_date, today_date):
         ('data_tracking_readwrite', 'ilike', 'Drop Off'),
         ('data_tracking_readwrite', 'ilike', 'Cross Docking con Drop Off'),
         ('write_date', '>=', filter_date),
-        ('state', '=', 'done'),
+        ('state', '=', 'sale'), #No hay done en V18
+        ('locked', '=', True),
         ('data_tracking_readwrite', 'not ilike', ' / '),
         ('effective_date', '=', False)
     ]
@@ -523,8 +524,8 @@ def procces_new_orders(orders, local):
         # **** Cambio 17-06-2025 para garantizar que ordenes migran a WMS hasta tener guia adjunta en pick. ****
 
         # carrier_tracking_ref = order['data_tracking_readwrite']   # Colecta
-        # carrier_tracking_ref, carrier_selection_relational = [x.strip() for x in order['data_tracking_readwrite'].split('|')]
-        # carrier_tracking_ref, carrier_selection_relational = parse_tracking_and_carrier(order['data_tracking_readwrite'])
+        # carrier_tracking_ref, data_carrier_selection_relational = [x.strip() for x in order['data_tracking_readwrite'].split('|')]
+        # carrier_tracking_ref, data_carrier_selection_relational = parse_tracking_and_carrier(order['data_tracking_readwrite'])
         # ----------------------------------------------------------------------------------------------
 
         # Eric inserta carrier.  cambio 15/julio/2025
@@ -756,7 +757,7 @@ def parse_tracking_and_carrier(value):
         return parts[0], parts[1]
 def insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref, carrier_selection='CMEL'):
     """
-    Actualiza en Odoo el número de guía (data_tracking_readwrite) y el carrier (carrier_selection_relational)
+    Actualiza en Odoo el número de guía (data_tracking_readwrite) y el carrier (data_carrier_selection_relational)
     para una orden de venta dada.
     """
     try:
@@ -775,10 +776,10 @@ def insert_carrier_and_tracking_ref_odoo(order_id, so_name, carrier_tracking_ref
                 'data_tracking_readwrite': new_carrier_tracking_ref
             }
         else:
-            carrier_selection_relational = carrier_map.get(carrier_selection)
+            data_carrier_selection_relational = carrier_map.get(carrier_selection)
             values = {
                 'data_tracking_readwrite': new_carrier_tracking_ref,
-                'carrier_selection_relational': carrier_selection_relational
+                'data_carrier_selection_relational': data_carrier_selection_relational
             }
 
         models.execute_kw(
@@ -816,7 +817,7 @@ def insert_LOIN_carrier_odoo(order_id, so_name):
 
             models.execute_kw(ODOO_DB_NAME, uid, ODOO_PASSWORD,
                               'sale.order', 'write',
-                              [[order_id], {'carrier_selection_relational': carrier_id}])
+                              [[order_id], {'data_carrier_selection_relational': carrier_id}])
 
             return f"Carrier asignado correctamente a la orden {so_name} "
         else:
