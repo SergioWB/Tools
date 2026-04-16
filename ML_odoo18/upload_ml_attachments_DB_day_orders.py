@@ -1330,7 +1330,7 @@ if __name__ == "__main__":
 
     start = tm.time()
     # Cargar variables de entorno
-    load_dotenv()
+    load_dotenv('/home/ubuntu/Documents/server-Tln/Tools/ML_odoo18/.env')
 
     # ////////////////////////////////////////////////
     enviroment = 'production_18' # test_18 / production_18
