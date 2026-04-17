@@ -80,6 +80,8 @@ def get_odoo_model(environment='test'):
     ODOO_PASSWORD = odoo_env["password"]
     ODOO_URL = odoo_env["url"]
 
+    print(ODOO_DB_NAME,ODOO_USER_ID,ODOO_PASSWORD,ODOO_URL)
+
     # Configuración del cliente XML-RPC
     common = xmlrpc.client.ServerProxy(f'{ODOO_URL}/xmlrpc/2/common')
     uid = common.authenticate(ODOO_DB_NAME, ODOO_USER_ID, ODOO_PASSWORD, {})
