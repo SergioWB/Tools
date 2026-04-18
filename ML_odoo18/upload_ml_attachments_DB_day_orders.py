@@ -131,9 +131,9 @@ def recupera_meli_token(user_id, local):
             }
         else:
             token_files = {
-                25523702: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli.txt',
-                160190870: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli_oficiales.txt',
-                1029905409: '/home/ubuntu/Documents/server-Tln/Tools/meli/tokens_meli_skyBrands.txt'
+                25523702: '/home/ubuntu/Documents/server-Tln/Tools/ML_odoo18/access_meli/tokens_meli.txt',
+                160190870: '/home/ubuntu/Documents/server-Tln/Tools/ML_odoo18/access_meli/tokens_meli_oficiales.txt',
+                1029905409: '/home/ubuntu/Documents/server-Tln/Tools/ML_odoo18/access_meli/tokens_meli_skyBrands.txt'
             }
 
 
@@ -202,10 +202,6 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
     except Exception as e:
         return {'ml_api_message': f'Error get_zpl_meli: {str(e)}', 'zpl_response': None}
 
-
-
-
-
 def get_seller_user_id(seller_marketplace):
     """Mapea seller_marketplace a user_id de Mercado Libre."""
     seller_map = {
@@ -213,7 +209,7 @@ def get_seller_user_id(seller_marketplace):
         '25523702': 25523702,
         '1029905409': 1029905409
     }
-    return seller_map.get(seller_marketplace)
+    return seller_map.get(seller_marketplace, 25523702)
 
 def process_orders(local=True):
     """
@@ -242,7 +238,7 @@ def process_orders(local=True):
         lastest_date = latest_date_db - timedelta(days=20)
         filter_date = lastest_date.strftime('%Y-%m-%d %H:%M:%S')
     else:
-        filter_date = '2025-07-10 00:00:00'
+        filter_date = '2026-04-01 00:00:00'
 
     print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
     logging.info(f'Filter date (ml_insertion_guide DB): {filter_date} / Now: {today_date}')
