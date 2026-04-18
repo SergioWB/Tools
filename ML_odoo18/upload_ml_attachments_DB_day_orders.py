@@ -102,7 +102,7 @@ def get_orders_from_odoo(filter_date, today_date):
         ('write_date', '>=', filter_date),
         ('state', '=', 'sale'), #No hay done en V18
         ('locked', '=', True),
-        ('data_tracking_readwrite', 'not ilike', ' / '),
+        ('data_tracking_readwrite', 'not ilike', '/'),
         ('effective_date', '=', False)
     ]
 
