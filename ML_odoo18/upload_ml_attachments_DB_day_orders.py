@@ -609,7 +609,7 @@ def procces_new_orders(orders, local):
                         date_order_odoo=date_order_odoo,
                         last_update_odoo=last_update_odoo,
                         processed_successfully=1,
-                        pick_id=None,  # IMPORTANTE: Ya no mandamos pick_id
+                        pick_id='None',  # IMPORTANTE: Ya no mandamos pick_id
                         zpl=zpl_data,
                         status=status,
                         already_printed=0
@@ -639,7 +639,7 @@ def procces_new_orders(orders, local):
                             date_order_odoo=date_order_odoo,
                             last_update_odoo=last_update_odoo,
                             processed_successfully=0,
-                            pick_id=None,
+                            pick_id='None',
                             failure_reason=f"Failed to obtain ZPL: {message_response}",
                             status=status,
                             already_printed=1
@@ -658,7 +658,7 @@ def procces_new_orders(orders, local):
                             date_order_odoo=date_order_odoo,
                             last_update_odoo=last_update_odoo,
                             processed_successfully=0,
-                            pick_id=None,
+                            pick_id='None',
                             failure_reason=f"Failed to obtain ZPL: {message_response}",
                             status=status,
                             already_printed=0
@@ -686,7 +686,7 @@ def procces_new_orders(orders, local):
                 date_order_odoo=date_order_odoo,
                 last_update_odoo=last_update_odoo,
                 processed_successfully=0,
-                pick_id=None,
+                pick_id='None',
                 failure_reason=f"Esta orden aun no es procesable para hoy",
                 status=status,
                 already_printed=0
@@ -867,7 +867,7 @@ def get_db_connection():
         database=os.getenv("DB_NAME")
     )
 
-def save_log_db(order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, card_name, carrier_tracking_ref, carrier_selection, date_order_odoo, last_update_odoo, processed_successfully, pick_id=None, zpl=None, failure_reason=None, status=None, already_printed=None):
+def save_log_db(order_id, so_name, marketplace_reference, pack_id, seller_marketplace, ml_status, card_name, carrier_tracking_ref, carrier_selection, date_order_odoo, last_update_odoo, processed_successfully, pick_id='None', zpl=None, failure_reason=None, status=None, already_printed=None):
     """Guarda la información de una orden procesada o no procesada en ml_guide_insertion."""
     connection = get_db_connection()
     cursor = connection.cursor()
