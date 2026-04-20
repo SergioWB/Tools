@@ -966,7 +966,7 @@ def get_orders_info_DB():
             "card_name": row[6],
             "carrier_tracking_ref": row[7],
             "carrier_selection": row[8],
-            "pick_id": int(row[9]),
+            "pick_id": 'None',
             "status": row[10]
         }
         for row in results
