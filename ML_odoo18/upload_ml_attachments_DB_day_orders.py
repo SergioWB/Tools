@@ -413,9 +413,16 @@ def procces_db_orders(orders, local):
 
 
         # --------- Logica para colecta mañana 09/octubre/2025 ------------------
-        if cdmx_time >= limit_hour and 'Mañana' in card_name:
+        safe_card_name = card_name or ""
+
+        if cdmx_time >= limit_hour and 'Mañana' in safe_card_name:
             get_label_for_tomorrow = True
             message_for_tomorrow = 'Guía de Mañana ADELANTADA // '
+        # ------------ LOGIA SOLICITADA OPS PARA HOT SALE--------------------------
+        elif cdmx_time >= limit_hour and 'A partir del 1 de junio' in safe_card_name:
+            get_label_for_tomorrow = True
+            message_for_tomorrow = 'Guía *A partir del 1 de junio* ADELANTADA // '
+        # ------------------------------------------------------------------------
         else:
             get_label_for_tomorrow = False
             message_for_tomorrow = ''
@@ -564,9 +571,16 @@ def procces_new_orders(orders, local):
         are_there_attachments = search_sale_attachments(order_id)
 
         # --------- Logica para colecta mañana 09/octubre/2025 ------------------
-        if cdmx_time >= limit_hour and 'Mañana' in card_name:
+        safe_card_name = card_name or ""
+
+        if cdmx_time >= limit_hour and 'Mañana' in safe_card_name:
             get_label_for_tomorrow = True
             message_for_tomorrow = 'Guía de Mañana ADELANTADA // '
+        # ------------ LOGIA SOLICITADA OPS PARA HOT SALE--------------------------
+        elif cdmx_time >= limit_hour and 'A partir del 1 de junio' in safe_card_name:
+            get_label_for_tomorrow = True
+            message_for_tomorrow = 'Guía *A partir del 1 de junio* ADELANTADA // '
+        # ------------------------------------------------------------------------
         else:
             get_label_for_tomorrow = False
             message_for_tomorrow = ''
@@ -1293,12 +1307,21 @@ def update_orders_from_crawl():
             new_status_name = "unknown"
             new_card_name = None
 
-        new_status = "pending" if new_status_name == "Envíos de hoy" or 'Mañana' in new_card_name else "not_for_today"
+        # ------------ LOGIA SOLICITADA OPS PARA HOT SALE--------------------------
+        safe_card_name = new_card_name or ""
+
+        new_status = "pending" if (
+                new_status_name == "Envíos de hoy"
+                or any(txt in safe_card_name for txt in ['Mañana', 'A partir del 1 de junio'])
+        ) else "not_for_today"
 
         if new_status_name == "Envíos de hoy":
             for_today_count += 1
-        if 'Mañana' in new_card_name:
+
+        if 'Mañana' in safe_card_name or 'A partir del 1 de junio' in safe_card_name:
             for_tomorrow_count += 1
+
+        # ----------------------------------------------------------------------------
 
         # Se pasa el nuevo card_name a la función de actualización
         update_log_db(
