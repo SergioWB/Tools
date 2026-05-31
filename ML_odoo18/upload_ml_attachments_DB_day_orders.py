@@ -425,8 +425,10 @@ def procces_db_orders(orders, local):
             message_for_tomorrow = 'Guía *A partir del 2 de junio* ADELANTADA // '
         # ------------------------------------------------------------------------
         else:
-            get_label_for_tomorrow = False
-            message_for_tomorrow = ''
+            # get_label_for_tomorrow = False
+            # message_for_tomorrow = ''
+            get_label_for_tomorrow = True
+            message_for_tomorrow = 'PETICION ESPECIAL HOTSALE'
         # -------------------------------------------------------------------------
 
         if ml_crawl_status == 'Envíos de hoy' or get_label_for_tomorrow:
@@ -583,8 +585,10 @@ def procces_new_orders(orders, local):
             message_for_tomorrow = 'Guía *A partir del 2 de junio* ADELANTADA // '
         # ------------------------------------------------------------------------
         else:
-            get_label_for_tomorrow = False
-            message_for_tomorrow = ''
+            # get_label_for_tomorrow = False
+            # message_for_tomorrow = ''
+            get_label_for_tomorrow = True
+            message_for_tomorrow = 'PETICION ESPECIAL HOTSALE'
         # -------------------------------------------------------------------------
 
         if ml_crawl_status == 'Envíos de hoy' or get_label_for_tomorrow:
