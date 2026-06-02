@@ -365,7 +365,7 @@ def procces_db_orders(orders, local):
     total_ = len(orders)
 
     cdmx_time = datetime.strptime(get_cdmx_time(), "%Y-%m-%d %H:%M:%S")
-    limit_hour = cdmx_time.replace(hour=5, minute=0, second=0, microsecond=0)  # 2pm CDMX
+    limit_hour = cdmx_time.replace(hour=14, minute=0, second=0, microsecond=0)  # 2pm CDMX
 
     print(f'cdmx_time: {cdmx_time}')
 
@@ -420,15 +420,17 @@ def procces_db_orders(orders, local):
             get_label_for_tomorrow = True
             message_for_tomorrow = 'Guía de Mañana ADELANTADA // '
         # ------------ LOGIA SOLICITADA OPS PARA HOT SALE--------------------------
-        elif cdmx_time >= limit_hour and 'A partir del 2 de junio' in safe_card_name:
-            get_label_for_tomorrow = True
-            message_for_tomorrow = 'Guía *A partir del 2 de junio* ADELANTADA // '
+        # elif cdmx_time >= limit_hour and 'A partir del 2 de junio' in safe_card_name:
+        #     get_label_for_tomorrow = True
+        #     message_for_tomorrow = 'Guía *A partir del 2 de junio* ADELANTADA // '
         # ------------------------------------------------------------------------
         else:
-            # get_label_for_tomorrow = False
-            # message_for_tomorrow = ''
-            get_label_for_tomorrow = True
-            message_for_tomorrow = 'PETICION ESPECIAL HOTSALE'
+            get_label_for_tomorrow = False
+            message_for_tomorrow = ''
+
+            ## #============== Extrae TODAS las guias disponibles =================
+            # get_label_for_tomorrow = True
+            # message_for_tomorrow = 'PETICION ESPECIAL HOTSALE'
         # -------------------------------------------------------------------------
 
         if ml_crawl_status == 'Envíos de hoy' or get_label_for_tomorrow:
@@ -516,7 +518,7 @@ def procces_new_orders(orders, local):
     lastest_date_value = False
 
     cdmx_time = datetime.strptime(get_cdmx_time(), "%Y-%m-%d %H:%M:%S")
-    limit_hour = cdmx_time.replace(hour=5, minute=0, second=0, microsecond=0) # 2pm CDMX
+    limit_hour = cdmx_time.replace(hour=14, minute=0, second=0, microsecond=0) # 2pm CDMX
 
     for order in orders:
         count += 1
@@ -580,15 +582,17 @@ def procces_new_orders(orders, local):
             get_label_for_tomorrow = True
             message_for_tomorrow = 'Guía de Mañana ADELANTADA // '
         # ------------ LOGIA SOLICITADA OPS PARA HOT SALE--------------------------
-        elif cdmx_time >= limit_hour and 'A partir del 2 de junio' in safe_card_name:
-            get_label_for_tomorrow = True
-            message_for_tomorrow = 'Guía *A partir del 2 de junio* ADELANTADA // '
+        # elif cdmx_time >= limit_hour and 'A partir del 2 de junio' in safe_card_name:
+        #     get_label_for_tomorrow = True
+        #     message_for_tomorrow = 'Guía *A partir del 2 de junio* ADELANTADA // '
         # ------------------------------------------------------------------------
         else:
-            # get_label_for_tomorrow = False
-            # message_for_tomorrow = ''
-            get_label_for_tomorrow = True
-            message_for_tomorrow = 'PETICION ESPECIAL HOTSALE'
+            get_label_for_tomorrow = False
+            message_for_tomorrow = ''
+
+            ## #============== Extrae TODAS las guias disponibles =================
+            # get_label_for_tomorrow = True
+            # message_for_tomorrow = 'PETICION ESPECIAL HOTSALE'
         # -------------------------------------------------------------------------
 
         if ml_crawl_status == 'Envíos de hoy' or get_label_for_tomorrow:
@@ -1317,13 +1321,14 @@ def update_orders_from_crawl():
 
         new_status = "pending" if (
                 new_status_name == "Envíos de hoy"
-                or any(txt in safe_card_name for txt in ['Mañana', 'A partir del 2 de junio'])
+                or any(txt in safe_card_name for txt in ['Mañana'])  #'A partir del 2 de junio'
         ) else "not_for_today"
 
         if new_status_name == "Envíos de hoy":
             for_today_count += 1
 
-        if 'Mañana' in safe_card_name or 'A partir del 2 de junio' in safe_card_name:
+        #if 'Mañana' in safe_card_name or 'A partir del 2 de junio' in safe_card_name:
+        if 'Mañana' in safe_card_name:
             for_tomorrow_count += 1
 
         # ----------------------------------------------------------------------------
