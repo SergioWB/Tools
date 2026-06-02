@@ -196,7 +196,7 @@ def get_zpl_meli(shipment_ids, so_name, access_token):
         else:
             logging.error("El archivo no existe: " + path_attachment)
             file_content = None
-        # //////////////////////////////////////////////
+        # -------------------------------------------------------------------
 
         return {'ml_api_message': f'Se procesó el archivo ZPL de la Orden: {so_name} con éxito', 'zpl_response': file_content}
     except Exception as e:
@@ -357,8 +357,8 @@ def insert_log_message_so(order_id, so_name):
         {'body': f'{current_datetime}. Se insertó la guía de MercadoLibre en los anexos de la orden {so_name}.'}
     )
 
-#/////////////////////////////////////////////////////////////////////////////////
-# /////////////////////// Funciones de procesamiento por orden ///////////////////
+# ==================================================================================
+# ==================== Funciones de procesamiento por orden ========================
 
 def procces_db_orders(orders, local):
     count = 0
@@ -722,7 +722,7 @@ def procces_new_orders(orders, local):
         update_latest_date_in_db(lastest_date_value)
         logging.info(f'---------------- Actualizando la fecha de búsqueda en DB: {lastest_date_value} ----------------')
 
-#/////////////////////////////////////////////////////////////////////////////////
+# ===============================================================================
 
 def insert_log_in_sheets(log_file, file_id, credentials_json):
     """
@@ -880,7 +880,7 @@ def update_latest_date_json(new_date_str):
     return new_date_str  # Retornamos la nueva fecha guardada
 
 
-#///////////////////////////// Conexion a base de datos /////////////////////////
+# ========================== Conexion a base de datos ==========================
 def get_db_connection():
     """Establece y devuelve una conexión a la base de datos."""
     return mysql.connector.connect(
@@ -1356,16 +1356,16 @@ def update_orders_from_crawl():
 
 
 if __name__ == "__main__":
-    logging.info("///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
-    print("////////////////////////////////////////////////////")
+    logging.info("====================== INICIO AUTOMATIZACION ======================")
+    print("====================== INICIO MANUAL ======================")
 
     start = tm.time()
     # Cargar variables de entorno
     load_dotenv('/home/ubuntu/Documents/server-Tln/Tools/ML_odoo18/.env')
 
-    # ////////////////////////////////////////////////
+    # ======================================================================
     enviroment = 'production_18' # test_18 / production_18
-    # ////////////////////////////////////////////////
+    # ======================================================================
 
     labels_path = "/home/ubuntu/Documents/server-Tln/Tools/etiquetazpl/Etiquetas"
     #labels_path = "C:/Users/Sergio Gil Guerrero/Documents/WonderBrands/Repos/Tools/etiquetazpl/Etiquetas"
@@ -1379,7 +1379,7 @@ if __name__ == "__main__":
 
     end = tm.time()
 
-    logging.info(f"  ////////////////////////////////// Terminando la ejecución. Tiempo: {round(end - start, 2)} [s] ////////////////////////////////// \n")
+    logging.info(f"  ==========================  Terminando la ejecución. Tiempo: {round(end - start, 2)} [s] ==========================  \n")
 
     file_id = "1foh4wRPgGGT46BBYPjl9lJ2bQFjY7fHVfzptNAVoQZ8"
     credentials_json = "/home/ubuntu/Documents/server-Tln/Tools/ML_odoo18/google_cred.json"
