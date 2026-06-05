@@ -224,6 +224,7 @@ def process_orders(local=True):
     """
 
     tk_meli.get_all_tokens()
+    logging.info(" ---- Tokens Meli obtenidos ----")
 
     now_date = datetime.now()
     today_date = now_date.strftime('%Y-%m-%d %H:%M:%S')
@@ -238,7 +239,7 @@ def process_orders(local=True):
         lastest_date = latest_date_db - timedelta(days=20)
         filter_date = lastest_date.strftime('%Y-%m-%d %H:%M:%S')
     else:
-        filter_date = '2026-04-01 00:00:00'
+        filter_date = '2026-06-01 00:00:00'
 
     print(f'Filter date (ml_insertion_guide DB):    {filter_date} \nNow:                                    {today_date}')
     logging.info(f'Filter date (ml_insertion_guide DB): {filter_date} / Now: {today_date}')
@@ -370,7 +371,6 @@ def procces_db_orders(orders, local):
     print(f'cdmx_time: {cdmx_time}')
 
     for order in orders:
-        print(f'DB: Orden desde Odoo {count} de {total_}')
         count += 1
         #print(f'Orden desde DB {count} de {total_}')
 
